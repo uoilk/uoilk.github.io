@@ -3,27 +3,202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>23403001106魏勇超的第一个网页</title> 
+    <title>23403001106魏勇超的个人网页</title>
     <style>
+        /* 全局样式重置+基础美化 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "微软雅黑", "PingFang SC", sans-serif;
+        }
+
+        /* 页面背景渐变+最小高度 */
         body {
-            background-color: #f0f8ff;
-            text-align: center;
-            padding: 50px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
         }
+
+        /* 容器居中+白色卡片效果 */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 标题样式：渐变文字+阴影 */
         h1 {
-            color: #2c3e50;
-            font-family: "微软雅黑";
+            background: linear-gradient(90deg, #2c3e50, #3498db);
+            -webkit-background-clip: text;
+            color: transparent;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2.2rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
+
+        /* 副标题样式 */
+        h2 {
+            color: #2c3e50;
+            margin: 25px 0 15px;
+            border-left: 4px solid #3498db;
+            padding-left: 10px;
+        }
+
+        /* 段落+列表样式 */
         p {
-            font-size: 18px;
             color: #34495e;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin: 10px 0 20px 30px;
+            color: #34495e;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        /* 图片样式：居中+圆角+阴影+ hover放大 */
+        .avatar {
+            display: block;
+            margin: 20px auto;
+            width: 280px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease; /* 过渡动画 */
+        }
+
+        .avatar:hover {
+            transform: scale(1.05); /* 鼠标悬停放大 */
+        }
+
+        /* 个人信息表格样式 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th, table td {
+            border: 1px solid #e0e0e0;
+            padding: 12px;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #f8f9fa;
+            color: #2c3e50;
+        }
+
+        /* 按钮+链接样式 */
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            margin: 10px 5px;
+            transition: background 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #2980b9; /* 鼠标悬停变色 */
+        }
+
+        /* 页脚样式 */
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        /* 响应式适配：手机端自动调整 */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            .avatar {
+                width: 220px;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>23403001106魏勇超的第一个网页</h1> <!-- 必须包含的核心内容 -->
-    <p>这是我用HBuilder制作的第一个网页，包含文字、样式和简单结构。</p>
-    <p>网页创建日期：2025年11月26日</p>
-    <img src="images/photo.jpg" alt="示例图片" width="300">
+    <div class="container">
+        <!-- 标题+自我介绍 -->
+        <h1>23403001106 魏勇超的个人网页</h1>
+        <hr> <!-- 分隔线 -->
+        <p>大家好！这是我用HBuilder制作的个性化网页，包含我的基本信息、兴趣爱好和学习记录～</p>
+
+        <!-- 图片展示 -->
+        <h2>📸 我的照片</h2>
+        <img src="photo.jpg" alt="魏勇超的照片" class="avatar">
+
+        <!-- 个人信息表格 -->
+        <h2>📝 个人基本信息</h2>
+        <table>
+            <tr>
+                <th>项目</th>
+                <th>内容</th>
+            </tr>
+            <tr>
+                <td>学号</td>
+                <td>23403001106</td>
+            </tr>
+            <tr>
+                <td>姓名</td>
+                <td>魏勇超</td>
+            </tr>
+            <tr>
+                <td>专业/班级</td>
+                <td>（可填写你的专业和班级）</td>
+            </tr>
+            <tr>
+                <td>兴趣爱好</td>
+                <td>编程、阅读、运动（可自定义）</td>
+            </tr>
+        </table>
+
+        <!-- 兴趣列表 -->
+        <h2>🌟 我的兴趣爱好</h2>
+        <ul> <!-- 无序列表 -->
+            <li>前端开发：学习HTML/CSS/JavaScript，尝试制作好看的网页</li>
+            <li>课余活动：打篮球、听音乐、看技术博客</li>
+            <li>学习目标：掌握网页开发，能独立完成小型网站制作</li>
+        </ul>
+
+        <!-- 学习计划（有序列表） -->
+        <h2>🎯 近期学习计划</h2>
+        <ol>
+            <li>巩固HTML/CSS基础，学习Flex/Grid布局</li>
+            <li>入门JavaScript，实现简单的网页交互</li>
+            <li>尝试使用GitHub管理自己的代码</li>
+        </ol>
+
+        <!-- 交互按钮+链接 -->
+        <h2>🔗 常用链接</h2>
+        <a href="https://github.com/uoilk/uoilk.github.io" class="btn" target="_blank">我的GitHub仓库</a>
+        <a href="javascript:alert('你点击了联系按钮！我的邮箱：xxx@xxx.com')" class="btn">联系我（弹窗）</a>
+
+        <!-- 页脚 -->
+        <footer>
+            <p>© 2025 魏勇超的个人网页 | 制作工具：HBuilder X | 部署平台：GitHub Pages</p>
+        </footer>
+    </div>
 </body>
 </html>
