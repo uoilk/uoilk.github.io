@@ -1,0 +1,87 @@
+/* css/click-particles.css */
+/* 鼠标点击粒子效果 - 全站通用 */
+
+/* 点击粒子容器 */
+.click-particles-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    overflow: hidden;
+}
+
+/* 单个点击粒子 */
+.click-particle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 小尺寸粒子 */
+.click-particle.small {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+}
+
+/* 大尺寸粒子 */
+.click-particle.large {
+    width: 12px;
+    height: 12px;
+    border-radius: 4px;
+}
+
+/* 点击粒子动画 - 向外绽放 */
+@keyframes clickParticleOut {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(0.5) rotate(0deg);
+    }
+    70% {
+        opacity: 0.8;
+    }
+    100% {
+        opacity: 0;
+        transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(0.1) rotate(var(--rotate));
+    }
+}
+
+/* 点击粒子动画 - 旋转飞出 */
+@keyframes clickParticleSpin {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(0.8) rotate(0deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(0.2) rotate(var(--rotate));
+    }
+}
+
+/* 点击粒子动画 - 弹性效果 */
+@keyframes clickParticleBounce {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    30% {
+        transform: translate(calc(-50% + var(--tx)*0.3), calc(-50% + var(--ty)*0.3)) scale(0.7);
+    }
+    70% {
+        opacity: 0.7;
+        transform: translate(calc(-50% + var(--tx)*0.8), calc(-50% + var(--ty)*0.8)) scale(0.5);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(0.2);
+    }
+}

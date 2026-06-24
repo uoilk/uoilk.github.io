@@ -1,0 +1,285 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.splash-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #e7c8d2 0%, #c8dff4 50%, #eee3db 100%);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+/* 小球容器 */
+.ball-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+}
+
+/* 主小球 */
+.ball {
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(135deg, #F8C8DC 0%, #FFB6C1 50%, #FFC0CB 100%);
+  border-radius: 50%;
+  box-shadow: 
+    0 8px 20px rgba(248, 200, 220, 0.5),
+    inset 0 -5px 15px rgba(255, 255, 255, 0.6),
+    inset 0 5px 10px rgba(255, 182, 193, 0.3);
+  animation: bounce 0.5s ease-in-out infinite;
+  position: relative;
+}
+
+/* 小球高光 */
+.ball::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  width: 10px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  transform: rotate(-30deg);
+}
+
+/* 小球阴影 */
+.ball-shadow {
+  width: 50px;
+  height: 10px;
+  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.15) 0%, transparent 70%);
+  border-radius: 50%;
+  margin-top: 10px;
+  animation: shadow-pulse 0.5s ease-in-out infinite;
+}
+
+/* 跳动动画 */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0) scaleX(1) scaleY(1);
+  }
+  30% {
+    transform: translateY(-80px) scaleX(0.9) scaleY(1.1);
+  }
+  50% {
+    transform: translateY(-100px) scaleX(0.85) scaleY(1.15);
+  }
+  70% {
+    transform: translateY(-80px) scaleX(0.9) scaleY(1.1);
+  }
+  85% {
+    transform: translateY(0) scaleX(1.15) scaleY(0.85);
+  }
+}
+
+/* 阴影动画 */
+@keyframes shadow-pulse {
+  0%, 100% {
+    transform: scaleX(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scaleX(0.5);
+    opacity: 0.15;
+  }
+}
+
+/* 小球变大动画 */
+.ball.expand {
+  animation: expand-to-logo 0.8s ease-out forwards;
+}
+
+@keyframes expand-to-logo {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(2);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+/* 阴影消失 */
+.ball-shadow.fade {
+  animation: fade-out 0.4s ease-out forwards;
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+}
+
+/* Logo图片样式 - 核心：控制尺寸+保持比例 */
+.logo1-img {
+  width: 300px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  object-fit: contain;
+}
+
+/* Logo容器 */
+.logo-container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  transform: scale(0.5);
+  z-index: 5;
+  margin-top: 20px;
+}
+
+.logo-container.show {
+  animation: logo-appear 0.8s ease-out forwards;
+}
+
+@keyframes logo-appear {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.logo-text {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icon {
+  font-size: 48px;
+  animation: icon-bounce 0.6s ease-out 0.3s;
+  /* 给图标也加上点阵字体 */
+  font-family: 'BoutiqueBitmap7x7', sans-serif;
+}
+
+@keyframes icon-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* 2. 核心：给logo名称/标语指定点阵字体 */
+/* Logo名称样式（点阵字体+渐变） */
+.logo-name {
+  font-size: 36px;
+  font-weight: 700;
+}
+.slogon-text {
+  width: 300px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  object-fit: contain;
+}
+
+@keyframes slogan-fade {
+  to {
+    opacity: 1;
+  }
+}
+
+/* 页面淡出 */
+.splash-container.fade-out {
+  animation: page-fade-out 0.6s ease-out forwards;
+}
+
+@keyframes page-fade-out {
+  to {
+    opacity: 0;
+    transform: scale(1.1);
+  }
+}
+
+/* 装饰小球容器 - 铺满全屏 */
+.decorative-balls {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* 不遮挡点击 */
+  overflow: hidden;
+  z-index: 1; /* 放在最底层，不遮挡小球/Logo */
+}
+
+/* 装饰小球基础样式 */
+.decorative-ball {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0;
+  /* 随机大小范围 + 柔和渐变 */
+  background: linear-gradient(135deg, rgba(248, 200, 220, 0.6), rgba(200, 230, 245, 0.6));
+  box-shadow: 0 2px 8px rgba(248, 200, 220, 0.3);
+}
+
+/* 小球出现动画 */
+.decorative-ball.animate {
+  animation: decorative-appear 0.6s ease-out forwards;
+}
+
+@keyframes decorative-appear {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  60% {
+    opacity: 0.6;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+}
+
+/* 小球漂浮动画（随机方向+速度） */
+.decorative-ball.float {
+  animation: decorative-float 3s ease-in-out infinite;
+}
+
+/* 多组漂浮动画，避免所有小球运动一致 */
+.decorative-ball.float-1 { animation: decorative-float 4s ease-in-out infinite; }
+.decorative-ball.float-2 { animation: decorative-float 5s ease-in-out infinite 0.5s; }
+.decorative-ball.float-3 { animation: decorative-float 6s ease-in-out infinite 1s; }
+
+@keyframes decorative-float {
+  0%, 100% { transform: translateY(0) translateX(0) rotate(0deg); }
+  50% { transform: translateY(-20px) translateX(10px) rotate(10deg); }
+}
+
+/* 首页容器样式（控制显示/隐藏） */
+.main-content {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.8s ease 0.5s, visibility 0.8s ease 0.5s;
+}
+.main-content.visible {
+  opacity: 1;
+  visibility: visible;
+}
