@@ -1,0 +1,48 @@
+<!-- images/logo/douziqugongfang.svg -->
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="180" height="60" viewBox="0 0 180 60" xmlns="http://www.w3.org/2000/svg">
+    <!-- 背景装饰（可选） -->
+    <rect x="0" y="0" width="180" height="60" rx="10" fill="#FFF0F5" opacity="0.3"/>
+    
+    <!-- 豆趣工坊文字 -->
+    <g font-family="'Comic Sans MS', 'Ma Shan Zheng', cursive" font-size="28" font-weight="bold">
+        <!-- 豆字 -->
+        <text x="15" y="38" fill="#F8C8DC" stroke="#FF6B9D" stroke-width="1">
+            豆
+        </text>
+        <!-- 豆子形状的点 -->
+        <circle cx="38" cy="22" r="5" fill="#FF6B9D">
+            <animate attributeName="r" values="5;6;5" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        
+        <!-- 趣字 -->
+        <text x="55" y="38" fill="#F8C8DC">
+            趣
+        </text>
+        <!-- 笔画末端凸起 -->
+        <circle cx="78" cy="27" r="3" fill="#F8C8DC" opacity="0.8"/>
+        
+        <!-- 工字 -->
+        <text x="95" y="38" fill="#F8C8DC">
+            工
+        </text>
+        <!-- 横笔末端凸起 -->
+        <circle cx="114" cy="32" r="3" fill="#F8C8DC" opacity="0.8"/>
+        
+        <!-- 坊字 -->
+        <text x="125" y="38" fill="#F8C8DC">
+            坊
+        </text>
+        <!-- 点笔末端凸起 -->
+        <circle cx="144" cy="24" r="3" fill="#F8C8DC" opacity="0.8"/>
+    </g>
+    
+    <!-- 英文 - 像素风 -->
+    <text x="160" y="52" font-family="'Courier New', monospace" font-size="8" fill="#C8E6F5">
+        BEADFUN
+    </text>
+    
+    <!-- 装饰性小豆子 -->
+    <circle cx="5" cy="15" r="3" fill="#F8C8DC" opacity="0.6"/>
+    <circle cx="175" cy="45" r="3" fill="#C8E6F5" opacity="0.6"/>
+</svg>
