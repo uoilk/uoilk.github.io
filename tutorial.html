@@ -1,0 +1,1560 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>精细化熨烫教程 - 豆趣工坊</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/tutorial.css">
+    <link rel="stylesheet" href="css/responsive.css">
+	<link rel="stylesheet" href="css/click-particles.css">
+	<link rel="stylesheet" href="css/music-player.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <style>
+    /* ========== 入场动画样式 ========== */
+    
+    /* 飘落的拼豆粒子容器 */
+    .floating-beads {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+    }
+    
+    .bead {
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        border-radius: 4px;
+        opacity: 0;
+        animation: floatDown 3s ease-in-out infinite, fadeInBead 0.8s ease-out forwards;
+    }
+    
+    @keyframes floatDown {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(15deg); }
+    }
+    
+    @keyframes fadeInBead {
+        from { opacity: 0; transform: translateY(-30px); }
+        to { opacity: 0.6; transform: translateY(0); }
+    }
+
+    /* ========== 教程页面专用动画 ========== */
+    
+    /* 页面标题滑入 */
+    .page-header {
+        opacity: 0;
+        transform: translateY(-30px);
+        animation: slideInDown 0.8s ease-out 0.3s forwards;
+    }
+    
+    @keyframes slideInDown {
+        from { opacity: 0; transform: translateY(-30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* 搜索框动画 */
+    .search-box {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+        animation: searchSlideUp 0.8s ease-out 0.5s forwards;
+    }
+    
+    @keyframes searchSlideUp {
+        from { opacity: 0; transform: translateY(20px) scale(0.95); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    
+    /* 搜索框聚焦效果 */
+    .search-box input {
+        transition: all 0.3s ease;
+    }
+    
+    .search-box input:focus {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(248, 200, 220, 0.3);
+    }
+    
+    /* 教程分类卡片滑入 */
+    .tutorial-categories {
+        opacity: 0;
+        animation: fadeIn 0.8s ease-out 0.7s forwards;
+    }
+    
+    .category-card {
+        opacity: 0;
+        transform: translateY(40px) scale(0.95);
+        transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    
+    .category-card.animate-in {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    
+    /* 分类卡片交错动画 */
+    .category-card:nth-child(1) { transition-delay: 0.2s; }
+    .category-card:nth-child(2) { transition-delay: 0.4s; }
+    .category-card:nth-child(3) { transition-delay: 0.6s; }
+    
+    /* 分类卡片悬停效果 */
+    .category-card:hover {
+        transform: translateY(-10px) scale(1.05);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+    
+    /* 分类图标动画 */
+    .category-icon {
+        transition: all 0.4s ease;
+    }
+    
+    .category-card:hover .category-icon {
+        transform: rotate(15deg) scale(1.2);
+        animation: iconFloat 1s ease-in-out infinite alternate;
+    }
+    
+    @keyframes iconFloat {
+        from { transform: translateY(0) rotate(15deg); }
+        to { transform: translateY(-5px) rotate(15deg); }
+    }
+    
+    /* 分割线动画 */
+    .section-divider {
+        opacity: 0;
+        animation: fadeIn 0.8s ease-out 1s forwards;
+    }
+    
+    .section-divider span {
+        position: relative;
+        display: inline-block;
+    }
+    
+    .section-divider span::before,
+    .section-divider span::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        width: 100px;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #F8C8DC, transparent);
+        opacity: 0;
+        transform: scaleX(0);
+        transition: all 0.6s ease;
+    }
+    
+    .section-divider span::before {
+        right: 120%;
+        transform-origin: right;
+    }
+    
+    .section-divider span::after {
+        left: 120%;
+        transform-origin: left;
+    }
+    
+    .section-divider.visible span::before,
+    .section-divider.visible span::after {
+        opacity: 1;
+        transform: scaleX(1);
+    }
+    
+    /* 热门教程卡片滑入 */
+    .featured-tutorials {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s ease-out;
+    }
+    
+    .featured-tutorials.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    .tutorial-card {
+        opacity: 0;
+        transform: translateY(40px) scale(0.95);
+        transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    
+    .tutorial-card.animate-in {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    
+    /* 教程卡片交错动画 */
+    .tutorial-card:nth-child(1) { transition-delay: 0.1s; }
+    .tutorial-card:nth-child(2) { transition-delay: 0.2s; }
+    .tutorial-card:nth-child(3) { transition-delay: 0.3s; }
+    .tutorial-card:nth-child(4) { transition-delay: 0.4s; }
+    .tutorial-card:nth-child(5) { transition-delay: 0.5s; }
+    .tutorial-card:nth-child(6) { transition-delay: 0.6s; }
+    .tutorial-card:nth-child(7) { transition-delay: 0.7s; }
+    .tutorial-card:nth-child(8) { transition-delay: 0.8s; }
+    
+    /* 教程卡片悬停效果 */
+    .tutorial-card:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(248, 200, 220, 0.25);
+    }
+    
+    /* 教程图片动画 */
+    .tutorial-image {
+        position: relative;
+        overflow: hidden;
+        border-radius: 12px 12px 0 0;
+    }
+    
+    .tutorial-image i {
+        transition: all 0.6s ease;
+    }
+    
+    .tutorial-card:hover .tutorial-image i {
+        transform: scale(1.2) rotate(10deg);
+        color: #FF6B9D;
+    }
+    
+    /* 难度徽章动画 */
+    .difficulty-badge {
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+    }
+    
+    .tutorial-card:hover .difficulty-badge {
+        transform: translateX(-50%) translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    
+    /* 快速链接动画 */
+    .quick-links {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s ease-out;
+    }
+    
+    .quick-links.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    .quick-link {
+        opacity: 0;
+        transform: translateX(-20px);
+        transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    
+    .quick-link.animate-in {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    
+    .quick-link:nth-child(1) { transition-delay: 0.1s; }
+    .quick-link:nth-child(2) { transition-delay: 0.2s; }
+    .quick-link:nth-child(3) { transition-delay: 0.3s; }
+    .quick-link:nth-child(4) { transition-delay: 0.4s; }
+    
+    /* 快速链接悬停效果 */
+    .quick-link:hover {
+        transform: translateX(10px);
+        background: linear-gradient(135deg, rgba(248, 200, 220, 0.15), rgba(200, 230, 245, 0.15));
+    }
+    
+    .quick-link i {
+        transition: all 0.3s ease;
+    }
+    
+    .quick-link:hover i {
+        transform: scale(1.3) rotate(15deg);
+        color: #F8C8DC;
+    }
+    
+    /* 分页动画 */
+    .pagination {
+        opacity: 0;
+        animation: fadeIn 1s ease-out 1.5s forwards;
+    }
+    
+    .page-link {
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    .page-link:hover {
+        transform: translateY(-3px) scale(1.1);
+    }
+    
+    .page-link.active {
+        animation: pagePulse 2s infinite;
+    }
+    
+    @keyframes pagePulse {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(248, 200, 220, 0.7); }
+        50% { box-shadow: 0 0 0 10px rgba(248, 200, 220, 0); }
+    }
+    
+    /* 滚动触发动画 */
+    .animate-on-scroll {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.6s ease-out;
+    }
+    
+    .animate-on-scroll.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    /* 页脚滑入 */
+    .footer {
+        opacity: 0;
+        animation: footerSlideUp 1s ease-out 2s forwards;
+    }
+    
+    @keyframes footerSlideUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    /* 响应式调整 */
+    @media (max-width: 768px) {
+        .page-header {
+            animation-duration: 0.6s;
+        }
+        
+        .search-box {
+            animation-duration: 0.6s;
+        }
+        
+        .category-card {
+            transform: translateY(20px) scale(0.95);
+        }
+        
+        .tutorial-card {
+            transform: translateY(20px) scale(0.95);
+        }
+    }
+	/* ========== 页面内容 ========== */
+	    .tutorials-page {
+	        padding: 40px 0;
+	        position: relative;
+	        z-index: 1;
+	    }
+	
+	    .page-header {
+	        text-align: center;
+	        margin-bottom: 50px;
+	        opacity: 0;
+	        transform: translateY(-30px);
+	        animation: slideInDown 0.8s ease-out 0.3s forwards;
+	    }
+	    
+	    @keyframes slideInDown {
+	        from { opacity: 0; transform: translateY(-30px); }
+	        to { opacity: 1; transform: translateY(0); }
+	    }
+	
+	    .page-header h1 {
+	        font-size: 2.5rem;
+	        color: #333;
+	        margin-bottom: 10px;
+	    }
+	
+	    .page-header p {
+	        color: #666;
+	        max-width: 700px;
+	        margin: 0 auto;
+	    }
+	
+	    .search-box {
+	        margin-top: 20px;
+	        display: flex;
+	        justify-content: center;
+	        gap: 10px;
+	        opacity: 0;
+	        transform: translateY(20px) scale(0.95);
+	        animation: searchSlideUp 0.8s ease-out 0.5s forwards;
+	    }
+	    
+	    @keyframes searchSlideUp {
+	        from { opacity: 0; transform: translateY(20px) scale(0.95); }
+	        to { opacity: 1; transform: translateY(0) scale(1); }
+	    }
+	
+	    .search-box input {
+	        width: 100%;
+	        max-width: 500px;
+	        padding: 12px 20px;
+	        border: 2px solid #eee;
+	        border-radius: 30px;
+	        font-size: 16px;
+	        outline: none;
+	        transition: all 0.3s;
+	    }
+	
+	    .search-box input:focus {
+	        border-color: #F8C8DC;
+	        box-shadow: 0 0 0 5px rgba(248, 200, 220, 0.1);
+	    }
+	
+	    /* ========== 分类 ========== */
+	    .tutorial-categories {
+	        margin-bottom: 60px;
+	        opacity: 0;
+	        animation: fadeIn 0.8s ease-out 0.7s forwards;
+	    }
+	    
+	    @keyframes fadeIn {
+	        from { opacity: 0; }
+	        to { opacity: 1; }
+	    }
+	
+	    .tutorial-categories h2 {
+	        text-align: center;
+	        margin-bottom: 30px;
+	        font-size: 1.8rem;
+	    }
+	
+	    .categories-grid {
+	        display: grid;
+	        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	        gap: 25px;
+	    }
+	
+	    .category-card {
+	        background: white;
+	        padding: 25px;
+	        border-radius: 15px;
+	        text-align: center;
+	        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+	        transition: all 0.5s;
+	        text-decoration: none;
+	        color: #333;
+	        opacity: 0;
+	        transform: translateY(40px) scale(0.95);
+	    }
+	
+	    .category-card.animate-in {
+	        opacity: 1;
+	        transform: translateY(0) scale(1);
+	    }
+	
+	    .category-icon {
+	        width: 70px;
+	        height: 70px;
+	        background: rgba(248, 200, 220, 0.1);
+	        border-radius: 50%;
+	        display: flex;
+	        align-items: center;
+	        justify-content: center;
+	        margin: 0 auto 15px;
+	        font-size: 30px;
+	        color: #F8C8DC;
+	    }
+	
+	    .category-card h3 {
+	        margin-bottom: 10px;
+	    }
+	
+	    .category-card p {
+	        color: #666;
+	        font-size: 14px;
+	    }
+	
+	    /* ========== 分割线 ========== */
+	    .section-divider {
+	        text-align: center;
+	        margin: 50px 0;
+	        position: relative;
+	        opacity: 0;
+	        animation: fadeIn 0.8s ease-out 1s forwards;
+	    }
+	
+	    .section-divider span {
+	        background: #fdfdfd;
+	        padding: 0 20px;
+	        position: relative;
+	        z-index: 2;
+	        font-weight: bold;
+	        color: #666;
+	        text-transform: uppercase;
+	        letter-spacing: 2px;
+	    }
+	
+	    .section-divider::before {
+	        content: '';
+	        position: absolute;
+	        top: 50%;
+	        left: 0;
+	        width: 100%;
+	        height: 1px;
+	        background: #eee;
+	        z-index: 1;
+	    }
+	
+	    /* ========== 教程列表 (核心：竖屏适配) ========== */
+	    .featured-tutorials {
+	        margin-bottom: 60px;
+	        opacity: 0;
+	        transform: translateY(30px);
+	        transition: all 0.8s ease-out;
+	    }
+	
+	    .featured-tutorials.visible {
+	        opacity: 1;
+	        transform: translateY(0);
+	    }
+	
+	    .featured-tutorials h2 {
+	        text-align: center;
+	        margin-bottom: 30px;
+	        font-size: 1.8rem;
+	    }
+	
+	    .tutorials-grid {
+	        display: grid;
+	        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* 卡片宽度稍微调宽以适应竖屏 */
+	        gap: 30px;
+	        justify-content: center;
+	    }
+	
+	    .tutorial-card {
+	        background: white;
+	        border-radius: 15px;
+	        overflow: hidden;
+	        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+	        transition: all 0.5s;
+	        cursor: pointer;
+	        opacity: 0;
+	        transform: translateY(40px) scale(0.95);
+	    }
+	
+	    .tutorial-card.animate-in {
+	        opacity: 1;
+	        transform: translateY(0) scale(1);
+	    }
+	
+	    /* ========== 关键修改：竖屏视频卡片样式 ========== */
+	    /* 1. 卡片封面区域比例改为 9:16 (竖屏) */
+	    .tutorial-image {
+	        position: relative;
+	        width: 100%;
+	        height: 0;
+	        padding-top: 177.78%; /* 9:16 Aspect Ratio (16/9 * 100 = 177.78%) */
+	        background-color: #000;
+	        overflow: hidden;
+	    }
+	
+	    /* 2. 封面图居中裁剪，保持竖屏构图 */
+	    .tutorial-cover-img {
+	        position: absolute;
+	        top: 0;
+	        left: 0;
+	        width: 100%;
+	        height: 100%;
+	        object-fit: cover; /* 关键属性：保持比例并填充容器 */
+	        transition: transform 0.5s;
+	    }
+	
+	    .tutorial-card:hover .tutorial-cover-img {
+	        transform: scale(1.05); /* 悬停时轻微放大 */
+	    }
+	
+	    /* 3. 播放按钮 */
+	    .play-btn {
+	        position: absolute;
+	        top: 50%;
+	        left: 50%;
+	        transform: translate(-50%, -50%);
+	        width: 70px;
+	        height: 70px;
+	        background: rgba(248, 200, 220, 0.9);
+	        border-radius: 50%;
+	        display: flex;
+	        align-items: center;
+	        justify-content: center;
+	        color: white;
+	        font-size: 26px;
+	        box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+	        transition: all 0.3s;
+	        z-index: 2;
+	    }
+	
+	    .tutorial-card:hover .play-btn {
+	        transform: translate(-50%, -50%) scale(1.1);
+	        background: #F8C8DC;
+	    }
+	
+	    /* 4. 难度徽章位置调整 */
+	    .difficulty-badge {
+	        position: absolute;
+	        bottom: 15px;
+	        left: 50%;
+	        transform: translateX(-50%);
+	        padding: 5px 15px;
+	        border-radius: 20px;
+	        font-size: 12px;
+	        font-weight: bold;
+	        color: white;
+	        z-index: 3;
+	        transition: all 0.3s;
+	    }
+	
+	    .difficulty-badge.beginner { background: #98D8AA; }
+	    .difficulty-badge.intermediate { background: #FFE066; color: #333; }
+	    .difficulty-badge.advanced { background: #FF6B9D; }
+	
+	    /* 卡片底部信息 */
+	    .tutorial-info {
+	        padding: 15px;
+	    }
+	
+	    .tutorial-info h3 {
+	        margin-bottom: 5px;
+	        font-size: 16px;
+	    }
+	
+	    .tutorial-info p {
+	        color: #666;
+	        font-size: 14px;
+	        margin-bottom: 10px;
+	        display: -webkit-box;
+	        -webkit-line-clamp: 2;
+	        -webkit-box-orient: vertical;
+	        overflow: hidden;
+	    }
+	
+	    .tutorial-meta {
+	        display: flex;
+	        justify-content: space-between;
+	        font-size: 12px;
+	        color: #999;
+	    }
+	
+	    /* ========== 快速链接 ========== */
+	    .quick-links {
+	        margin-bottom: 60px;
+	        opacity: 0;
+	        transform: translateY(30px);
+	        transition: all 0.8s ease-out;
+	    }
+	
+	    .quick-links.visible {
+	        opacity: 1;
+	        transform: translateY(0);
+	    }
+	
+	    .quick-links h2 {
+	        text-align: center;
+	        margin-bottom: 30px;
+	        font-size: 1.8rem;
+	    }
+	
+	    .links-grid {
+	        display: grid;
+	        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	        gap: 15px;
+	    }
+	
+	    .quick-link {
+	        background: rgba(255,255,255,0.7);
+	        border: 1px solid #eee;
+	        padding: 15px;
+	        border-radius: 10px;
+	        display: flex;
+	        align-items: center;
+	        text-decoration: none;
+	        color: #333;
+	        transition: all 0.3s;
+	        backdrop-filter: blur(5px);
+	        opacity: 0;
+	        transform: translateX(-20px);
+	    }
+	
+	    .quick-link.animate-in {
+	        opacity: 1;
+	        transform: translateX(0);
+	    }
+	
+	    .quick-link i {
+	        font-size: 24px;
+	        color: #F8C8DC;
+	        margin-right: 15px;
+	        width: 40px;
+	        height: 40px;
+	        display: flex;
+	        align-items: center;
+	        justify-content: center;
+	        background: rgba(248, 200, 220, 0.1);
+	        border-radius: 50%;
+	    }
+	
+	    /* ========== 分页 ========== */
+	    .pagination {
+	        display: flex;
+	        justify-content: center;
+	        gap: 10px;
+	        margin-top: 40px;
+	        opacity: 0;
+	        animation: fadeIn 1s ease-out 1.5s forwards;
+	    }
+	
+	    .page-link {
+	        width: 40px;
+	        height: 40px;
+	        border-radius: 50%;
+	        background: white;
+	        border: 2px solid #eee;
+	        display: flex;
+	        align-items: center;
+	        justify-content: center;
+	        text-decoration: none;
+	        color: #555;
+	        font-weight: bold;
+	        transition: all 0.3s;
+	    }
+	
+	    .page-link:hover {
+	        border-color: #F8C8DC;
+	        color: #F8C8DC;
+	    }
+	
+	    .page-link.active {
+	        background: #F8C8DC;
+	        color: white;
+	        border-color: #F8C8DC;
+	    }
+	
+	    .page-link.next {
+	        width: auto;
+	        padding: 0 15px;
+	        border-radius: 20px;
+	    }
+		
+		/* ========== 视频播放模态框 (核心优化：确保控件可点击) ========== */
+		.video-modal {
+		    position: fixed;
+		    top: 0;
+		    left: 0;
+		    width: 100%;
+		    height: 100%;
+		    background: rgba(0, 0, 0, 0.9);
+		    z-index: 9999;
+		    display: flex;
+		    align-items: center;
+		    justify-content: center;
+		    opacity: 0;
+		    pointer-events: none;
+		    transition: opacity 0.3s ease;
+		}
+	
+		.video-modal.show {
+		    opacity: 1;
+		    pointer-events: all;
+		}
+	
+		/* 1. 弹窗容器优化：关键修改 overflow: visible 确保控件不被裁剪 */
+		.modal-content {
+		    width: 90%;
+		    max-width: 450px;
+		    max-height: 85vh; /* 减少高度，为控件留出空间 */
+		    position: relative;
+		    border-radius: 15px;
+		    overflow: visible !important; /* 核心修改：禁止裁剪控件 */
+		    background: #000;
+		    transform: scale(0.95);
+		    transition: transform 0.3s ease;
+		    box-shadow: 0 15px 50px rgba(0,0,0,0.5);
+		}
+	
+		.video-modal.show .modal-content {
+		    transform: scale(1);
+		}
+	
+		/* 2. 视频控件核心优化：确保可点击、不被遮挡 */
+		.modal-video {
+		    width: 100%;
+		    height: 100%;
+		    object-fit: contain;
+		    background: #000;
+		    display: block;
+		    /* 核心优化：确保控件区域可点击 */
+		    padding-bottom: 40px !important; /* 为底部控件留空间 */
+		    pointer-events: auto !important; /* 确保鼠标事件能穿透到控件 */
+		    cursor: pointer; /* 鼠标指针提示 */
+		}
+	
+		/* 3. 关闭按钮 */
+		.modal-close {
+		    position: absolute;
+		    top: 10px;
+		    right: 10px;
+		    color: white;
+		    font-size: 30px;
+		    cursor: pointer;
+		    transition: all 0.2s ease;
+		    z-index: 100;
+		    width: 40px;
+		    height: 40px;
+		    display: flex;
+		    align-items: center;
+		    justify-content: center;
+		    background: rgba(0,0,0,0.5);
+		    border-radius: 50%;
+		}
+	
+		.modal-close:hover {
+		    transform: scale(1.2);
+		    color: #F8C8DC;
+		}
+	
+		/* 4. 标题栏：关键修改 bottom 值，避开控件区域 */
+		.modal-header {
+		    position: absolute;
+		    bottom: 40px !important; /* 核心修改：下移40px，不遮挡控件 */
+		    left: 0;
+		    width: 100%;
+		    padding: 15px 20px;
+		    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+		    color: white;
+		    z-index: 10;
+		}
+	
+		.modal-header h3 {
+		    font-size: 18px;
+		    margin-bottom: 5px;
+		    white-space: nowrap;
+		    overflow: hidden;
+		    text-overflow: ellipsis;
+		}
+	
+		.modal-meta {
+		    display: flex;
+		    gap: 15px;
+		    font-size: 13px;
+		    opacity: 0.8;
+		}
+	
+		/* ========== 响应式适配 ========== */
+		@media (max-width: 992px) {
+		    .nav-menu {
+		        display: none;
+		        flex-direction: column;
+		        position: absolute;
+		        top: 100%;
+		        left: 0;
+		        width: 100%;
+		        background: white;
+		        box-shadow: 0 10px 10px rgba(0,0,0,0.1);
+		        padding: 20px;
+		    }
+	
+		    .nav-menu.active {
+		        display: flex;
+		    }
+	
+		    .nav-menu li {
+		        margin: 10px 0;
+		    }
+	
+		    .dropdown-menu {
+		        position: static;
+		        box-shadow: none;
+		        padding-left: 20px;
+		    }
+	
+		    .menu-toggle {
+		        display: block;
+		    }
+		}
+	
+		@media (max-width: 768px) {
+		    .page-header h1 {
+		        font-size: 2rem;
+		    }
+	
+		    .tutorials-grid {
+		        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+		    }
+	
+		    /* 移动端视频弹窗优化 */
+		    .modal-content {
+		        max-width: 95%;
+		        max-height: 80vh;
+		    }
+		    
+		    /* 移动端标题栏再下移，适配更小屏幕 */
+		    .modal-header {
+		        bottom: 35px !important;
+		        padding: 10px 15px;
+		    }
+		    
+		    /* 移动端视频控件空间加大 */
+		    .modal-video {
+		        padding-bottom: 50px !important;
+		    }
+		}
+    </style>
+</head>
+<body>
+	<!-- 全局背景音乐（所有页面都要加） -->
+	<audio id="globalBgMusic" loop preload="auto" style="display: none;">
+	  <source src="audio/background-music.mp3" type="audio/mpeg">
+	</audio>
+	<script>
+	    document.addEventListener('DOMContentLoaded', function() {
+	        initBgMusic(); // 初始化背景音乐（续播逻辑）
+	        // 其他页面专属逻辑...
+	    });
+	</script>
+    <!-- 飘落的拼豆粒子 -->
+    <div class="floating-beads" id="floatingBeads"></div>
+    
+    <!-- 导航栏 -->
+    <header class="header">
+		<!-- 跳动小球背景 -->
+		<div class="header-bubbles" id="headerBubbles"></div>
+        <div class="container">
+            <nav class="navbar">
+                <a href="index.html" class="logo">
+                    <img src="images/logo/logo-text.png" class="logo-text-img">
+                </a>
+                <ul class="nav-menu">
+                    <li><a href="index.html" ><i class="fas fa-home"></i> 首页</a></li>
+                    <li class="has-dropdown">
+                        <a href="library.html"><i class="fas fa-book"></i> 图纸库</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="library.html?category=anime"><i class="fas fa-film"></i> 动漫角色</a></li>
+                            <li><a href="library.html?category=game"><i class="fas fa-gamepad"></i> 游戏像素</a></li>
+                            <li><a href="library.html?category=animal"><i class="fas fa-paw"></i> 可爱动物</a></li>
+                            <li><a href="library.html?category=holiday"><i class="fas fa-gift"></i> 节日主题</a></li>
+                            <li class="dropdown-divider"></li>
+                            <li><a href="library.html"><i class="fas fa-th"></i> 查看全部</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="tutorial.html" id="nav-tutorial-link"><i class="fas fa-graduation-cap"></i> 熨烫教程</a></li>
+                    <li><a href="shops.html" ><i class="fas fa-shops"></i> 商家推荐</a></li>
+                    <li class="has-dropdown">
+                        <a href="community.html"><i class="fas fa-users"></i> 社区</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="community.html?tab=works"><i class="fas fa-images"></i> 分享讨论</a></li>
+                            <li><a href="upload.html"><i class="fas fa-cloud-upload-alt"></i> 上传图纸</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="about.html" ><i class="fas fa-info-circle"></i> 关于我们</a></li>
+                </ul>
+                <div class="nav-right">
+					<div class="floating-music-player" id="floatingMusicPlayer">
+					    <div class="music-control" id="musicControl">
+					        <div class="music-note" id="musicNote">
+					            <i class="fas fa-music"></i>
+					        </div>
+					        <div class="music-tooltip">播放/暂停</div>
+					    </div>
+					</div>
+                    <a href="login.html" class="btn btn-outline">登录</a>
+                    <a href="register.html" class="btn btn-primary">注册</a>
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="tutorials-page">
+        <div class="container">
+            <!-- 页面标题和介绍 -->
+            <div class="page-header">
+                <h1>精细化熨烫教程</h1>
+                <p class="animate-on-scroll">从基础到高级，掌握拼豆熨烫技巧，制作完美作品。无论您是新手还是有经验的拼豆爱好者，这里都有适合您的教程。</p>
+<!-- 修复后的搜索框（独立样式，避免冲突） -->
+<div style="display: flex; max-width: 600px; margin: 20px auto 0; align-items: center;">
+    <!-- 输入框（强制设置宽度+样式） -->
+    <input 
+        type="text" 
+        placeholder="搜索熨烫教程，如:温度控制、多层熨烫..." 
+        style="width: 85%; padding: 12px 20px; border: 2px solid #eee; border-radius: 30px 0 0 30px; font-size: 16px; outline: none; box-sizing: border-box;"
+    >
+    <!-- 搜索按钮（强制样式） -->
+    <button 
+        style="width: 15%; padding: 12px 0; background: #F8C8DC; color: #fff; border: none; border-radius: 0 30px 30px 0; font-size: 16px; cursor: pointer;"
+    >
+        <i class="fas fa-search"></i> 搜索
+    </button>
+</div>
+            </div>
+            
+            <!-- 教程分类 -->
+            <div class="tutorial-categories">
+                <h2 class="animate-on-scroll">选择适合您的难度级别</h2>
+                <div class="categories-grid">
+                    <a href="#beginner" class="category-card animate-on-scroll">
+                        <div class="category-icon">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <h3>初级教程</h3>
+                        <p>适合新手的入门熨烫技巧，从零开始学习拼豆熨烫基础知识</p>
+                    </a>
+                    <a href="#intermediate" class="category-card animate-on-scroll">
+                        <div class="category-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <h3>中级教程</h3>
+                        <p>提升熨烫水平，学习更多实用技巧和进阶方法</p>
+                    </a>
+                    <a href="#advanced" class="category-card animate-on-scroll">
+                        <div class="category-icon">
+                            <i class="fas fa-tree"></i>
+                        </div>
+                        <h3>高级教程</h3>
+                        <p>专业级熨烫方法和疑难解答，打造完美拼豆作品</p>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 分割线 -->
+            <div class="section-divider animate-on-scroll">
+                <span>精选教程推荐</span>
+            </div>
+            
+            <!-- 热门教程推荐（带视频播放） -->
+            <div class="featured-tutorials animate-on-scroll">
+                <h2>热门熨烫视频教程</h2>
+                <div class="tutorials-grid">
+                    <!-- 教程1：本地竖屏视频示例 -->
+                    <div class="tutorial-card animate-on-scroll" 
+                         data-video-type="local"
+                         data-video-src="vedio/11.MP4"
+                         data-title="基础熨烫技巧完全指南"
+                         data-meta="15分钟 | 543次观看">
+                        <div class="tutorial-image">
+                            <!-- 视频封面图 -->
+                            <img src="images/a.png" class="tutorial-cover-img">
+                            <!-- 播放按钮 -->
+                            <div class="play-btn">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <span class="difficulty-badge beginner">初级</span>
+                        </div>
+                        <div class="tutorial-info">
+                            <h3>基础熨烫技巧完全指南</h3>
+                            <p>学习拼豆熨烫的基本方法和技巧，包括温度控制、熨烫时间和正确手法</p>
+                            <div class="tutorial-meta">
+                                <span><i class="fas fa-clock"></i> 15分钟</span>
+                                <span><i class="fas fa-eye"></i> 543次观看</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 教程2：本地竖屏视频示例 -->
+                    <div class="tutorial-card animate-on-scroll" 
+                         data-video-type="local"
+                         data-video-src="vedio/2.mp4"
+                         data-title="多层拼豆熨烫专业教程"
+                         data-meta="25分钟 | 321次观看">
+                        <div class="tutorial-image">
+                            <img src="images/11.png" class="tutorial-cover-img">
+                            <div class="play-btn">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <span class="difficulty-badge intermediate">中级</span>
+                        </div>
+                        <div class="tutorial-info">
+                            <h3>多层拼豆熨烫专业教程</h3>
+                            <p>掌握多层拼豆作品的熨烫方法，确保每一层都完美融合</p>
+                            <div class="tutorial-meta">
+                                <span><i class="fas fa-clock"></i> 25分钟</span>
+                                <span><i class="fas fa-eye"></i> 321次观看</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 教程4：本地竖屏视频示例 -->
+                    <div class="tutorial-card animate-on-scroll" 
+                         data-video-type="local"
+                         data-video-src="vedio/1.mp4"
+                         data-title="专业级熨烫方法与技巧"
+                         data-meta="30分钟 | 198次观看">
+                        <div class="tutorial-image">
+                            <img src="images/b.png" class="tutorial-cover-img">
+                            <div class="play-btn">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <span class="difficulty-badge advanced">高级</span>
+                        </div>
+                        <div class="tutorial-info">
+                            <h3>专业级熨烫方法与技巧</h3>
+                            <p>学习专业拼豆师的熨烫技巧，打造无瑕疵的完美作品</p>
+                            <div class="tutorial-meta">
+                                <span><i class="fas fa-clock"></i> 30分钟</span>
+                                <span><i class="fas fa-eye"></i> 198次观看</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 快速导航 -->
+            <div class="quick-links animate-on-scroll">
+                <h2>快速开始学习</h2>
+                <div class="links-grid">
+                    <a href="#" class="quick-link animate-on-scroll" id="play-first-video">
+                        <i class="fas fa-play-circle"></i>
+                        <span>立即播放第一个教程视频</span>
+                    </a>
+                    <a href="#beginner" class="quick-link animate-on-scroll">
+                        <i class="fas fa-seedling"></i>
+                        <span>我是新手，从哪里开始？</span>
+                    </a>
+                    <a href="community.html" class="quick-link animate-on-scroll">
+                        <i class="fas fa-question-circle"></i>
+                        <span>有熨烫问题？访问社区</span>
+                    </a>
+                    <a href="library.html" class="quick-link animate-on-scroll">
+                        <i class="fas fa-book"></i>
+                        <span>需要图纸？查看图纸库</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 分页 -->
+            <div class="pagination">
+                <a href="#" class="page-link active">1</a>
+                <a href="#" class="page-link">2</a>
+                <a href="#" class="page-link">3</a>
+                <a href="#" class="page-link">4</a>
+                <a href="#" class="page-link">5</a>
+                <a href="#" class="page-link next">下一页 <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </main>
+	
+	<!-- ========== 视频播放模态框 ========== -->
+	<div class="video-modal" id="videoModal">
+	    <div class="modal-content">
+	        <!-- 视频播放容器（动态加载） -->
+	        <video id="modalVideoPlayer" class="modal-video" controls playsInline></video>
+	        <!-- 关闭按钮 -->
+	        <span class="modal-close" id="modalClose">&times;</span>
+	        <!-- 视频标题 -->
+	        <div class="modal-header">
+	            <h3 id="modalVideoTitle">视频教程标题</h3>
+	            <div class="modal-meta" id="modalVideoMeta">时长 | 观看次数</div>
+	        </div>
+	    </div>
+	</div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <a href="index.html" class="logo">
+                        <img src="images/logo/logo.png" alt="拼豆网 Logo" class="logo-img">
+                        <span>豆趣工坊</span>
+                    </a>
+                    <p>免费拼豆图纸库与精细化熨烫教程垂直服务平台</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-weixin"></i></a>
+                        <a href="#"><i class="fab fa-weibo"></i></a>
+                        <a href="#"><i class="fab fa-qq"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3><li><a href="shops.html">商家推荐</a></li></h3>
+                    <ul>
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="library.html">图纸库</a></li>
+                        <li><a href="tutorial.html" id="footer-tutorial-link">熨烫教程</a></li>
+                        <li><a href="shops.html">商家推荐</a></li>
+                		<li><a href="upload.html">上传图纸</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>帮助支持</h3>
+                    <ul>
+                        <li><a href="#">常见问题</a></li>
+                        <li><a href="#">使用教程</a></li>
+                        <li><a href="#">联系我们</a></li>
+                        <li><a href="about.html">关于我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>订阅更新</h3>
+                    <p>订阅我们的 newsletter，获取最新图纸和教程</p>
+                    <form class="subscribe-form" id="subscribeForm">
+                        <input type="email" placeholder="输入您的邮箱" required>
+                        <button type="submit" class="btn btn-primary">订阅</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 豆趣工坊. 保留所有权利. 配色: #F8C8DC 和 #C8E6F5</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 核心脚本 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("tutorial.html 页面加载完成");
+            
+            // 移动端菜单切换
+            const menuToggle = document.getElementById('menuToggle');
+            const navMenu = document.querySelector('.nav-menu');
+            
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function() {
+                    navMenu.classList.toggle('active');
+                    menuToggle.innerHTML = navMenu.classList.contains('active') 
+                        ? '<i class="fas fa-times"></i>' 
+                        : '<i class="fas fa-bars"></i>';
+                });
+            }
+            
+            // 搜索功能
+            const searchBtn = document.querySelector('.search-box button');
+            const searchInput = document.querySelector('.search-box input');
+            
+            if (searchBtn && searchInput) {
+                searchBtn.addEventListener('click', function() {
+                    performSearch();
+                });
+                
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        performSearch();
+                    }
+                });
+                
+                function performSearch() {
+                    const searchTerm = searchInput.value.trim();
+                    if (searchTerm) {
+                        console.log('搜索教程:', searchTerm);
+                        // 搜索按钮点击动画
+                        searchBtn.style.transform = 'scale(0.95)';
+                        setTimeout(() => {
+                            searchBtn.style.transform = '';
+                        }, 150);
+                        
+                        // 在实际应用中，这里会跳转到搜索页面或显示搜索结果
+                        alert(`搜索教程: "${searchTerm}"\n搜索结果将在完整版本中显示`);
+                        searchInput.value = '';
+                    } else {
+                        alert('请输入搜索关键词');
+                        searchInput.focus();
+                    }
+                }
+            }
+            
+            // 创建飘落的拼豆粒子
+            function createFloatingBeads() {
+                const container = document.getElementById('floatingBeads');
+                if (!container) return;
+                
+                const colors = ['#F8C8DC', '#C8E6F5', '#FFE066', '#98D8AA', '#FFB6C1'];
+                
+                for (let i = 0; i < 20; i++) {
+                    const bead = document.createElement('div');
+                    bead.className = 'bead';
+                    bead.style.backgroundColor = colors[i % colors.length];
+                    bead.style.left = Math.random() * 100 + '%';
+                    bead.style.top = Math.random() * 100 + '%';
+                    bead.style.animationDelay = (i * 0.15) + 's';
+                    bead.style.animationDuration = (3 + Math.random() * 2) + 's';
+                    container.appendChild(bead);
+                }
+            }
+            
+            // 初始化滚动动画观察器
+            function initScrollAnimations() {
+                const observerOptions = {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -50px 0px'
+                };
+                
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            // 添加可见类触发动画
+                            entry.target.classList.add('visible');
+                            
+                            // 如果是卡片，添加专门的动画类
+                            if (entry.target.classList.contains('category-card') || 
+                                entry.target.classList.contains('tutorial-card') || 
+                                entry.target.classList.contains('quick-link')) {
+                                setTimeout(() => {
+                                    entry.target.classList.add('animate-in');
+                                }, 100);
+                            }
+                        }
+                    });
+                }, observerOptions);
+                
+                // 观察所有需要动画的元素
+                document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                    observer.observe(el);
+                });
+            }
+            
+            // 分类卡片点击事件
+            const categoryCards = document.querySelectorAll('.category-card');
+            categoryCards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (this.getAttribute('href').startsWith('#')) {
+                        e.preventDefault();
+                        const targetId = this.getAttribute('href').substring(1);
+                        const difficultyLabels = {
+                            'beginner': '初级',
+                            'intermediate': '中级', 
+                            'advanced': '高级'
+                        };
+                        const label = difficultyLabels[targetId] || targetId;
+                        console.log(`跳转到 ${label} 教程分类`);
+                        
+                        // 点击动画
+                        this.style.transform = 'scale(0.95)';
+                        setTimeout(() => {
+                            this.style.transform = '';
+                        }, 150);
+                        
+                        // 在实际应用中，这里会筛选显示对应难度的教程
+                        alert(`将显示${label}教程\n筛选功能将在完整版本中实现`);
+                    }
+                });
+            });
+            
+            // 教程卡片悬停效果
+            const tutorialCards = document.querySelectorAll('.tutorial-card');
+            tutorialCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-10px)';
+                    this.style.boxShadow = '0 15px 30px rgba(0,0,0,0.12)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = '';
+                    this.style.boxShadow = '';
+                });
+            });
+            
+            // 快速链接点击动画
+            const quickLinks = document.querySelectorAll('.quick-link');
+            quickLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // 点击动画
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
+            
+            // 订阅表单
+            const subscribeForm = document.getElementById('subscribeForm');
+            if (subscribeForm) {
+                subscribeForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const emailInput = this.querySelector('input[type="email"]');
+                    const email = emailInput.value.trim();
+                    
+                    if (email) {
+                        console.log('订阅邮箱:', email);
+                        
+                        // 提交按钮动画
+                        const submitBtn = this.querySelector('button');
+                        submitBtn.style.transform = 'scale(0.95)';
+                        setTimeout(() => {
+                            submitBtn.style.transform = '';
+                        }, 150);
+                        
+                        alert('感谢订阅！我们将定期发送最新的拼豆教程和资源到您的邮箱。');
+                        emailInput.value = '';
+                    }
+                });
+            }
+            
+            // 分页链接点击事件
+            const pageLinks = document.querySelectorAll('.page-link:not(.active)');
+            pageLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // 点击动画
+                    this.style.transform = 'scale(0.9)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                    
+                    if (this.classList.contains('next')) {
+                        console.log('跳转到下一页');
+                        alert('分页功能将在完整版本中实现');
+                    } else {
+                        console.log('跳转到第', this.textContent, '页');
+                        alert(`跳转到第 ${this.textContent} 页\n分页功能将在完整版本中实现`);
+                    }
+                });
+            });
+            
+            // ========== 视频播放核心逻辑（优化版） ==========
+            const videoModal = document.getElementById('videoModal');
+            const modalClose = document.getElementById('modalClose');
+            const modalVideoPlayer = document.getElementById('modalVideoPlayer');
+            const modalVideoTitle = document.getElementById('modalVideoTitle');
+            const modalVideoMeta = document.getElementById('modalVideoMeta');
+            const playFirstVideoBtn = document.getElementById('play-first-video');
+
+            // 初始化视频播放器（确保控件可点击）
+            function initVideoPlayer() {
+                // 强制启用原生控件
+                modalVideoPlayer.controls = true;
+                // 确保视频元素能接收鼠标事件
+                modalVideoPlayer.style.pointerEvents = 'auto';
+                // 确保视频容器不裁剪控件
+                document.querySelector('.modal-content').style.overflow = 'visible';
+            }
+
+            // 播放视频
+            function playVideo(videoSrc, title, meta) {
+                // 初始化播放器设置
+                initVideoPlayer();
+                
+                // 设置视频源和信息
+                modalVideoPlayer.src = videoSrc;
+                modalVideoTitle.textContent = title;
+                modalVideoMeta.textContent = meta;
+
+                // 显示模态框
+                videoModal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+                
+                // 尝试自动播放（处理浏览器限制）
+                modalVideoPlayer.play().catch(err => {
+                    console.log("自动播放受限:", err);
+                    // 给用户友好提示
+                    const hint = document.createElement('div');
+                    hint.style.position = 'absolute';
+                    hint.style.top = '20px';
+                    hint.style.left = '50%';
+                    hint.style.transform = 'translateX(-50%)';
+                    hint.style.backgroundColor = 'rgba(248, 200, 220, 0.9)';
+                    hint.style.color = 'white';
+                    hint.style.padding = '10px 20px';
+                    hint.style.borderRadius = '30px';
+                    hint.style.zIndex = '1000';
+                    hint.style.fontSize = '14px';
+                    hint.textContent = '请点击视频下方的播放按钮开始播放';
+                    document.querySelector('.modal-content').appendChild(hint);
+                    
+                    // 3秒后移除提示
+                    setTimeout(() => {
+                        hint.remove();
+                    }, 3000);
+                });
+            }
+
+            // 教程卡片点击播放
+            tutorialCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const videoSrc = this.getAttribute('data-video-src');
+                    const title = this.getAttribute('data-title');
+                    const meta = this.getAttribute('data-meta');
+                    
+                    if (videoSrc) {
+                        playVideo(videoSrc, title, meta);
+                    }
+                });
+                
+                // 播放按钮单独处理（防止冒泡）
+                const playBtn = card.querySelector('.play-btn');
+                if (playBtn) {
+                    playBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const videoSrc = card.getAttribute('data-video-src');
+                        const title = card.getAttribute('data-title');
+                        const meta = card.getAttribute('data-meta');
+                        
+                        if (videoSrc) {
+                            playVideo(videoSrc, title, meta);
+                        }
+                    });
+                }
+            });
+
+            // 快速播放第一个视频
+            if (playFirstVideoBtn) {
+                playFirstVideoBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const firstCard = tutorialCards[0];
+                    if (firstCard) {
+                        const videoSrc = firstCard.getAttribute('data-video-src');
+                        const title = firstCard.getAttribute('data-title');
+                        const meta = firstCard.getAttribute('data-meta');
+                        playVideo(videoSrc, title, meta);
+                    }
+                });
+            }
+
+            // 关闭视频模态框
+            function closeVideoModal() {
+                videoModal.classList.remove('show');
+                document.body.style.overflow = '';
+                
+                // 重置视频
+                modalVideoPlayer.pause();
+                modalVideoPlayer.currentTime = 0;
+                modalVideoPlayer.src = '';
+            }
+
+            // 关闭按钮点击
+            modalClose.addEventListener('click', closeVideoModal);
+            
+            // 点击模态框背景关闭
+            videoModal.addEventListener('click', function(e) {
+                if (e.target === videoModal) {
+                    closeVideoModal();
+                }
+            });
+            
+            // ESC键关闭
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && videoModal.classList.contains('show')) {
+                    closeVideoModal();
+                }
+            });
+            
+            // 初始化动画
+            function initAnimations() {
+                createFloatingBeads();
+                initScrollAnimations();
+                
+                // 页面加载后自动显示分类卡片
+                setTimeout(() => {
+                    categoryCards.forEach(card => {
+                        card.classList.add('animate-in');
+                    });
+                }, 800);
+            }
+            
+            // 页面加载后初始化
+            setTimeout(initAnimations, 100);
+            
+            // 初始化视频播放器
+            initVideoPlayer();
+        });
+    </script>
+	<script src="js/splash.js"></script>
+	<script src="js/click-particles.js"></script>
+	<script src="js/music-player.js"></script>
+</body>
+</html>

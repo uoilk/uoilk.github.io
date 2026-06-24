@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>豆趣工坊 - 免费拼豆图纸库与精细化熨烫教程平台</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/shops.css">
+  <link rel="stylesheet" href="css/click-particles.css">
+  <link rel="stylesheet" href="css/music-player.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+  <style>
+  /* ========== 入场动画样式 ========== */
+  
+  /* 飘落的拼豆粒子容器 */
+  .floating-beads {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+  }
+  
+  .bead {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      opacity: 0;
+      animation: floatDown 3s ease-in-out infinite, fadeInBead 0.8s ease-out forwards;
+  }
+  
+  @keyframes floatDown {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(15deg); }
+  }
+  
+  @keyframes fadeInBead {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 0.6; transform: translateY(0); }
+  }
+  /* 导航栏样式 */
+  .header {
+      background-color: var(--light-color);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+  }
+  
+  .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+  }
+  
+  .logo {
+      display: flex;
+      align-items: center;
+      font-size: 42px;
+      font-weight: 700;
+      color: var(--dark-color);
+      text-decoration: none;
+  }
+  
+  .logo-img {
+      height: 60px;
+      width: auto;
+      margin-right: 10px;
+      transition: var(--transition);
+  }
+  
+  .logo:hover .logo-img {
+      transform: scale(1.5);
+  }
+  
+  .nav-menu {
+      display: flex;
+      gap: 30px;
+  }
+  
+  .nav-menu li a {
+      font-weight: 600;
+      padding: 8px 0;
+      position: relative;
+  }
+  
+  .nav-menu li a:hover {
+      color: var(--primary-color);
+  }
+  
+  .nav-menu li a.active {
+      color: var(--primary-color);
+  }
+  
+  .nav-menu li a.active::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 3px;
+      background-color: var(--primary-color);
+      bottom: 0;
+      left: 0;
+      border-radius: 2px;
+  }
+  
+  .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+  }
+  
+  .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: var(--dark-color);
+      cursor: pointer;
+  }
+  /* 拼豆像素弹跳动画 */
+  .pixel {
+      opacity: 0;
+      animation: popIn 0.5s ease-out forwards;
+  }
+  
+  .pixel:nth-child(1) { animation-delay: 0.8s; }
+  .pixel:nth-child(2) { animation-delay: 0.9s; }
+  .pixel:nth-child(3) { animation-delay: 1.0s; }
+  .pixel:nth-child(4) { animation-delay: 1.1s; }
+  .pixel:nth-child(5) { animation-delay: 1.2s; }
+  .pixel:nth-child(6) { animation-delay: 1.3s; }
+  .pixel:nth-child(7) { animation-delay: 1.4s; }
+  .pixel:nth-child(8) { animation-delay: 1.5s; }
+  .pixel:nth-child(9) { animation-delay: 1.6s; }
+  
+  @keyframes popIn {
+      0% { opacity: 0; transform: scale(0) rotate(-180deg); }
+      60% { transform: scale(1.2) rotate(10deg); }
+      100% { opacity: 1; transform: scale(1) rotate(0deg); }
+  }
+  
+  /* 图标摇摆动画 */
+  .feature-card:hover .feature-icon {
+      animation: wiggle 0.5s ease-in-out;
+  }
+  
+  @keyframes wiggle {
+      0%, 100% { transform: rotate(0deg) scale(1); }
+      25% { transform: rotate(-15deg) scale(1.1); }
+      75% { transform: rotate(15deg) scale(1.1); }
+  }
+  
+  /* section 通用淡入 - 所有板块使用这个 */
+  .section-animate {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease-out;
+  }
+  
+  .section-animate.visible {
+      opacity: 1;
+      transform: translateY(0);
+  }
+  
+  /* ========== 商家页面动画 ========== */
+  
+  /* 页面标题区 - 扩大范围 */
+  .page-hero {
+      padding: 80px 0;
+      background: linear-gradient(135deg, 
+          rgba(248, 200, 220, 0.1) 0%, 
+          rgba(200, 230, 245, 0.1) 50%, 
+          rgba(248, 200, 220, 0.05) 100%);
+      border-bottom: 1px solid rgba(248, 200, 220, 0.2);
+      margin-bottom: 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+  }
+  
+  .page-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, 
+          #F8C8DC 0%, 
+          #C8E6F5 50%, 
+          #F8C8DC 100%);
+      animation: shimmer 3s infinite linear;
+  }
+  
+  @keyframes shimmer {
+      0% { background-position: -200px 0; }
+      100% { background-position: calc(200px + 100%) 0; }
+  }
+  
+  .page-hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, 
+          transparent 0%, 
+          rgba(248, 200, 220, 0.3) 50%, 
+          transparent 100%);
+  }
+  
+  .page-hero .container {
+      position: relative;
+      z-index: 1;
+  }
+  
+  .page-title {
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: #333;
+      margin-bottom: 20px;
+      letter-spacing: -0.5px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      position: relative;
+      display: inline-block;
+  }
+  
+  .page-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(90deg, #F8C8DC, #C8E6F5);
+      border-radius: 2px;
+  }
+  
+  .page-subtitle {
+      font-size: 1.3rem;
+      color: #666;
+      max-width: 700px;
+      margin: 0 auto 30px;
+      line-height: 1.6;
+      font-weight: 300;
+  }
+  
+  .page-hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+  }
+  
+  .stat-item {
+      text-align: center;
+      padding: 20px;
+      min-width: 150px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(248, 200, 220, 0.2);
+      transition: all 0.3s ease;
+  }
+  
+  .stat-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(248, 200, 220, 0.2);
+      border-color: #F8C8DC;
+  }
+  
+  .stat-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #FF6B9D;
+      display: block;
+      font-family: 'Arial Rounded MT Bold', sans-serif;
+      margin-bottom: 5px;
+  }
+  
+  .stat-label {
+      font-size: 0.9rem;
+      color: #888;
+      display: block;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+  }
+  
+  /* 页面标题动画效果 */
+  .page-hero {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease-out;
+  }
+  
+  .page-hero.visible {
+      opacity: 1;
+      transform: translateY(0);
+  }
+  
+  /* 筛选区域 - 使用滚动触发动画 */
+  .filter-section {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease-out;
+  }
+  
+  .filter-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+  }
+  
+  /* 商家列表区域 - 使用滚动触发动画 */
+  .shops-section {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease-out;
+  }
+  
+  .shops-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+  }
+  
+  /* 筛选标签逐个滑入 */
+  .filter-tab {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.5s ease-out;
+  }
+  
+  .filter-tab.animate-in {
+      opacity: 1;
+      transform: translateY(0);
+  }
+  
+  /* 商家卡片滑入动画 */
+  .shop-card {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.6s ease-out;
+  }
+  
+  .shop-card.animate-in {
+      opacity: 1;
+      transform: translateY(0);
+  }
+  
+  /* 卡片悬停效果 */
+  .shop-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(248, 200, 220, 0.2);
+  }
+  
+  /* 徽章闪烁动画 */
+  .shop-badge {
+      animation: badgePulse 2s infinite;
+  }
+  
+  @keyframes badgePulse {
+      0%, 100% {
+          box-shadow: 0 0 5px rgba(255, 107, 157, 0.5);
+      }
+      50% {
+          box-shadow: 0 0 15px rgba(255, 107, 157, 0.8);
+      }
+  }
+  
+  /* 星级评分闪烁 */
+  .stars {
+      position: relative;
+  }
+  
+  .stars::after {
+      content: '★★★★★';
+      position: absolute;
+      top: 0;
+      left: 0;
+      color: #FFD700;
+      animation: starTwinkle 3s infinite;
+      opacity: 0;
+  }
+  
+  @keyframes starTwinkle {
+      0%, 100% {
+          opacity: 0;
+      }
+      50% {
+          opacity: 0.5;
+      }
+  }
+  
+  /* 进店链接箭头动画 */
+  .shop-link {
+      position: relative;
+      transition: all 0.3s ease;
+  }
+  
+  .shop-link::after {
+      content: '→';
+      position: absolute;
+      right: -20px;
+      opacity: 0;
+      transition: all 0.3s ease;
+  }
+  
+  .shop-link:hover {
+      padding-right: 25px;
+  }
+  
+  .shop-link:hover::after {
+      right: 0;
+      opacity: 1;
+  }
+  
+  /* 页面滚动触发动画 */
+  .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease-out;
+  }
+  
+  .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
+  }
+  
+  /* 响应式调整 */
+  @media (max-width: 768px) {
+      .page-hero {
+          padding: 60px 0;
+      }
+      
+      .page-title {
+          font-size: 2.5rem;
+      }
+      
+      .page-subtitle {
+          font-size: 1.1rem;
+          padding: 0 20px;
+      }
+      
+      .page-hero-stats {
+          gap: 20px;
+      }
+      
+      .stat-item {
+          min-width: 120px;
+          padding: 15px;
+      }
+      
+      .stat-number {
+          font-size: 2rem;
+      }
+  }
+  
+  @media (max-width: 480px) {
+      .page-hero {
+          padding: 50px 0;
+      }
+      
+      .page-title {
+          font-size: 2rem;
+      }
+      
+      .page-subtitle {
+          font-size: 1rem;
+      }
+      
+      .page-hero-stats {
+          flex-direction: column;
+          align-items: center;
+      }
+      
+      .stat-item {
+          width: 100%;
+          max-width: 200px;
+      }
+  }
+  </style>
+</head>
+<body>
+	<!-- 全局背景音乐（所有页面都要加） -->
+	<audio id="globalBgMusic" loop preload="auto" style="display: none;">
+	  <source src="audio/background-music.mp3" type="audio/mpeg">
+	</audio>
+	<script>
+	    document.addEventListener('DOMContentLoaded', function() {
+	        initBgMusic(); // 初始化背景音乐（续播逻辑）
+	        // 其他页面专属逻辑...
+	    });
+	</script>
+    <!-- 飘落的拼豆粒子 -->
+	    <div class="floating-beads" id="floatingBeads"></div>
+    <!-- 导航栏 -->
+    <header class="header">
+      <div class="container">
+          <nav class="navbar">
+              <a href="index.html" class="logo">
+                  <img src="images/logo/logo-text.png" class="logo-text-img">
+              </a>
+              <ul class="nav-menu">
+                  <li><a href="index.html" ><i class="fas fa-home"></i> 首页</a></li>
+                  <li class="has-dropdown">
+                      <a href="library.html"><i class="fas fa-book"></i> 图纸库</a>
+                      <ul class="dropdown-menu">
+                          <li><a href="library.html?category=anime"><i class="fas fa-film"></i> 动漫角色</a></li>
+                          <li><a href="library.html?category=game"><i class="fas fa-gamepad"></i> 游戏像素</a></li>
+                          <li><a href="library.html?category=animal"><i class="fas fa-paw"></i> 可爱动物</a></li>
+                          <li><a href="library.html?category=holiday"><i class="fas fa-gift"></i> 节日主题</a></li>
+                          <li class="dropdown-divider"></li>
+                          <li><a href="library.html"><i class="fas fa-th"></i> 查看全部</a></li>
+                      </ul>
+                  </li>
+                  <li><a href="tutorial.html" id="nav-tutorial-link"><i class="fas fa-graduation-cap"></i> 熨烫教程</a></li>
+                  <li><a href="shops.html" ><i class="fas fa-shops"></i> 商家推荐</a></li>
+                  <li class="has-dropdown">
+                      <a href="community.html"><i class="fas fa-users"></i> 社区</a>
+                      <ul class="dropdown-menu">
+                          <li><a href="community.html?tab=works"><i class="fas fa-images"></i> 分享讨论</a></li>
+                          <li><a href="upload.html"><i class="fas fa-cloud-upload-alt"></i> 上传图纸</a></li>
+                      </ul>
+                  </li>
+                  <li><a href="about.html" ><i class="fas fa-info-circle"></i> 关于我们</a></li>
+              </ul>
+              <div class="nav-right">
+				  <div class="floating-music-player" id="floatingMusicPlayer">
+				      <div class="music-control" id="musicControl">
+				          <div class="music-note" id="musicNote">
+				              <i class="fas fa-music"></i>
+				          </div>
+				          <div class="music-tooltip">播放/暂停</div>
+				      </div>
+				  </div>
+                  <a href="login.html" class="btn btn-outline">登录</a>
+                  <a href="register.html" class="btn btn-primary">注册</a>
+                  <button class="menu-toggle" id="menuToggle">
+                      <i class="fas fa-bars"></i>
+                  </button>
+              </div>
+          </nav>
+      </div>
+  </header>
+
+  <main class="main-content">
+    <!-- 页面标题区 - 扩大范围 -->
+    <section class="page-hero section-animate">
+      <div class="container">
+        <h1 class="page-title">优质商家推荐</h1>
+        <p class="page-subtitle">精选高品质拼豆工具与材料商家，让您的创作更加得心应手</p>
+
+    <!-- 筛选区 - 添加 section-animate 类 -->
+    <section class="filter-section section-animate">
+      <div class="container">
+        <div class="filter-tabs">
+          <button class="filter-tab active" data-category="all">全部商家</button>
+          <button class="filter-tab" data-category="beads">拼豆珠子</button>
+          <button class="filter-tab" data-category="shops">工具配件</button>
+          <button class="filter-tab" data-category="boards">拼豆板</button>
+          <button class="filter-tab" data-category="kits">套装礼盒</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 商家列表 -->
+    <section class="shops-section section-animate">
+      <div class="container">
+        <div class="shops-grid">
+          <!-- 商家卡片 1 -->
+          <div class="shop-card" data-category="beads shops">
+            <div class="shop-header">
+              <div class="shop-avatar">
+                <img src="images/1688logo.png" class="shop-logo-img">
+              </div>
+              <div class="shop-info">
+                <h3 class="shop-name">义乌市趣多玩具有限公司</h3>
+                <div class="shop-rating">
+                  <span class="stars">★★★★★</span>
+                  <span class="rating-text">4.9分</span>
+                </div>
+              </div>
+            </div>
+            <p class="shop-desc">专营各类进口拼豆珠子，颜色齐全，品质保证。提供Perler、Hama等知名品牌，满足专业玩家需求。</p >
+            <div class="shop-tags">
+              <span class="tag">进口珠子</span>
+              <span class="tag">颜色齐全</span>
+              <span class="tag">品牌正品</span>
+            </div>
+            <div class="shop-footer">
+              <span class="shop-location">📍 浙江义乌</span>
+              <a href="https://detail.1688.com/offer/977167476382.html&scm=1007.45324.363797.0&pvid=4e755ca5-0b8a-4624-be56-2bafd9fd293b?spm=a262cb.19918180.ljxo5qvc.7.1e037adcBqTw9z&file=977167476382.html&scm=1007.45324.363797.0&pvid=4e755ca5-0b8a-4624-be56-2bafd9fd293b" target="_blank" rel="noopener noreferrer" class="shop-link">进店逛逛</a >
+            </div>
+          </div>
+
+          <!-- 商家卡片 2 -->
+          <div class="shop-card" data-category="shops boards">
+            <div class="shop-header">
+              <div class="shop-avatar">
+                <img src="images/1688logo.png" class="shop-logo-img">
+              </div>
+              <div class="shop-info">
+                <h3 class="shop-name">吉安县清舜科技有限公司</h3>
+                <div class="shop-rating">
+                  <span class="stars">★★★★★</span>
+                  <span class="rating-text">4.8分</span>
+                </div>
+              </div>
+            </div>
+            <p class="shop-desc">专业拼豆工具供应商，镊子、熨斗、硅胶垫等一应俱全。新手入门套装超值，老手进阶装备专业。</p >
+            <div class="shop-tags">
+              <span class="tag">工具齐全</span>
+              <span class="tag">新手友好</span>
+              <span class="tag">性价比高</span>
+            </div>
+            <div class="shop-footer">
+              <span class="shop-location">📍吉安 </span>
+              <a href="https://detail.1688.com/offer/992794025779.html?spm=a26352.13672862.offerlist.1.6dae1e62jGIxVk&offerId=992794025779&sortType=&pageId=&abBizDataType=cbuOffer&trace_log=normal&uuid=34e62dae10414dac9357f050de967881&skuId=5964896612842&forcePC=1767582984137" target="_blank" rel="noopener noreferrer" class="shop-link">进店逛逛</a >
+            </div>
+          </div>
+
+          <!-- 商家卡片 3 -->
+          <div class="shop-card" data-category="boards">
+            <div class="shop-header">
+              <div class="shop-avatar">
+                <img src="images/1688logo.png" class="shop-logo-img">
+              </div>
+              <div class="shop-info">
+                <h3 class="shop-name">义乌市鼎盈玩具有限公司</h3>
+                <div class="shop-rating">
+                  <span class="stars">★★★★☆</span>
+                  <span class="rating-text">4.6分</span>
+                </div>
+              </div>
+            </div>
+            <p class="shop-desc">各种尺寸拼豆板专卖，从迷你到超大号应有尽有。支持定制异形板，让您的创意不受限制。</p >
+            <div class="shop-tags">
+              <span class="tag">尺寸齐全</span>
+              <span class="tag">支持定制</span>
+              <span class="tag">快速发货</span>
+            </div>
+            <div class="shop-footer">
+              <span class="shop-location">📍 浙江义乌</span>
+              <a href="https://detail.1688.com/offer/984801905100.html?spm=a26352.13672862.offerlist.4.676c1e62oup5Uj&offerId=984801905100&sortType=&pageId=&abBizDataType=cbuOffer&hotSaleSkuId=6112220731884&trace_log=normal&uuid=081c227c89ea41bab3336ddb3589cde5&forcePC=1767583114737" target="_blank" rel="noopener noreferrer" class="shop-link">进店逛逛</a >
+            </div>
+          </div>
+
+          <!-- 商家卡片 4 -->
+          <div class="shop-card" data-category="kits">
+            <div class="shop-header">
+              <div class="shop-avatar">
+               <img src="images/淘宝logo.png" class="shop-logo-img">
+              </div>
+              <div class="shop-info">
+                <h3 class="shop-name">小鹿拼豆</h3>
+                <div class="shop-rating">
+                  <span class="stars">★★★★★</span>
+                  <span class="rating-text">4.9分</span>
+                </div>
+              </div>
+            </div>
+            <p class="shop-desc">多种工具，拼豆，熨斗，拼豆板等应有尽有。</p >
+            <div class="shop-tags">
+              <span class="tag">工具多样</span>
+              <span class="tag">小白首选</span>
+              <span class="tag">一站配齐</span>
+            </div>
+            <div class="shop-footer">
+              <span class="shop-location">📍 云南文山</span>
+              <a href="https://shop113850832.taobao.com/?spm=a21n57.shop_search.0.0.13ba523c4ql4u3" target="_blank" rel="noopener noreferrer" class="shop-link">进店逛逛</a >
+            </div>
+          </div>
+
+          <!-- 商家卡片 5 -->
+          <div class="shop-card" data-category="beads">
+            <div class="shop-header">
+              <div class="shop-avatar">
+                <img src="images/淘宝logo.png" class="shop-logo-img">
+              </div>
+              <div class="shop-info">
+                <h3 class="shop-name">武漢隨心淘文具</h3>
+                <div class="shop-rating">
+                  <span class="stars">★★★★☆</span>
+                  <span class="rating-text">4.5分</span>
+                </div>
+              </div>
+            </div>
+            <p class="shop-desc">拼豆工具多种多样，兼顾样式和实用性，用户能够享受拼豆的过程。</p >
+            <div class="shop-tags">
+              <span class="tag">价格实惠</span>
+              <span class="tag">颜色丰富</span>
+              <span class="tag">批发优惠</span>
+            </div>
+            <div class="shop-footer">
+              <span class="shop-location">📍 湖北武汉</span>
+              <a href="https://www.taobao.com/list/item/985954009298.htm?spm=a21wu.11804641.shop-content.58.135a474c1dtwwS" target="_blank" rel="noopener noreferrer" class="shop-link">进店逛逛</a >
+            </div>
+          </div>
+
+          <!-- 商家卡片 6 -->
+          <div class="shop-card" data-category="shops kits">
+            <div class="shop-header">
+              <div class="shop-avatar">
+                <img src="images/天猫logo.png" class="shop-logo-img">
+              </div>
+              <div class="shop-info">
+                <h3 class="shop-name">afc电器旗舰店</h3>
+                <div class="shop-rating">
+                  <span class="stars">★★★★★</span>
+                  <span class="rating-text">5.0分</span>
+                </div>
+              </div>
+            </div>
+            <p class="shop-desc">资深拼豆玩家开店，提供专业选购建议。独家设计图纸+配色方案，帮您轻松完成复杂作品。</p >
+            <div class="shop-tags">
+              <span class="tag">专业指导</span>
+              <span class="tag">无孔必备</span>
+              <span class="tag">顺滑耐用</span>
+            </div>
+            <div class="shop-footer">
+              <span class="shop-location">📍 浙江宁波</span>
+              <a href="https://detail.tmall.com/item.htm?abbucket=4&id=809946320971&loginBonus=1&mi_id=0000FCuScXUp_738XeKXRnTI1xAxI85t9762VqoqzbNnUvM&ns=1&priceTId=213e08ed17678832792438204e123f&skuId=5669189963090&spm=a21n57.sem.item.1.5c703903JGFfxZ&utparam=%7B%22aplus_abtest%22%3A%22e37b1c626c4dbb80aed0fde3a2f22f25%22%7D&xxc=taobaoSearch" target="_blank" rel="noopener noreferrer" class="shop-link">进店逛逛</a >
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- 页脚 -->
+  <footer class="footer">
+      <div class="container">
+          <div class="footer-content">
+              <div class="footer-section">
+                  <a href="index.html" class="logo">
+                      <img src="images/logo/logo.png" alt="拼豆网 Logo" class="logo-img">
+                      <span>豆趣工坊</span>
+                  </a>
+                  <p>免费拼豆图纸库与精细化熨烫教程垂直服务平台</p>
+                  <div class="social-links">
+                      <a href="#"><i class="fab fa-weixin"></i></a>
+                      <a href="#"><i class="fab fa-weibo"></i></a>
+                      <a href="#"><i class="fab fa-qq"></i></a>
+                      <a href="#"><i class="fab fa-github"></i></a>
+                  </div>
+              </div>
+              <div class="footer-section">
+                  <h3><li><a href="shops.html">商家推荐</a></li></h3>
+                  <ul>
+                      <li><a href="index.html">首页</a></li>
+                      <li><a href="library.html">图纸库</a></li>
+                      <li><a href="tutorial.html" id="footer-tutorial-link">熨烫教程</a></li>
+                      <li><a href="shops.html">商家推荐</a></li>
+                      <li><a href="upload.html">上传图纸</a></li>
+                  </ul>
+              </div>
+              <div class="footer-section">
+                  <h3>帮助支持</h3>
+                  <ul>
+                      <li><a href="#">常见问题</a></li>
+                      <li><a href="#">使用教程</a></li>
+                      <li><a href="#">联系我们</a></li>
+                      <li><a href="about.html">关于我们</a></li>
+                  </ul>
+              </div>
+              <div class="footer-section">
+                  <h3>订阅更新</h3>
+                  <p>订阅我们的 newsletter，获取最新图纸和教程</p>
+                  <form class="subscribe-form">
+                      <input type="email" placeholder="输入您的邮箱">
+                      <button type="submit" class="btn btn-primary">订阅</button>
+                  </form>
+              </div>
+          </div>
+          <div class="footer-bottom">
+              <p>&copy; 2023 豆趣工坊. 保留所有权利. 配色: #F8C8DC 和 #C8E6F5</p>
+          </div>
+      </div>
+  </footer>
+
+  <script src="js/shops.js"></script>
+  <!-- 修正后的动画脚本 -->
+  <script>
+  // 商家页面动画脚本
+  document.addEventListener('DOMContentLoaded', function() {
+      console.log('商家页面动画初始化...');
+      
+      // ========== 创建飘落的拼豆粒子 ==========
+      function createFloatingBeads() {
+          const container = document.createElement('div');
+          container.className = 'floating-beads';
+          document.body.insertBefore(container, document.body.firstChild);
+          
+          const colors = ['#F8C8DC', '#C8E6F5', '#FFE066', '#98D8AA', '#FFB6C1'];
+          
+          for (let i = 0; i < 15; i++) {
+              const bead = document.createElement('div');
+              bead.className = 'bead';
+              bead.style.backgroundColor = colors[i % colors.length];
+              bead.style.left = Math.random() * 100 + '%';
+              bead.style.top = Math.random() * 100 + '%';
+              bead.style.animationDelay = (i * 0.15) + 's';
+              bead.style.animationDuration = (3 + Math.random() * 2) + 's';
+              container.appendChild(bead);
+          }
+      }
+      
+      // ========== 初始化筛选标签动画 ==========
+      function initFilterTabsAnimation() {
+          const filterTabs = document.querySelectorAll('.filter-tab');
+          
+          // 使用滚动观察器而不是直接动画
+          const observerOptions = {
+              threshold: 0.2,
+              rootMargin: '0px 0px -50px 0px'
+          };
+          
+          const tabObserver = new IntersectionObserver((entries) => {
+              entries.forEach((entry, index) => {
+                  if (entry.isIntersecting) {
+                      setTimeout(() => {
+                          entry.target.classList.add('animate-in');
+                      }, index * 100);
+                      tabObserver.unobserve(entry.target);
+                  }
+              });
+          }, observerOptions);
+          
+          // 观察所有筛选标签
+          filterTabs.forEach(tab => {
+              tabObserver.observe(tab);
+          });
+      }
+      
+      // ========== 初始化商家卡片动画 ==========
+      function initShopCardsAnimation() {
+          const shopCards = document.querySelectorAll('.shop-card');
+          
+          // 设置滚动观察器
+          const observerOptions = {
+              threshold: 0.2,
+              rootMargin: '0px 0px -50px 0px'
+          };
+          
+          const shopObserver = new IntersectionObserver((entries) => {
+              entries.forEach((entry, index) => {
+                  if (entry.isIntersecting) {
+                      setTimeout(() => {
+                          entry.target.classList.add('animate-in');
+                      }, index * 100);
+                      shopObserver.unobserve(entry.target);
+                  }
+              });
+          }, observerOptions);
+          
+          // 观察所有商家卡片
+          shopCards.forEach(card => {
+              shopObserver.observe(card);
+          });
+      }
+      
+      // ========== 筛选功能动画 ==========
+      function initFilterAnimation() {
+          const filterTabs = document.querySelectorAll('.filter-tab');
+          const shopCards = document.querySelectorAll('.shop-card');
+          
+          filterTabs.forEach(tab => {
+              tab.addEventListener('click', function() {
+                  const category = this.getAttribute('data-category');
+                  
+                  // 移除所有active类
+                  filterTabs.forEach(t => t.classList.remove('active'));
+                  // 添加active类到当前标签
+                  this.classList.add('active');
+                  
+                  // 添加点击动画
+                  this.style.transform = 'scale(0.95)';
+                  setTimeout(() => {
+                      this.style.transform = 'scale(1)';
+                  }, 150);
+                  
+                  // 筛选卡片
+                  shopCards.forEach(card => {
+                      const cardCategories = card.getAttribute('data-category').split(' ');
+                      
+                      if (category === 'all' || cardCategories.includes(category)) {
+                          // 显示卡片
+                          card.style.display = 'block';
+                          // 添加显示动画
+                          setTimeout(() => {
+                              card.style.opacity = '1';
+                              card.style.transform = 'translateY(0)';
+                          }, 100);
+                      } else {
+                          // 隐藏卡片
+                          card.style.opacity = '0';
+                          card.style.transform = 'translateY(20px)';
+                          setTimeout(() => {
+                              card.style.display = 'none';
+                          }, 300);
+                      }
+                  });
+              });
+          });
+      }
+      
+      // ========== 卡片悬停动画 ==========
+      function initCardHoverAnimations() {
+          const shopCards = document.querySelectorAll('.shop-card');
+          
+          shopCards.forEach(card => {
+              // 鼠标进入
+              card.addEventListener('mouseenter', function() {
+                  this.style.transform = 'translateY(-10px)';
+                  this.style.boxShadow = '0 15px 30px rgba(248, 200, 220, 0.2)';
+                  
+                  // 徽章放大效果
+                  const badge = this.querySelector('.shop-badge');
+                  if (badge) {
+                      badge.style.transform = 'scale(1.1)';
+                  }
+                  
+                  // 链接箭头动画
+                  const link = this.querySelector('.shop-link');
+                  if (link) {
+                      link.style.transform = 'translateX(5px)';
+                  }
+              });
+              
+              // 鼠标离开
+              card.addEventListener('mouseleave', function() {
+                  this.style.transform = 'translateY(0)';
+                  this.style.boxShadow = '';
+                  
+                  // 徽章恢复
+                  const badge = this.querySelector('.shop-badge');
+                  if (badge) {
+                      badge.style.transform = 'scale(1)';
+                  }
+                  
+                  // 链接恢复
+                  const link = this.querySelector('.shop-link');
+                  if (link) {
+                      link.style.transform = 'translateX(0)';
+                  }
+              });
+          });
+      }
+      
+      // ========== 页面滚动动画 ==========
+      function initScrollAnimations() {
+          const observerOptions = {
+              threshold: 0.2,
+              rootMargin: '0px 0px -50px 0px'
+          };
+          
+          const observer = new IntersectionObserver((entries) => {
+              entries.forEach(entry => {
+                  if (entry.isIntersecting) {
+                      entry.target.classList.add('visible');
+                  }
+              });
+          }, observerOptions);
+          
+          // 观察所有使用 section-animate 类的板块
+          document.querySelectorAll('.section-animate').forEach(element => {
+              observer.observe(element);
+          });
+          
+          // 页面加载后立即显示第一个板块（页面标题）
+          const pageHero = document.querySelector('.page-hero');
+          if (pageHero) {
+              setTimeout(() => {
+                  pageHero.classList.add('visible');
+              }, 100);
+          }
+      }
+      
+      // ========== 统计数据数字动画 ==========
+      function initStatsAnimation() {
+          const statNumbers = document.querySelectorAll('.stat-number');
+          
+          statNumbers.forEach(element => {
+              if (element.textContent.includes('+')) {
+                  const value = element.textContent.replace('+', '');
+                  let current = 0;
+                  const target = parseInt(value);
+                  const duration = 1500;
+                  const increment = Math.ceil(target / (duration / 16));
+                  
+                  const timer = setInterval(() => {
+                      current += increment;
+                      if (current >= target) {
+                          current = target;
+                          clearInterval(timer);
+                      }
+                      element.textContent = current + '+';
+                  }, 16);
+              }
+          });
+      }
+      
+      // ========== 初始化所有动画 ==========
+      function initAllAnimations() {
+          createFloatingBeads();
+          initScrollAnimations(); // 先初始化滚动动画
+          initFilterTabsAnimation();
+          initShopCardsAnimation();
+          initFilterAnimation();
+          initCardHoverAnimations();
+          initStatsAnimation(); // 初始化统计数据动画
+          
+          // 为导航菜单添加active效果
+          const currentPage = window.location.pathname.split('/').pop();
+          const navLinks = document.querySelectorAll('.nav-menu a');
+          navLinks.forEach(link => {
+              if (link.getAttribute('href') === currentPage) {
+                  link.classList.add('active');
+              }
+          });
+      }
+      
+      // ========== 移动端菜单切换 ==========
+      function initMobileMenu() {
+          const menuToggle = document.getElementById('menuToggle');
+          const navMenu = document.querySelector('.nav-menu');
+          
+          if (menuToggle) {
+              menuToggle.addEventListener('click', function() {
+                  navMenu.classList.toggle('active');
+                  menuToggle.innerHTML = navMenu.classList.contains('active') 
+                      ? '<i class="fas fa-times"></i>' 
+                      : '<i class="fas fa-bars"></i>';
+              });
+          }
+      }
+      
+      // 执行初始化
+      initAllAnimations();
+      initMobileMenu();
+      
+      console.log('商家页面动画初始化完成');
+  });
+  </script>
+  <script src="js/splash.js"></script>
+  <script src="js/click-particles.js"></script>
+</body>
+</html>

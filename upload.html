@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>上传图纸 - 豆趣工坊</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/upload.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/click-particles.css">
+	<link rel="stylesheet" href="css/music-player.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="images/logo/logo.png">
+	<style>
+	/* ========== 入场动画样式 ========== */
+	
+	/* 飘落的拼豆粒子容器 */
+	.floating-beads {
+	    position: fixed;
+	    top: 0;
+	    left: 0;
+	    width: 100%;
+	    height: 100%;
+	    pointer-events: none;
+	    z-index: 0;
+	    overflow: hidden;
+	}
+	
+	.bead {
+	    position: absolute;
+	    width: 16px;
+	    height: 16px;
+	    border-radius: 4px;
+	    opacity: 0;
+	    animation: floatDown 3s ease-in-out infinite, fadeInBead 0.8s ease-out forwards;
+	}
+	
+	@keyframes floatDown {
+	    0%, 100% { transform: translateY(0) rotate(0deg); }
+	    50% { transform: translateY(-20px) rotate(15deg); }
+	}
+	
+	@keyframes fadeInBead {
+	    from { opacity: 0; transform: translateY(-30px); }
+	    to { opacity: 0.6; transform: translateY(0); }
+	}
+	/* ========== 关于我们页面专用动画 ========== */
+	
+	/* 页面标题滑入 */
+	.page-header {
+	    opacity: 0;
+	    transform: translateY(-40px);
+	    animation: slideInDown 0.8s ease-out 0.3s forwards;
+	}
+	
+	@keyframes slideInDown {
+	    from { opacity: 0; transform: translateY(-40px); }
+	    to { opacity: 1; transform: translateY(0); }
+	}
+	
+	/* 标题装饰效果 */
+	.page-header h1 {
+	    position: relative;
+	    display: inline-block;
+	}
+	
+	.page-header h1::after {
+	    content: '';
+	    position: absolute;
+	    bottom: -10px;
+	    left: 0;
+	    width: 0;
+	    height: 3px;
+	    background: linear-gradient(90deg, #F8C8DC, #C8E6F5);
+	    border-radius: 3px;
+	    animation: expandWidth 1s ease-out 1s forwards;
+	}
+	
+	@keyframes expandWidth {
+	    from { width: 0; }
+	    to { width: 100%; }
+	}
+	
+	/* 页面描述动画 */
+	.page-header p {
+	    opacity: 0;
+	    transform: translateY(20px);
+	    animation: slideUpSmall 0.8s ease-out 0.6s forwards;
+	}
+	
+	@keyframes slideUpSmall {
+	    from { opacity: 0; transform: translateY(20px); }
+	    to { opacity: 1; transform: translateY(0); }
+	}
+	
+	/* 关于内容区淡入 */
+	.about-content {
+	    opacity: 0;
+	    animation: fadeIn 0.8s ease-out 0.8s forwards;
+	}
+	
+	/* 关于区块动画 */
+	.about-section {
+	    opacity: 0;
+	    transform: translateY(40px);
+	    transition: all 0.8s ease-out;
+	}
+	
+	.about-section.visible {
+	    opacity: 1;
+	    transform: translateY(0);
+	}
+	
+	/* 区块标题动画 */
+	.about-section h2 {
+	    opacity: 0;
+	    transform: translateX(-20px);
+	    transition: all 0.6s ease-out 0.2s;
+	}
+	
+	.about-section.visible h2 {
+	    opacity: 1;
+	    transform: translateX(0);
+	}
+	
+	/* 图标动画 */
+	.about-section h2 i {
+	    display: inline-block;
+	    margin-right: 10px;
+	    transition: all 0.5s ease;
+	}
+	
+	.about-section:hover h2 i {
+	    transform: scale(1.2) rotate(15deg);
+	    color: #F8C8DC;
+	}
+	
+	/* 段落内容动画 */
+	.about-section p {
+	    opacity: 0;
+	    transform: translateY(20px);
+	    transition: all 0.6s ease-out 0.4s;
+	}
+	
+	.about-section.visible p {
+	    opacity: 1;
+	    transform: translateY(0);
+	}
+	
+	/* 目标列表动画 */
+	.about-goals {
+	    list-style: none;
+	    padding-left: 20px;
+	}
+	
+	.about-goals li {
+	    opacity: 0;
+	    transform: translateX(-30px);
+	    margin-bottom: 12px;
+	    padding-left: 30px;
+	    position: relative;
+	    transition: all 0.5s ease-out;
+	}
+	
+	.about-goals li::before {
+	    content: '✓';
+	    position: absolute;
+	    left: 0;
+	    color: #F8C8DC;
+	    font-weight: bold;
+	    transition: all 0.3s ease;
+	}
+	
+	.about-section.visible .about-goals li {
+	    opacity: 1;
+	    transform: translateX(0);
+	}
+	
+	.about-goals li:nth-child(1) { transition-delay: 0.1s; }
+	.about-goals li:nth-child(2) { transition-delay: 0.2s; }
+	.about-goals li:nth-child(3) { transition-delay: 0.3s; }
+	.about-goals li:nth-child(4) { transition-delay: 0.4s; }
+	.about-goals li:nth-child(5) { transition-delay: 0.5s; }
+	
+	/* 目标列表悬停效果 */
+	.about-goals li:hover {
+	    transform: translateX(10px);
+	    color: #F8C8DC;
+	}
+	
+	.about-goals li:hover::before {
+	    transform: scale(1.3) rotate(15deg);
+	    color: #C8E6F5;
+	}
+	
+	/* 统计数据网格动画 */
+	.stats-grid {
+	    opacity: 0;
+	    transform: translateY(30px);
+	    transition: all 0.8s ease-out;
+	}
+	
+	.about-section.visible .stats-grid {
+	    opacity: 1;
+	    transform: translateY(0);
+	}
+	
+	/* 统计卡片动画 */
+	.stat-card {
+	    opacity: 0;
+	    transform: translateY(30px) scale(0.95);
+	    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+	}
+	
+	.stat-card.animate-in {
+	    opacity: 1;
+	    transform: translateY(0) scale(1);
+	}
+	
+	/* 统计卡片交错延迟 */
+	.stat-card:nth-child(1) { transition-delay: 0.1s; }
+	.stat-card:nth-child(2) { transition-delay: 0.2s; }
+	.stat-card:nth-child(3) { transition-delay: 0.3s; }
+	.stat-card:nth-child(4) { transition-delay: 0.4s; }
+	
+	/* 统计卡片悬停效果 */
+	.stat-card:hover {
+	    transform: translateY(-10px) scale(1.05);
+	    box-shadow: 0 15px 30px rgba(248, 200, 220, 0.3);
+	}
+	
+	/* 统计数字滚动动画 */
+	.stat-number {
+	    display: inline-block;
+	}
+	
+	/* 团队网格动画 */
+	.team-grid {
+	    opacity: 0;
+	    transform: translateY(30px);
+	    transition: all 0.8s ease-out;
+	}
+	
+	.about-section.visible .team-grid {
+	    opacity: 1;
+	    transform: translateY(0);
+	}
+	
+	/* 团队成员动画 */
+	.team-member {
+	    opacity: 0;
+	    transform: translateY(40px) scale(0.95);
+	    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+	}
+	
+	.team-member.animate-in {
+	    opacity: 1;
+	    transform: translateY(0) scale(1);
+	}
+	
+	/* 团队成员交错延迟 */
+	.team-member:nth-child(1) { transition-delay: 0.1s; }
+	.team-member:nth-child(2) { transition-delay: 0.3s; }
+	.team-member:nth-child(3) { transition-delay: 0.5s; }
+	
+	/* 团队成员悬停效果 */
+	.team-member:hover {
+	    transform: translateY(-15px) scale(1.03);
+	    box-shadow: 0 20px 40px rgba(248, 200, 220, 0.25);
+	}
+	
+	/* 成员头像动画 */
+	.member-avatar {
+	    position: relative;
+	    overflow: hidden;
+	    border-radius: 50%;
+	    transition: all 0.5s ease;
+	}
+	
+	.member-avatar::after {
+	    content: '';
+	    position: absolute;
+	    top: 0;
+	    left: 0;
+	    right: 0;
+	    bottom: 0;
+	    background: linear-gradient(135deg, rgba(248, 200, 220, 0.3), rgba(200, 230, 245, 0.3));
+	    opacity: 0;
+	    transition: opacity 0.3s ease;
+	}
+	
+	.team-member:hover .member-avatar {
+	    transform: scale(1.1) rotate(5deg);
+	}
+	
+	.team-member:hover .member-avatar::after {
+	    opacity: 1;
+	}
+	
+	/* 成员角色动画 */
+	.member-role {
+	    opacity: 0;
+	    transform: translateY(10px);
+	    transition: all 0.4s ease-out 0.2s;
+	}
+	
+	.team-member.animate-in .member-role {
+	    opacity: 1;
+	    transform: translateY(0);
+	}
+	
+	/* 加入选项动画 */
+	.join-options {
+	    opacity: 0;
+	    transform: translateY(30px);
+	    transition: all 0.8s ease-out;
+	}
+	
+	.about-section.visible .join-options {
+	    opacity: 1;
+	    transform: translateY(0);
+	}
+	
+	/* 加入选项卡片动画 */
+	.join-option {
+	    opacity: 0;
+	    transform: translateY(30px) scale(0.95);
+	    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+	}
+	
+	.join-option.animate-in {
+	    opacity: 1;
+	    transform: translateY(0) scale(1);
+	}
+	
+	/* 加入选项交错延迟 */
+	.join-option:nth-child(1) { transition-delay: 0.1s; }
+	.join-option:nth-child(2) { transition-delay: 0.3s; }
+	.join-option:nth-child(3) { transition-delay: 0.5s; }
+	
+	/* 加入选项悬停效果 */
+	.join-option:hover {
+	    transform: translateY(-10px) scale(1.05);
+	    box-shadow: 0 20px 40px rgba(248, 200, 220, 0.2);
+	}
+	
+	/* 加入选项图标动画 */
+	.join-option i {
+	    transition: all 0.5s ease;
+	    display: inline-block;
+	}
+	
+	.join-option:hover i {
+	    transform: scale(1.3) rotate(15deg);
+	    color: #F8C8DC;
+	}
+	
+	/* 加入选项按钮动画 */
+	.join-option .btn {
+	    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	}
+	
+	.join-option:hover .btn {
+	    transform: translateY(-3px) scale(1.05);
+	    background: linear-gradient(135deg, #F8C8DC, #C8E6F5);
+	    border-color: transparent;
+	    color: white;
+	}
+	
+	/* 页脚滑入 */
+	.footer {
+	    opacity: 0;
+	    animation: footerSlideUp 1s ease-out 2s forwards;
+	}
+	
+	@keyframes footerSlideUp {
+	    from { opacity: 0; transform: translateY(30px); }
+	    to { opacity: 1; transform: translateY(0); }
+	}
+	
+	@keyframes fadeIn {
+	    from { opacity: 0; }
+	    to { opacity: 1; }
+	}
+	
+	/* 滚动触发动画 */
+	.animate-on-scroll {
+	    opacity: 0;
+	    transform: translateY(30px);
+	    transition: all 0.8s ease-out;
+	}
+	
+	.animate-on-scroll.visible {
+	    opacity: 1;
+	    transform: translateY(0);
+	}
+	
+	/* 响应式调整 */
+	@media (max-width: 768px) {
+	    .page-header {
+	        animation-duration: 0.6s;
+	    }
+	    
+	    .about-section {
+	        transform: translateY(20px);
+	    }
+	    
+	    .stat-card,
+	    .team-member,
+	    .join-option {
+	        transform: translateY(20px) scale(0.95);
+	    }
+	    
+	    .about-goals li {
+	        transform: translateX(-20px);
+	    }
+	}
+	</style>
+</head>
+<body>
+	<!-- 全局背景音乐（所有页面都要加） -->
+	<audio id="globalBgMusic" loop preload="auto" style="display: none;">
+	  <source src="audio/background-music.mp3" type="audio/mpeg">
+	</audio>
+	<script>
+	    document.addEventListener('DOMContentLoaded', function() {
+	        initBgMusic(); // 初始化背景音乐（续播逻辑）
+	        // 其他页面专属逻辑...
+	    });
+	</script>
+	<!-- 飘落的拼豆粒子 -->
+	<div class="floating-beads" id="floatingBeads"></div>
+    <!-- 导航栏 -->
+    <header class="header">
+		<!-- 跳动小球背景 -->
+		<div class="header-bubbles" id="headerBubbles"></div>
+        <div class="container">
+            <nav class="navbar">
+                <a href="index.html" class="logo">
+                    <img src="images/logo/logo-text.png" class="logo-text-img">
+                </a>
+                <ul class="nav-menu">
+                    <li><a href="index.html" ><i class="fas fa-home"></i> 首页</a></li>
+                    <li class="has-dropdown">
+                        <a href="library.html"><i class="fas fa-book"></i> 图纸库</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="library.html?category=anime"><i class="fas fa-film"></i> 动漫角色</a></li>
+                            <li><a href="library.html?category=game"><i class="fas fa-gamepad"></i> 游戏像素</a></li>
+                            <li><a href="library.html?category=animal"><i class="fas fa-paw"></i> 可爱动物</a></li>
+                            <li><a href="library.html?category=holiday"><i class="fas fa-gift"></i> 节日主题</a></li>
+                            <li class="dropdown-divider"></li>
+                            <li><a href="library.html"><i class="fas fa-th"></i> 查看全部</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="tutorial.html" id="nav-tutorial-link"><i class="fas fa-graduation-cap"></i> 熨烫教程</a></li>
+                    <li><a href="shops.html" ><i class="fas fa-shops"></i> 商家推荐</a></li>
+                    <li class="has-dropdown">
+                        <a href="community.html"><i class="fas fa-users"></i> 社区</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="community.html?tab=works"><i class="fas fa-images"></i> 分享讨论</a></li>
+                            <li><a href="upload.html"><i class="fas fa-cloud-upload-alt"></i> 上传图纸</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="about.html" ><i class="fas fa-info-circle"></i> 关于我们</a></li>
+                </ul>
+                <div class="nav-right">
+					<div class="floating-music-player" id="floatingMusicPlayer">
+					    <div class="music-control" id="musicControl">
+					        <div class="music-note" id="musicNote">
+					            <i class="fas fa-music"></i>
+					        </div>
+					        <div class="music-tooltip">播放/暂停</div>
+					    </div>
+					</div>
+                    <a href="login.html" class="btn btn-outline">登录</a>
+                    <a href="register.html" class="btn btn-primary">注册</a>
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="upload-page">
+        <div class="container">
+            <!-- 页面标题 -->
+            <div class="page-header">
+                <div class="header-badge">
+                    <i class="fas fa-sparkles"></i>
+                    <span>分享你的创意</span>
+                </div>
+                <h1>上传图纸</h1>
+                <p>与全国拼豆爱好者分享你的作品，让更多人看到你的创意！<br>每一张图纸都是一份独特的礼物 🎁</p>
+            </div>
+
+            <!-- 主要内容 -->
+            <div class="upload-content">
+                <!-- 上传表单 -->
+                <div class="upload-form-container">
+                    <div class="form-header">
+                        <div class="form-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <div class="form-title">
+                            <h2>填写图纸信息</h2>
+                            <p>请填写完整信息，方便其他用户查找</p>
+                        </div>
+                    </div>
+
+                    <form id="uploadForm" class="upload-form">
+                        <!-- 图片上传区域 -->
+                        <div class="form-section">
+                            <label class="form-label">
+                                <i class="fas fa-image"></i>
+                                上传图纸 <span class="required">*</span>
+                            </label>
+                            <div class="upload-area" id="uploadArea">
+                                <input type="file" id="fileInput" accept="image/*" multiple hidden>
+                                <div class="upload-icon">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <p class="upload-text">点击或拖拽上传图纸</p>
+                                <p class="upload-hint">支持 JPG、PNG、GIF 格式，最多5张，单张不超过10MB</p>
+                            </div>
+                            <div class="preview-grid" id="previewGrid"></div>
+                        </div>
+
+                        <!-- 基本信息 -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="title" class="form-label">
+                                    图纸标题 <span class="required">*</span>
+                                </label>
+                                <input type="text" id="title" name="title" placeholder="请输入图纸名称，如：可爱皮卡丘" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="category" class="form-label">
+                                    图纸分类 <span class="required">*</span>
+                                </label>
+                                <select id="category" name="category" required>
+                                    <option value="">请选择分类</option>
+                                    <option value="anime">动漫角色</option>
+                                    <option value="game">游戏人物</option>
+                                    <option value="animal">可爱动物</option>
+                                    <option value="food">美食甜点</option>
+                                    <option value="plant">花草植物</option>
+                                    <option value="festival">节日主题</option>
+                                    <option value="landscape">风景建筑</option>
+                                    <option value="other">其他</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="difficulty" class="form-label">
+                                    难度级别 <span class="required">*</span>
+                                </label>
+                                <select id="difficulty" name="difficulty" required>
+                                    <option value="">请选择难度</option>
+                                    <option value="beginner">🟢 入门级</option>
+                                    <option value="intermediate">🟡 进阶级</option>
+                                    <option value="advanced">🔴 高手级</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="beadCount" class="form-label">
+                                    拼豆数量（颗）
+                                </label>
+                                <input type="number" id="beadCount" name="beadCount" placeholder="预估使用拼豆数量">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="colors" class="form-label">
+                                使用颜色
+                            </label>
+                            <input type="text" id="colors" name="colors" placeholder="请输入使用的颜色，用逗号分隔，如：红色, 蓝色, 黄色">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description" class="form-label">
+                                图纸描述
+                            </label>
+                            <textarea id="description" name="description" rows="4" placeholder="介绍一下这张图纸的特点、创作灵感或制作技巧..."></textarea>
+                        </div>
+
+                        <!-- 提交按钮 -->
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary btn-large" id="submitBtn">
+                                <i class="fas fa-sparkles"></i> 提交图纸
+                            </button>
+                            <button type="reset" class="btn btn-outline" id="resetBtn">
+                                重置
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- 侧边栏 -->
+                <aside class="upload-sidebar">
+                    <!-- 上传须知 -->
+                    <div class="sidebar-card guidelines-card">
+                        <h3><i class="fas fa-info-circle"></i> 上传须知</h3>
+                        <ul class="guidelines-list">
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>请确保图纸清晰可辨，建议使用高分辨率图片</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>原创图纸优先审核，转载请注明出处</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>可上传成品图作为参考，帮助其他用户了解效果</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-check-circle"></i>
+                                <span>图纸审核通过后将自动加入图纸库</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- 注意事项 -->
+                    <div class="sidebar-card warning-card">
+                        <h3><i class="fas fa-exclamation-triangle"></i> 注意事项</h3>
+                        <ul class="warning-list">
+                            <li>
+                                <span class="warning-dot"></span>
+                                <span>禁止上传违法违规、色情暴力等不良内容</span>
+                            </li>
+                            <li>
+                                <span class="warning-dot"></span>
+                                <span>请勿上传带有明显商业水印的图纸</span>
+                            </li>
+                            <li>
+                                <span class="warning-dot"></span>
+                                <span>尊重原创，抄袭他人作品将被删除并封禁账号</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- 社区激励 -->
+                    <div class="sidebar-card reward-card">
+                        <h3><i class="fas fa-heart"></i> 社区激励</h3>
+                        <ul class="reward-list">
+                            <li>
+                                <span class="reward-number">1</span>
+                                <span>每成功上传一张图纸获得 <strong>10积分</strong></span>
+                            </li>
+                            <li>
+                                <span class="reward-number">2</span>
+                                <span>图纸被收藏一次获得 <strong>5积分</strong></span>
+                            </li>
+                            <li>
+                                <span class="reward-number">3</span>
+                                <span>月度优质作者可获得 <strong>专属徽章</strong></span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- 统计数据 -->
+                    <div class="sidebar-card stats-card">
+                        <h3>图纸库统计</h3>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-value">2,580</div>
+                                <div class="stat-label">图纸总数</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">386</div>
+                                <div class="stat-label">创作者</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">12,450</div>
+                                <div class="stat-label">总下载量</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">98%</div>
+                                <div class="stat-label">好评率</div>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <a href="index.html" class="logo">
+                        <img src="images/logo/logo.png" alt="拼豆网 Logo" class="logo-img">
+                        <span>豆趣工坊</span>
+                    </a>
+                    <p>免费拼豆图纸库与精细化熨烫教程垂直服务平台</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-weixin"></i></a>
+                        <a href="#"><i class="fab fa-weibo"></i></a>
+                        <a href="#"><i class="fab fa-qq"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3><li><a href="shops.html">商家推荐</a></li></h3>
+                    <ul>
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="library.html">图纸库</a></li>
+                        <li><a href="tutorial.html" id="footer-tutorial-link">熨烫教程</a></li>
+                        <li><a href="shops.html">商家推荐</a></li>
+    					<li><a href="upload.html">上传图纸</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>帮助支持</h3>
+                    <ul>
+                        <li><a href="#">常见问题</a></li>
+                        <li><a href="#">使用教程</a></li>
+                        <li><a href="#">联系我们</a></li>
+                        <li><a href="about.html">关于我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>订阅更新</h3>
+                    <p>订阅我们的 newsletter，获取最新图纸和教程</p>
+                    <form class="subscribe-form">
+                        <input type="email" placeholder="输入您的邮箱">
+                        <button type="submit" class="btn btn-primary">订阅</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 豆趣工坊. 保留所有权利. 配色: #F8C8DC 和 #C8E6F5</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast 提示 -->
+    <div class="toast" id="toast">
+        <i class="toast-icon"></i>
+        <span class="toast-message"></span>
+    </div>
+	<script src="js/splash.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/upload.js"></script>
+	<script src="js/click-particles.js"></script>
+</body>
+</html>

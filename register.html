@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册 - 拼豆网</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+	<link rel="stylesheet" href="css/click-particles.css">
+	<link rel="stylesheet" href="css/music-player.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+</head>
+<body>
+	<!-- 全局背景音乐（所有页面都要加） -->
+	<audio id="globalBgMusic" loop preload="auto" style="display: none;">
+	  <source src="audio/background-music.mp3" type="audio/mpeg">
+	</audio>
+	<script>
+	    document.addEventListener('DOMContentLoaded', function() {
+	        initBgMusic(); // 初始化背景音乐（续播逻辑）
+	        // 其他页面专属逻辑...
+	    });
+	</script>
+	<!-- 飘落的拼豆粒子 -->
+	<div class="floating-beads" id="floatingBeads"></div>
+    <!-- 导航栏 -->
+    <header class="header">
+		<!-- 跳动小球背景 -->
+		<div class="header-bubbles" id="headerBubbles"></div>
+        <div class="container">
+            <nav class="navbar">
+                <a href="index.html" class="logo">
+                    <img src="images/logo/logo-text.png" class="logo-text-img">
+                </a>
+                <ul class="nav-menu">
+                    <li><a href="index.html" ><i class="fas fa-home"></i> 首页</a></li>
+                    <li class="has-dropdown">
+                        <a href="library.html"><i class="fas fa-book"></i> 图纸库</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="library.html?category=anime"><i class="fas fa-film"></i> 动漫角色</a></li>
+                            <li><a href="library.html?category=game"><i class="fas fa-gamepad"></i> 游戏像素</a></li>
+                            <li><a href="library.html?category=animal"><i class="fas fa-paw"></i> 可爱动物</a></li>
+                            <li><a href="library.html?category=holiday"><i class="fas fa-gift"></i> 节日主题</a></li>
+                            <li class="dropdown-divider"></li>
+                            <li><a href="library.html"><i class="fas fa-th"></i> 查看全部</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="tutorial.html" id="nav-tutorial-link"><i class="fas fa-graduation-cap"></i> 熨烫教程</a></li>
+                    <li><a href="shops.html" ><i class="fas fa-shops"></i> 商家推荐</a></li>
+                    <li class="has-dropdown">
+                        <a href="community.html"><i class="fas fa-users"></i> 社区</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="community.html?tab=works"><i class="fas fa-images"></i> 分享讨论</a></li>
+                            <li><a href="upload.html"><i class="fas fa-cloud-upload-alt"></i> 上传图纸</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="about.html" ><i class="fas fa-info-circle"></i> 关于我们</a></li>
+                </ul>
+                <div class="nav-right">
+					<div class="floating-music-player" id="floatingMusicPlayer">
+					    <div class="music-control" id="musicControl">
+					        <div class="music-note" id="musicNote">
+					            <i class="fas fa-music"></i>
+					        </div>
+					        <div class="music-tooltip">播放/暂停</div>
+					    </div>
+					</div>
+                    <a href="login.html" class="btn btn-outline">登录</a>
+                    <a href="register.html" class="btn btn-primary" class="active">注册</a>
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="auth-page">
+        <div class="container">
+            <div class="auth-container">
+                <!-- 注册表单 -->
+                <div class="auth-form register-form">
+                    <div class="auth-header">
+                        <div class="logo-large">
+                            <img src="images/logo/logo.png" class="logo-img">
+                            <h1>豆趣工坊</h1>
+                        </div>
+                        <h2><i class="fas fa-user-plus"></i> 注册账户</h2>
+                        <p class="auth-subtitle">加入拼豆创作社区，开启创意之旅</p>
+                    </div>
+                    
+                    <form id="registerForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="registerUsername">
+                                    <i class="fas fa-user"></i> 用户名
+                                </label>
+                                <input type="text" id="registerUsername" name="username" required placeholder="请输入用户名">
+                                <p class="form-hint" style="font-size: 12px;">4-20个字符，可使用字母、数字和下划线</p>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="registerEmail">
+                                    <i class="fas fa-envelope"></i> 邮箱地址
+                                </label>
+                                <input type="email" id="registerEmail" name="email" required placeholder="请输入邮箱">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="registerPassword">
+                                    <i class="fas fa-lock"></i> 密码
+                                </label>
+                                <div class="password-input">
+                                    <input type="password" id="registerPassword" name="password" required placeholder="请输入密码">
+                                    <button type="button" class="toggle-password" id="toggleRegisterPassword">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <div class="password-strength">
+                                    <div class="strength-meter">
+                                        <div class="strength-bar"></div>
+                                    </div>
+                                    <span class="strength-text" style="font-size: 12px;">密码强度：弱</span>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="confirmPassword">
+                                    <i class="fas fa-lock"></i> 确认密码
+                                </label>
+                                <div class="password-input">
+                                    <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="请再次输入密码">
+                                    <button type="button" class="toggle-password" id="toggleConfirmPassword">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="userType">您是什么类型的用户？</label>
+                            <div class="user-type-selection">
+                                <label class="user-type-option">
+                                    <input type="radio" name="userType" value="beginner" checked>
+                                    <div class="user-type-card">
+                                        <i class="fas fa-seedling"></i>
+                                        <h4>拼豆新手</h4>
+                                        <p>刚接触拼豆，想学习基础</p>
+                                    </div>
+                                </label>
+                                <label class="user-type-option">
+                                    <input type="radio" name="userType" value="enthusiast">
+                                    <div class="user-type-card">
+                                        <i class="fas fa-heart"></i>
+                                        <h4>拼豆爱好者</h4>
+                                        <p>有一定经验，经常制作作品</p>
+                                    </div>
+                                </label>
+                                <label class="user-type-option">
+                                    <input type="radio" name="userType" value="expert">
+                                    <div class="user-type-card">
+                                        <i class="fas fa-crown"></i>
+                                        <h4>拼豆达人</h4>
+                                        <p>经验丰富，能创作复杂作品</p>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group terms-group">
+                            <label class="terms-label">
+                                <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
+                                <span>我已阅读并同意 <a href="terms.html" class="terms-link">用户协议</a> 和 <a href="privacy.html" class="terms-link">隐私政策</a></span>
+                            </label>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-large btn-block">
+                            <i class="fas fa-user-plus"></i> 注册账户
+                        </button>
+                        
+                        <div class="auth-footer">
+                            <p>已有账户？ <a href="login.html" class="auth-link">立即登录</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <a href="index.html" class="logo">
+                        <i class="fas fa-shapes"></i>
+                        <span>拼豆网</span>
+                    </a>
+                    <p>免费拼豆图纸库与精细化熨烫教程垂直服务平台</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-weixin"></i></a>
+                        <a href="#"><i class="fab fa-weibo"></i></a>
+                        <a href="#"><i class="fab fa-qq"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3><li><a href="shops.html">商家推荐</a></li></h3>
+                    <ul>
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="library.html">图纸库</a></li>
+                        <li><a href="tutorial.html" id="footer-tutorial-link">熨烫教程</a></li>
+                        <li><a href="shops.html">商家推荐</a></li>
+                		<li><a href="upload.html">上传图纸</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>帮助支持</h3>
+                    <ul>
+                        <li><a href="#">常见问题</a></li>
+                        <li><a href="#">使用教程</a></li>
+                        <li><a href="#">联系我们</a></li>
+                        <li><a href="about.html">关于我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>订阅更新</h3>
+                    <p>订阅我们的 newsletter，获取最新图纸和教程</p>
+                    <form class="subscribe-form">
+                        <input type="email" placeholder="输入您的邮箱">
+                        <button type="submit" class="btn btn-primary">订阅</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 拼豆网. 保留所有权利. 配色: #F8C8DC 和 #C8E6F5</p>
+            </div>
+        </div>
+    </footer>
+	<script src="js/splash.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/auth.js"></script>
+	<script src="js/click-particles.js"></script>
+	<script src="js/music-player.js"></script>
+</body>
+</html>
