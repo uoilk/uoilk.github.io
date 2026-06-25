@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>糖画历史 - 糖韵匠心</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <style>
+        /* 共用样式，与首页相同 */
+        :root {
+            --primary-amber: #D4A017;
+            --golden-yellow: #FFD700;
+            --cream-white: #FFF8E7;
+            --dark-brown: #5D4037;
+            --chinese-red: #C62828;
+            --shadow-light: rgba(212, 160, 23, 0.1);
+            --shadow-medium: rgba(212, 160, 23, 0.2);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: var(--cream-white);
+            color: var(--dark-brown);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 头部样式 - 与首页相同 */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 12px var(--shadow-light);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-amber), var(--golden-yellow));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .logo-icon:before {
+            content: "";
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--dark-brown);
+        }
+        
+        .logo-icon:after {
+            content: "";
+            position: absolute;
+            width: 15px;
+            height: 40px;
+            background-color: var(--dark-brown);
+            border-radius: 10px;
+            transform: rotate(45deg);
+            top: 5px;
+            left: 25px;
+        }
+        
+        .logo-text h1 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.8rem;
+            color: var(--dark-brown);
+            letter-spacing: 2px;
+        }
+        
+        .logo-text p {
+            font-size: 0.8rem;
+            color: var(--primary-amber);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: var(--dark-brown);
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        nav a:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-amber);
+            transition: width 0.3s ease;
+        }
+        
+        nav a:hover {
+            color: var(--primary-amber);
+        }
+        
+        nav a:hover:after {
+            width: 100%;
+        }
+        
+        /* 页面标题区域 */
+        .page-header {
+            padding: 160px 0 60px;
+            background: linear-gradient(rgba(255, 248, 231, 0.9), rgba(255, 248, 231, 0.7));
+            text-align: center;
+        }
+        
+        .page-header h2 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 3rem;
+            color: var(--dark-brown);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .page-header h2:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background-color: var(--primary-amber);
+        }
+        
+        .page-header p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* 时间线样式 */
+        .timeline {
+            padding: 80px 0;
+            position: relative;
+        }
+        
+        .timeline:before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: var(--primary-amber);
+            transform: translateX(-50%);
+        }
+        
+        .timeline-item {
+            display: flex;
+            justify-content: flex-end;
+            padding-right: 50%;
+            position: relative;
+            margin-bottom: 60px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.5s ease;
+        }
+        
+        .timeline-item:nth-child(even) {
+            justify-content: flex-start;
+            padding-right: 0;
+            padding-left: 50%;
+        }
+        
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .timeline-content {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 85%;
+            position: relative;
+            border-top: 5px solid var(--primary-amber);
+        }
+        
+        .timeline-item:nth-child(even) .timeline-content {
+            border-top-color: var(--golden-yellow);
+        }
+        
+        .timeline-content:before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: var(--primary-amber);
+            border-radius: 50%;
+            top: 30px;
+            right: -10px;
+            z-index: 1;
+        }
+        
+        .timeline-item:nth-child(even) .timeline-content:before {
+            left: -10px;
+            right: auto;
+        }
+        
+        .timeline-year {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-amber);
+            margin-bottom: 10px;
+        }
+        
+        .timeline-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--dark-brown);
+            font-family: 'Noto Serif SC', serif;
+        }
+        
+        .timeline-text {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        /* 历史图片展示 - 完全重写的样式 */
+        .history-gallery {
+            padding: 80px 0;
+            background-color: #f9f5eb;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .history-image {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(93, 64, 55, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .history-image:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(93, 64, 55, 0.15);
+        }
+        
+        /* 图片容器 - 使用内联样式确保优先级 */
+        .image-placeholder {
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* 图片样式 - 确保覆盖所有可能的样式 */
+        .image-placeholder img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            display: block !important;
+            max-width: 100%;
+            max-height: 100%;
+        }
+        
+        .image-caption {
+            padding: 20px;
+        }
+        
+        .image-caption h4 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.3rem;
+            color: var(--dark-brown);
+            margin-bottom: 10px;
+        }
+        
+        .image-caption p {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        /* 页脚样式 - 与首页相同 */
+        footer {
+            background-color: var(--dark-brown);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-logo .logo-icon {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .footer-logo h3 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .footer-links h4 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-links h4:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary-amber);
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary-amber);
+            padding-left: 5px;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+            
+            .page-header h2 {
+                font-size: 2.5rem;
+            }
+            
+            .timeline:before {
+                left: 30px;
+            }
+            
+            .timeline-item {
+                justify-content: flex-start;
+                padding-right: 0;
+                padding-left: 70px;
+            }
+            
+            .timeline-item:nth-child(even) {
+                justify-content: flex-start;
+                padding-left: 70px;
+            }
+            
+            .timeline-content:before {
+                left: -10px;
+                right: auto;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .image-placeholder {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部 -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-area">
+                    <div class="logo-icon"></div>
+                    <div class="logo-text">
+                        <h1>糖韵匠心</h1>
+                        <p>非遗糖画数字传承馆</p>
+                    </div>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html" class="active">首页</a></li>
+                        <li><a href="history.html">糖画历史</a></li>
+                        <li><a href="craft.html">制作工艺</a></li>
+                        <li><a href="gallery.html">作品鉴赏</a></li>
+                        <li><a href="experience.html">在线体验</a></li>
+                        <li><a href="artisans.html">传承人物</a></li>
+                        <li><a href="shop.html">糖画商城</a></li>
+                        <li><a href="booking.html">活动预约</a></li>
+                    </ul>
+                </nav>
+                <!-- 首页：购物车占位区域（保持透明或不显示） -->
+                <div class="cart-placeholder"></div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- 页面标题区域 -->
+    <section class="page-header">
+        <div class="container">
+            <h2>糖画历史源流</h2>
+            <p>糖画艺术起源于明代，历经六百余年发展，从民间街头技艺演变为国家级非物质文化遗产</p>
+        </div>
+    </section>
+    
+    <!-- 时间线 -->
+    <section class="timeline">
+        <div class="container">
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">明朝 (1368-1644)</div>
+                    <h3 class="timeline-title">起源时期</h3>
+                    <p class="timeline-text">糖画最早出现在四川地区，最初被称为"糖灯影"或"糖关刀"。明代《蜀中广记》中已有关于糖画的记载，当时主要用于祭祀和节庆活动。</p>
+                    <p class="timeline-text">最初的糖画图案较为简单，以动物和吉祥符号为主，制作工具也相对简陋。</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">清朝 (1644-1912)</div>
+                    <h3 class="timeline-title">发展兴盛</h3>
+                    <p class="timeline-text">清代是糖画艺术的重要发展时期，随着蔗糖生产的普及，糖画技艺逐渐传播到全国各地。</p>
+                    <p class="timeline-text">这一时期出现了专业的糖画艺人，技艺更加精湛，图案更加丰富，出现了十二生肖、神话人物等复杂图案。</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">民国时期 (1912-1949)</div>
+                    <h3 class="timeline-title">民间普及</h3>
+                    <p class="timeline-text">糖画成为庙会、集市上的常见民间艺术，深受儿童喜爱。艺人们走街串巷，靠手艺谋生。</p>
+                    <p class="timeline-text">这一时期形成了糖画的多种地域流派，如四川糖画、北京糖画、山东糖画等，各具特色。</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">20世纪80年代</div>
+                    <h3 class="timeline-title">复兴时期</h3>
+                    <p class="timeline-text">改革开放后，传统民间艺术重新受到重视。糖画作为中国特色民间艺术，开始出现在各种文化交流活动中。</p>
+                    <p class="timeline-text">1986年，糖画被列入四川省非物质文化遗产名录，标志着这一艺术形式正式受到官方保护。</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">2008年</div>
+                    <h3 class="timeline-title">国家级非遗</h3>
+                    <p class="timeline-text">糖画被正式列入第二批国家级非物质文化遗产名录，编号为Ⅶ-95。</p>
+                    <p class="timeline-text">这一认定极大地推动了糖画艺术的保护、传承和发展，各地开始建立糖画传承基地和保护机构。</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">当今</div>
+                    <h3 class="timeline-title">创新发展</h3>
+                    <p class="timeline-text">糖画艺术在保留传统技艺的基础上，不断进行创新。现代糖画作品题材更加广泛，技艺更加精湛。</p>
+                    <p class="timeline-text">数字技术的应用为糖画传承开辟了新途径，通过网站、社交媒体等方式，让更多人了解和喜爱这一传统艺术。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 历史图片展示 - 使用内联样式确保显示 -->
+    <section class="history-gallery">
+        <div class="container">
+            <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 20px; font-family: 'Noto Serif SC', serif; color: var(--dark-brown);">历史影像</h2>
+            <p style="text-align: center; color: #666; max-width: 800px; margin: 0 auto 40px;">通过历史图片，了解糖画艺术的演变历程</p>
+            
+            <div class="gallery-grid">
+                <div class="history-image">
+                    <div class="image-placeholder">
+                        <!-- 第一张图片 - 使用最简单的路径 -->
+                        <img src="images/（0).png" alt="清代糖画艺人老照片" 
+                             style="width: 100%; height: 100%; object-fit: cover;"
+                             onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300/5D4037/FFF8E7?text=清代糖画艺人老照片'; console.log('图片1加载失败，使用占位图');">
+                    </div>
+                    <div class="image-caption">
+                        <h4>清末民初的糖画摊</h4>
+                        <p>这张老照片记录了20世纪初糖画艺人在街头作画的情景，展示了传统的糖画工具和制作场景。</p>
+                    </div>
+                </div>
+                
+                <div class="history-image">
+                    <div class="image-placeholder">
+                        <!-- 第二张图片 -->
+                        <img src="images/(1).png" alt="民国时期糖画作品" 
+                             style="width: 100%; height: 100%; object-fit: cover;"
+                             onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300/8D6E63/FFF8E7?text=民国时期糖画作品'; console.log('图片2加载失败，使用占位图');">
+                    </div>
+                    <div class="image-caption">
+                        <h4>民国时期的糖画作品</h4>
+                        <p>这个时期的糖画作品以动物和简单人物为主，线条简洁明快，色彩以琥珀色为主。</p>
+                    </div>
+                </div>
+                
+                <div class="history-image">
+                    <div class="image-placeholder">
+                        <!-- 第三张图片 -->
+                        <img src="images/(2).png" alt="20世纪80年代糖画复兴" 
+                             style="width: 100%; height: 100%; object-fit: cover;"
+                             onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300/D4A017/FFF8E7?text=80年代糖画复兴'; console.log('图片3加载失败，使用占位图');">
+                    </div>
+                    <div class="image-caption">
+                        <h4>改革开放初期的糖画</h4>
+                        <p>80年代糖画艺术重新繁荣，作品题材更加丰富，开始出现大型糖画作品。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <div class="logo-icon"></div>
+                        <h3>糖韵匠心</h3>
+                    </div>
+                    <p>非遗糖画数字传承馆致力于通过数字技术记录、展示和传承糖画艺术，让这一古老技艺在新时代继续绽放光彩。</p>
+                </div>
+                <div class="footer-links">
+                    <h4>快速链接</h4>
+                    <ul>
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="history.html">糖画历史</a></li>
+                        <li><a href="craft.html">制作工艺</a></li>
+                        <li><a href="gallery.html">作品鉴赏</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>更多内容</h4>
+                    <ul>
+                        <li><a href="experience.html">在线体验</a></li>
+                        <li><a href="artisans.html">传承人物</a></li>
+                        <li><a href="shop.html">糖画商城</a></li>
+                        <li><a href="booking.html">活动预约</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>联系我们</h4>
+                    <p>邮箱：contact@sugarpainting.com</p>
+                    <p>电话：400-123-4567</p>
+                    <p>地址：北京市东城区非物质文化遗产保护中心</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2023 糖韵匠心 - 非遗糖画数字传承馆 版权所有 | 设计制作：非遗数字化团队</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // 时间线动画
+        document.addEventListener('DOMContentLoaded', function() {
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            
+            function checkVisibility() {
+                timelineItems.forEach(item => {
+                    const rect = item.getBoundingClientRect();
+                    const windowHeight = window.innerHeight;
+                    
+                    if (rect.top <= windowHeight * 0.8) {
+                        item.classList.add('visible');
+                    }
+                });
+            }
+            
+            // 初始检查
+            checkVisibility();
+            
+            // 滚动时检查
+            window.addEventListener('scroll', checkVisibility);
+            
+            // 图片加载调试
+            const images = document.querySelectorAll('.image-placeholder img');
+            images.forEach((img, index) => {
+                console.log(`图片 ${index+1} 尝试加载: ${img.src}`);
+                
+                img.onload = function() {
+                    console.log(`✓ 图片 ${index+1} 加载成功: ${img.src}`);
+                };
+                
+                img.onerror = function() {
+                    console.log(`✗ 图片 ${index+1} 加载失败: ${img.src}`);
+                };
+            });
+        });
+    </script>
+</body>
+</html>

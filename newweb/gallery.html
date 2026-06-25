@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作品鉴赏 - 糖韵匠心</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <style>
+        /* 使用首页的CSS变量和基本样式 */
+        :root {
+            --primary-amber: #D4A017;
+            --golden-yellow: #FFD700;
+            --cream-white: #FFF8E7;
+            --dark-brown: #5D4037;
+            --chinese-red: #C62828;
+            --shadow-light: rgba(212, 160, 23, 0.1);
+            --shadow-medium: rgba(212, 160, 23, 0.2);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: var(--cream-white);
+            color: var(--dark-brown);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 头部样式 - 与首页保持一致 */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 12px var(--shadow-light);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-amber), var(--golden-yellow));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .logo-icon:before {
+            content: "";
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--dark-brown);
+        }
+        
+        .logo-icon:after {
+            content: "";
+            position: absolute;
+            width: 15px;
+            height: 40px;
+            background-color: var(--dark-brown);
+            border-radius: 10px;
+            transform: rotate(45deg);
+            top: 5px;
+            left: 25px;
+        }
+        
+        .logo-text h1 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.8rem;
+            color: var(--dark-brown);
+            letter-spacing: 2px;
+        }
+        
+        .logo-text p {
+            font-size: 0.8rem;
+            color: var(--primary-amber);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: var(--dark-brown);
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        nav a:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-amber);
+            transition: width 0.3s ease;
+        }
+        
+        nav a:hover {
+            color: var(--primary-amber);
+        }
+        
+        nav a:hover:after {
+            width: 100%;
+        }
+        
+        /* 页面顶部区域 */
+        .page-header {
+            padding: 160px 0 60px;
+            background: linear-gradient(135deg, rgba(212, 160, 23, 0.1), rgba(255, 215, 0, 0.05));
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .page-header h1 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 3rem;
+            color: var(--dark-brown);
+            margin-bottom: 15px;
+        }
+        
+        .page-header p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* 作品分类 */
+        .gallery-categories {
+            margin-bottom: 50px;
+            text-align: center;
+        }
+        
+        .categories-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .category-btn {
+            padding: 10px 25px;
+            background-color: white;
+            border: 2px solid rgba(212, 160, 23, 0.3);
+            border-radius: 30px;
+            color: var(--dark-brown);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .category-btn:hover, .category-btn.active {
+            background-color: var(--primary-amber);
+            color: white;
+            border-color: var(--primary-amber);
+        }
+        
+        /* 作品网格 */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+        
+        .gallery-item {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .gallery-img {
+            width: 100%;
+            height: 250px;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 1.2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gallery-img i {
+            font-size: 4rem;
+            color: rgba(212, 160, 23, 0.3);
+        }
+        
+        .gallery-info {
+            padding: 20px;
+        }
+        
+        .gallery-info h3 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: var(--dark-brown);
+        }
+        
+        .gallery-info p {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+        
+        .gallery-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--primary-amber);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        /* 页脚 - 与首页保持一致 */
+        footer {
+            background-color: var(--dark-brown);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-logo .logo-icon {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .footer-logo h3 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .footer-links h4 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-links h4:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary-amber);
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary-amber);
+            padding-left: 5px;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+		/* 在现有CSS中添加以下样式 */
+		
+		.gallery-img {
+		    width: 100%;
+		    height: 250px;
+		    background-color: #f5f5f5;
+		    display: flex;
+		    align-items: center;
+		    justify-content: center;
+		    color: #999;
+		    font-size: 1.2rem;
+		    position: relative;
+		    overflow: hidden;
+		}
+		
+		.gallery-image {
+		    width: 100%;
+		    height: 100%;
+		    object-fit: cover;
+		    transition: transform 0.5s ease;
+		}
+		
+		.gallery-item:hover .gallery-image {
+		    transform: scale(1.05);
+		}
+		
+		/* 图片加载失败时的备用样式 */
+		.gallery-img:has(img:not([src])) i,
+		.gallery-img:has(img.error) i {
+		    display: block;
+		    font-size: 4rem;
+		    color: rgba(212, 160, 23, 0.3);
+		}
+		/* 筛选动画 */
+		@keyframes fadeInUp {
+		    from {
+		        opacity: 0;
+		        transform: translateY(20px);
+		    }
+		    to {
+		        opacity: 1;
+		        transform: translateY(0);
+		    }
+		}
+		
+		/* 修改.gallery-item的初始状态 */
+		.gallery-item {
+		    background-color: white;
+		    border-radius: 10px;
+		    overflow: hidden;
+		    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+		    transition: all 0.3s ease;
+		    /* 移除初始隐藏状态 */
+		    opacity: 1;
+		    transform: translateY(0);
+		}
+		
+		/* 修改动画关键帧，只用于筛选时的动画 */
+		@keyframes fadeInUp {
+		    from {
+		        opacity: 0;
+		        transform: translateY(20px);
+		    }
+		    to {
+		        opacity: 1;
+		        transform: translateY(0);
+		    }
+		}
+		
+		/* 移除.gallery-item的初始动画，只用于筛选时 */
+		.gallery-item.filter-animated {
+		    opacity: 0;
+		    transform: translateY(20px);
+		    animation: fadeInUp 0.5s ease forwards;
+		}
+    </style>
+</head>
+<body>
+    <!-- 头部 -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-area">
+                    <div class="logo-icon"></div>
+                    <div class="logo-text">
+                        <h1>糖韵匠心</h1>
+                        <p>非遗糖画数字传承馆</p>
+                    </div>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html" class="active">首页</a></li>
+                        <li><a href="history.html">糖画历史</a></li>
+                        <li><a href="craft.html">制作工艺</a></li>
+                        <li><a href="gallery.html">作品鉴赏</a></li>
+                        <li><a href="experience.html">在线体验</a></li>
+                        <li><a href="artisans.html">传承人物</a></li>
+                        <li><a href="shop.html">糖画商城</a></li>
+                        <li><a href="booking.html">活动预约</a></li>
+                    </ul>
+                </nav>
+                <!-- 首页：购物车占位区域（保持透明或不显示） -->
+                <div class="cart-placeholder"></div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- 页面顶部区域 -->
+    <section class="page-header">
+        <div class="container">
+            <h1>作品鉴赏</h1>
+            <p>欣赏传统与现代糖画艺术的精髓，感受糖画艺人匠心独运的创作</p>
+        </div>
+    </section>
+    
+    <!-- 作品分类 -->
+    <section class="gallery-categories">
+        <div class="container">
+            <div class="categories-container">
+                <button class="category-btn active" data-filter="all">全部作品</button>
+                <button class="category-btn" data-filter="传统题材">传统题材</button>
+                <button class="category-btn" data-filter="十二生肖">十二生肖</button>
+                <button class="category-btn" data-filter="神话传说">神话传说</button>
+                <button class="category-btn" data-filter="现代创意">现代创意</button>
+                <button class="category-btn" data-filter="人物肖像">人物肖像</button>
+                <button class="category-btn" data-filter="书法文字">书法文字</button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 作品网格 -->
+    <section class="gallery-main">
+        <div class="container">
+            <div class="gallery-grid">
+                <!-- 作品1 - 传统题材、神话传说 -->
+                <div class="gallery-item" data-category="传统题材,神话传说">
+                    <div class="gallery-img">
+                        <img src="images/为曲线工具添加功能 (7).png" 
+                             alt="金龙戏珠糖画" class="gallery-image">
+                    </div>
+                    <div class="gallery-info">
+                        <h3>金龙戏珠</h3>
+                        <p>传统龙形糖画，线条流畅有力，龙鳞细腻分明，展现糖画艺人的精湛技艺。</p>
+                        <div class="gallery-meta">
+                            <span>作者: 李师傅</span>
+                            <span>尺寸: 40×30cm</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 作品2 - 传统题材、十二生肖 -->
+                <div class="gallery-item" data-category="传统题材,十二生肖">
+                    <div class="gallery-img">
+                        <img src="images/为曲线工具添加功能 (9).png" 
+                             alt="灵猴献寿糖画" class="gallery-image">
+                    </div>
+                    <div class="gallery-info">
+                        <h3>灵猴献寿</h3>
+                        <p>生肖猴糖画，形态生动活泼，寓意吉祥长寿，体现了糖画的吉祥文化内涵。</p>
+                        <div class="gallery-meta">
+                            <span>作者: 王师傅</span>
+                            <span>尺寸: 25×20cm</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 作品3 - 传统题材、神话传说 -->
+                <div class="gallery-item" data-category="传统题材,神话传说">
+                    <div class="gallery-img">
+                        <img src="images/为曲线工具添加功能 (10).png" 
+                             alt="凤凰涅槃糖画" class="gallery-image">
+                    </div>
+                    <div class="gallery-info">
+                        <h3>凤凰涅槃</h3>
+                        <p>凤凰题材糖画，羽毛细节丰富，姿态优雅，展现糖画的细腻表现力。</p>
+                        <div class="gallery-meta">
+                            <span>作者: 张师傅</span>
+                            <span>尺寸: 35×25cm</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 作品4 - 传统题材 -->
+                <div class="gallery-item" data-category="传统题材">
+                    <div class="gallery-img">
+                        <img src="images/为曲线工具添加功能 (11).png" 
+                             alt="年年有余糖画" class="gallery-image">
+                    </div>
+                    <div class="gallery-info">
+                        <h3>年年有余</h3>
+                        <p>双鱼糖画作品，线条流畅对称，寓意吉祥，是传统年节常见的糖画题材。</p>
+                        <div class="gallery-meta">
+                            <span>作者: 赵师傅</span>
+                            <span>尺寸: 30×20cm</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 作品5 - 传统题材、十二生肖 -->
+                <div class="gallery-item" data-category="传统题材,十二生肖">
+                    <div class="gallery-img">
+                        <img src="images/为曲线工具添加功能 (12).png" 
+                             alt="骏马奔腾糖画" class="gallery-image">
+                    </div>
+                    <div class="gallery-info">
+                        <h3>骏马奔腾</h3>
+                        <p>奔马糖画，动态感强烈，马尾飞扬，展现糖画艺术的动态表现能力。</p>
+                        <div class="gallery-meta">
+                            <span>作者: 孙师傅</span>
+                            <span>尺寸: 35×25cm</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 作品6 - 传统题材 -->
+                <div class="gallery-item" data-category="传统题材">
+                    <div class="gallery-img">
+                        <img src="images/为曲线工具添加功能 (13).png" 
+                             alt="喜鹊登梅糖画" class="gallery-image">
+                    </div>
+                    <div class="gallery-info">
+                        <h3>喜鹊登梅</h3>
+                        <p>喜鹊与梅花组合糖画，寓意喜上眉梢，是传统吉祥图案的糖画表现。</p>
+                        <div class="gallery-meta">
+                            <span>作者: 周师傅</span>
+                            <span>尺寸: 30×25cm</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 作品7 - 现代创意 -->
+                <div class="gallery-item" data-category="现代创意">
+                    <div class="gallery-img">
+                        <img src="images/为曲线工具添加功能 (14).png" 
+                             alt="招财猫糖画" class="gallery-image">
+                    </div>
+                    <div class="gallery-info">
+                        <h3>招财猫</h3>
+                        <p>现代创意糖画，将传统糖画技艺与现代卡通形象结合，深受年轻人喜爱。</p>
+                        <div class="gallery-meta">
+                            <span>作者: 陈师傅</span>
+                            <span>尺寸: 20×15cm</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 作品8 - 现代创意、人物肖像 -->
+                <div class="gallery-item" data-category="现代创意,人物肖像">
+                    <div class="gallery-img">
+                        <img src="images/为曲线工具添加功能 (15).png" 
+                             alt="心心相印糖画" class="gallery-image">
+                    </div>
+                    <div class="gallery-info">
+                        <h3>心心相印</h3>
+                        <p>现代爱情主题糖画，两颗心交织在一起，线条简洁而富有情感。</p>
+                        <div class="gallery-meta">
+                            <span>作者: 刘师傅</span>
+                            <span>尺寸: 25×20cm</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <div class="logo-icon"></div>
+                        <h3>糖韵匠心</h3>
+                    </div>
+                    <p>非遗糖画数字传承馆致力于通过数字技术记录、展示和传承糖画艺术，让这一古老技艺在新时代继续绽放光彩。</p>
+                </div>
+                <div class="footer-links">
+                    <h4>快速链接</h4>
+                    <ul>
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="history.html">糖画历史</a></li>
+                        <li><a href="craft.html">制作工艺</a></li>
+                        <li><a href="gallery.html">作品鉴赏</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>更多内容</h4>
+                    <ul>
+                        <li><a href="experience.html">在线体验</a></li>
+                        <li><a href="artisans.html">传承人物</a></li>
+                        <li><a href="shop.html">糖画商城</a></li>
+                        <li><a href="booking.html">活动预约</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>联系我们</h4>
+                    <p>邮箱：contact@sugarpainting.com</p>
+                    <p>电话：400-123-4567</p>
+                    <p>地址：北京市东城区非物质文化遗产保护中心</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2023 糖韵匠心 - 非遗糖画数字传承馆 版权所有 | 设计制作：非遗数字化团队</p>
+            </div>
+        </div>
+    </footer>
+    
+        <script>
+            // 作品筛选功能
+            document.addEventListener('DOMContentLoaded', function() {
+                const categoryButtons = document.querySelectorAll('.category-btn');
+                const galleryItems = document.querySelectorAll('.gallery-item');
+                const galleryGrid = document.querySelector('.gallery-grid');
+                
+                // 移除初始的动画类，让图案立即显示
+                galleryItems.forEach(item => {
+                    item.classList.remove('filter-animated');
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                    item.style.display = 'block';
+                });
+                
+                // 自动激活"全部作品"按钮
+                const allButton = document.querySelector('.category-btn[data-filter="all"]');
+                if (allButton) {
+                    allButton.classList.add('active');
+                }
+                
+                // 初始化分类计数
+                updateCategoryCounts();
+                
+                categoryButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        // 移除所有按钮的active类
+                        categoryButtons.forEach(btn => btn.classList.remove('active'));
+                        
+                        // 为当前点击的按钮添加active类
+                        this.classList.add('active');
+                        
+                        // 获取筛选条件
+                        const filter = this.getAttribute('data-filter');
+                        
+                        // 移除之前的无结果消息
+                        removeNoResultsMessage();
+                        
+                        // 筛选作品
+                        galleryItems.forEach(item => {
+                            const categories = item.getAttribute('data-category') || '';
+                            
+                            // 重置动画状态
+                            item.classList.remove('filter-animated');
+                            item.style.animation = 'none';
+                            
+                            // 如果是"全部作品"，显示所有
+                            if (filter === 'all') {
+                                item.style.display = 'block';
+                                // 添加筛选动画
+                                setTimeout(() => {
+                                    item.classList.add('filter-animated');
+                                }, 10);
+                            } 
+                            // 如果作品包含筛选的分类，显示
+                            else if (categories.includes(filter)) {
+                                item.style.display = 'block';
+                                // 添加筛选动画
+                                setTimeout(() => {
+                                    item.classList.add('filter-animated');
+                                }, 10);
+                            } 
+                            // 否则隐藏
+                            else {
+                                item.style.display = 'none';
+                            }
+                        });
+                        
+                        // 延迟检查是否有匹配的作品
+                        setTimeout(() => {
+                            const visibleItems = Array.from(galleryItems).filter(item => 
+                                item.style.display === 'block'
+                            );
+                            
+                            if (visibleItems.length === 0 && filter !== 'all') {
+                                showNoResultsMessage(filter);
+                            }
+                        }, 100);
+                    });
+                });
+                
+                // 作品悬停效果
+                galleryItems.forEach(item => {
+                    item.addEventListener('mouseenter', function() {
+                        if (this.style.display !== 'none') {
+                            this.style.transform = 'translateY(-10px)';
+                            this.style.boxShadow = '0 15px 30px rgba(0, 0, 0, 0.15)';
+                        }
+                    });
+                    
+                    item.addEventListener('mouseleave', function() {
+                        if (this.style.display !== 'none') {
+                            this.style.transform = 'translateY(0)';
+                            this.style.boxShadow = '0 10px 20px rgba(0, 0, 0, 0.05)';
+                        }
+                    });
+                });
+                
+                // 图片加载错误处理
+                const galleryImages = document.querySelectorAll('.gallery-image');
+                galleryImages.forEach(img => {
+                    img.addEventListener('error', function() {
+                        const parent = this.parentElement;
+                        const altText = this.alt || '糖画作品';
+                        
+                        this.style.display = 'none';
+                        const fallbackDiv = document.createElement('div');
+                        fallbackDiv.style.cssText = `
+                            width: 100%;
+                            height: 100%;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            justify-content: center;
+                            background-color: #f0e6d3;
+                            color: #666;
+                            text-align: center;
+                            padding: 20px;
+                        `;
+                        fallbackDiv.innerHTML = `
+                            <i class="fas fa-image" style="font-size: 4rem; margin-bottom: 10px; color: rgba(212, 160, 23, 0.3);"></i>
+                            <p>${altText}</p>
+                            <p style="font-size: 0.8rem; margin-top: 10px;">图片加载失败</p>
+                        `;
+                        parent.appendChild(fallbackDiv);
+                    });
+                });
+                
+                // 显示无结果消息的函数
+                function showNoResultsMessage(category) {
+                    removeNoResultsMessage();
+                    
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = 'no-results-message';
+                    messageDiv.style.cssText = `
+                        grid-column: 1 / -1;
+                        text-align: center;
+                        padding: 60px 20px;
+                        background-color: rgba(255, 255, 255, 0.9);
+                        border-radius: 10px;
+                        margin: 20px 0;
+                        animation: fadeInUp 0.5s ease;
+                        border: 2px dashed rgba(212, 160, 23, 0.3);
+                    `;
+                    messageDiv.innerHTML = `
+                        <i class="fas fa-search" style="font-size: 3rem; color: var(--primary-amber); margin-bottom: 20px;"></i>
+                        <h3 style="color: var(--dark-brown); margin-bottom: 10px; font-family: 'Noto Serif SC', serif;">暂无"${category}"作品</h3>
+                        <p style="color: #666; max-width: 500px; margin: 0 auto;">我们正在努力创作更多"${category}"糖画作品，敬请期待！</p>
+                        <button class="show-all-btn" style="margin-top: 25px; padding: 12px 30px; background-color: var(--primary-amber); color: white; border: none; border-radius: 30px; cursor: pointer; font-weight: 500; transition: all 0.3s ease;">
+                            查看全部作品
+                        </button>
+                    `;
+                    
+                    galleryGrid.appendChild(messageDiv);
+                    
+                    // 添加查看全部按钮的悬停效果
+                    const showAllBtn = messageDiv.querySelector('.show-all-btn');
+                    if (showAllBtn) {
+                        showAllBtn.addEventListener('mouseenter', function() {
+                            this.style.transform = 'translateY(-2px)';
+                            this.style.boxShadow = '0 5px 15px rgba(212, 160, 23, 0.3)';
+                        });
+                        
+                        showAllBtn.addEventListener('mouseleave', function() {
+                            this.style.transform = 'translateY(0)';
+                            this.style.boxShadow = 'none';
+                        });
+                        
+                        // 添加查看全部按钮的点击事件
+                        showAllBtn.addEventListener('click', function() {
+                            const allBtn = document.querySelector('.category-btn[data-filter="all"]');
+                            if (allBtn) {
+                                allBtn.click();
+                            }
+                        });
+                    }
+                }
+                
+                // 移除无结果消息的函数
+                function removeNoResultsMessage() {
+                    const existingMessage = document.querySelector('.no-results-message');
+                    if (existingMessage) {
+                        existingMessage.remove();
+                    }
+                }
+                
+                // 添加筛选动画CSS
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes fadeInUp {
+                        from {
+                            opacity: 0;
+                            transform: translateY(20px);
+                        }
+                        to {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                    }
+                    
+                    .gallery-item.filter-animated {
+                        opacity: 0;
+                        transform: translateY(20px);
+                        animation: fadeInUp 0.5s ease forwards;
+                    }
+                    
+                    /* 添加计数器显示 */
+                    .category-count {
+                        display: inline-block;
+                        margin-left: 8px;
+                        background-color: var(--primary-amber);
+                        color: white;
+                        border-radius: 12px;
+                        padding: 2px 8px;
+                        font-size: 0.8rem;
+                        min-width: 24px;
+                        text-align: center;
+                    }
+                    
+                    /* 筛选动画延迟 */
+                    .gallery-item.filter-animated:nth-child(1) { animation-delay: 0.05s; }
+                    .gallery-item.filter-animated:nth-child(2) { animation-delay: 0.1s; }
+                    .gallery-item.filter-animated:nth-child(3) { animation-delay: 0.15s; }
+                    .gallery-item.filter-animated:nth-child(4) { animation-delay: 0.2s; }
+                    .gallery-item.filter-animated:nth-child(5) { animation-delay: 0.25s; }
+                    .gallery-item.filter-animated:nth-child(6) { animation-delay: 0.3s; }
+                    .gallery-item.filter-animated:nth-child(7) { animation-delay: 0.35s; }
+                    .gallery-item.filter-animated:nth-child(8) { animation-delay: 0.4s; }
+                `;
+                document.head.appendChild(style);
+            });
+            
+            // 更新分类计数的函数
+            function updateCategoryCounts() {
+                const galleryItems = document.querySelectorAll('.gallery-item');
+                const categoryButtons = document.querySelectorAll('.category-btn');
+                
+                // 创建计数对象
+                const counts = {
+                    'all': galleryItems.length,
+                    '传统题材': 0,
+                    '十二生肖': 0,
+                    '神话传说': 0,
+                    '现代创意': 0,
+                    '人物肖像': 0,
+                    '书法文字': 0
+                };
+                
+                // 统计每个分类的作品数量
+                galleryItems.forEach(item => {
+                    const categories = item.getAttribute('data-category') || '';
+                    const categoryList = categories.split(',').map(cat => cat.trim());
+                    
+                    categoryList.forEach(category => {
+                        if (counts[category] !== undefined) {
+                            counts[category]++;
+                        }
+                    });
+                });
+                
+                // 为按钮添加计数
+                categoryButtons.forEach(button => {
+                    const filter = button.getAttribute('data-filter');
+                    const count = counts[filter] || 0;
+                    
+                    // 移除现有的计数元素
+                    const existingCount = button.querySelector('.category-count');
+                    if (existingCount) {
+                        existingCount.remove();
+                    }
+                    
+                    // 添加新的计数元素
+                    const countElement = document.createElement('span');
+                    countElement.className = 'category-count';
+                    countElement.textContent = count;
+                    button.appendChild(countElement);
+                });
+            }
+        </script>
+</body>
+</html>

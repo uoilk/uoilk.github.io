@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>糖画商城 - 糖韵匠心</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <style>
+        /* 使用首页的CSS变量和基本样式 */
+        :root {
+            --primary-amber: #D4A017;
+            --golden-yellow: #FFD700;
+            --cream-white: #FFF8E7;
+            --dark-brown: #5D4037;
+            --chinese-red: #C62828;
+            --shadow-light: rgba(212, 160, 23, 0.1);
+            --shadow-medium: rgba(212, 160, 23, 0.2);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: var(--cream-white);
+            color: var(--dark-brown);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 头部样式 - 与首页保持一致 */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 12px var(--shadow-light);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            display: grid;
+            grid-template-columns: auto 1fr auto; /* 三列：logo、导航、购物车 */
+            align-items: center;
+            padding: 15px 0;
+            gap: 20px;
+        }
+        
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-amber), var(--golden-yellow));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .logo-icon:before {
+            content: "";
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--dark-brown);
+        }
+        
+        .logo-icon:after {
+            content: "";
+            position: absolute;
+            width: 15px;
+            height: 40px;
+            background-color: var(--dark-brown);
+            border-radius: 10px;
+            transform: rotate(45deg);
+            top: 5px;
+            left: 25px;
+        }
+        
+        .logo-text h1 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.8rem;
+            color: var(--dark-brown);
+            letter-spacing: 2px;
+        }
+        
+        .logo-text p {
+            font-size: 0.8rem;
+            color: var(--primary-amber);
+        }
+        
+        nav {
+            grid-column: 2;
+            justify-self: center;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            margin: 0;
+            padding: 0;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: var(--dark-brown);
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        nav a:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-amber);
+            transition: width 0.3s ease;
+        }
+        
+        nav a:hover {
+            color: var(--primary-amber);
+        }
+        
+        nav a:hover:after {
+            width: 100%;
+        }
+
+        /* 购物车区域放在第三列 */
+        .cart-area, .cart-placeholder {
+            grid-column: 3;
+            width: 60px; /* 固定宽度，不影响其他列 */
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        /* 购物车图标样式 */
+        .nav-cart-icon {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-cart-icon:hover {
+            background-color: rgba(212, 160, 23, 0.1);
+        }
+        
+        .nav-cart-icon i {
+            font-size: 1.4rem;
+            color: var(--dark-brown);
+        }
+        
+        .nav-cart-count {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: var(--chinese-red);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        
+        /* 页面顶部区域 */
+        .page-header {
+            padding: 160px 0 60px;
+            background: linear-gradient(135deg, rgba(212, 160, 23, 0.1), rgba(255, 215, 0, 0.05));
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .page-header h1 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 3rem;
+            color: var(--dark-brown);
+            margin-bottom: 15px;
+        }
+        
+        .page-header p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* 商品分类 */
+        .shop-categories {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .categories-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .category-btn {
+            padding: 10px 25px;
+            background-color: white;
+            border: 2px solid rgba(212, 160, 23, 0.3);
+            border-radius: 30px;
+            color: var(--dark-brown);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .category-btn:hover, .category-btn.active {
+            background-color: var(--primary-amber);
+            color: white;
+            border-color: var(--primary-amber);
+        }
+        
+        /* 商品网格 */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+        
+        .product-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 优化商品图片样式 - 支持图片显示 */
+        .product-img {
+            width: 100%;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            background-color: #f5f5f5;
+        }
+        
+        .product-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .product-card:hover .product-img img {
+            transform: scale(1.05);
+        }
+        
+        .product-img i {
+            font-size: 3.5rem;
+            color: rgba(212, 160, 23, 0.3);
+            position: absolute;
+        }
+        
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: var(--chinese-red);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            z-index: 10;
+        }
+        
+        .product-info {
+            padding: 20px;
+        }
+        
+        .product-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--dark-brown);
+        }
+        
+        .product-desc {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            height: 60px;
+            overflow: hidden;
+        }
+        
+        .product-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .price-main {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-amber);
+        }
+        
+        .price-original {
+            font-size: 0.9rem;
+            color: #999;
+            text-decoration: line-through;
+        }
+        
+        .product-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-amber);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .product-btn:hover {
+            background-color: var(--dark-brown);
+        }
+        
+        .product-btn.added {
+            background-color: #4CAF50;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .header-content {
+                grid-template-columns: auto 1fr;
+                grid-template-rows: auto auto;
+                gap: 10px;
+            }
+            
+            .logo-area {
+                grid-column: 1;
+                grid-row: 1;
+            }
+            
+            nav {
+                grid-column: 1 / span 2;
+                grid-row: 2;
+                justify-self: stretch;
+                margin-top: 10px;
+            }
+            
+            nav ul {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+            
+            .cart-area, .cart-placeholder {
+                grid-column: 2;
+                grid-row: 1;
+                justify-self: end;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            nav ul {
+                gap: 10px;
+            }
+            
+            nav a {
+                font-size: 1rem;
+            }
+            
+            .nav-cart-icon {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+        
+        /* 购物车侧边栏 */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 350px;
+            height: 100%;
+            background-color: white;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            z-index: 2000;
+            transition: right 0.3s ease;
+            padding: 30px 25px;
+            overflow-y: auto;
+        }
+        
+        .cart-sidebar.active {
+            right: 0;
+        }
+        
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .cart-header h3 {
+            font-size: 1.5rem;
+            color: var(--dark-brown);
+        }
+        
+        .close-cart {
+            font-size: 1.5rem;
+            color: #999;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .close-cart:hover {
+            color: var(--primary-amber);
+        }
+        
+        .cart-items {
+            margin-bottom: 30px;
+        }
+        
+        .cart-item {
+            display: flex;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        /* 优化购物车商品图片样式 */
+        .cart-item-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 5px;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background-color: #f5f5f5;
+            position: relative;
+        }
+        
+        .cart-item-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .cart-item-img i {
+            font-size: 1.5rem;
+            color: rgba(212, 160, 23, 0.5);
+            position: absolute;
+        }
+        
+        .cart-item-info {
+            flex: 1;
+        }
+        
+        .cart-item-info h4 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+            color: var(--dark-brown);
+        }
+        
+        .cart-item-price {
+            color: var(--primary-amber);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .cart-item-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+        
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .remove-btn {
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 5px 10px;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        
+        .remove-btn:hover {
+            color: var(--chinese-red);
+            background-color: rgba(198, 40, 40, 0.1);
+        }
+        
+        .quantity-btn {
+            width: 25px;
+            height: 25px;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .quantity {
+            font-weight: 600;
+        }
+        
+        .cart-total {
+            margin-bottom: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .total-final {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-amber);
+        }
+        
+        .cart-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .cart-action-btn {
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .checkout-btn {
+            background-color: var(--primary-amber);
+            color: white;
+        }
+        
+        .checkout-btn:hover {
+            background-color: var(--dark-brown);
+        }
+        
+        .continue-btn {
+            background-color: #f0f0f0;
+            color: var(--dark-brown);
+        }
+        
+        .continue-btn:hover {
+            background-color: #e0e0e0;
+        }
+        
+        /* 页脚 - 与首页保持一致 */
+        footer {
+            background-color: var(--dark-brown);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-logo .logo-icon {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .footer-logo h3 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .footer-links h4 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-links h4:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary-amber);
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary-amber);
+            padding-left: 5px;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-area">
+                    <div class="logo-icon"></div>
+                    <div class="logo-text">
+                        <h1>糖韵匠心</h1>
+                        <p>非遗糖画数字传承馆</p>
+                    </div>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="history.html">糖画历史</a></li>
+                        <li><a href="craft.html">制作工艺</a></li>
+                        <li><a href="gallery.html">作品鉴赏</a></li>
+                        <li><a href="experience.html">在线体验</a></li>
+                        <li><a href="artisans.html">传承人物</a></li>
+                        <li><a href="shop.html" class="active">糖画商城</a></li>
+                        <li><a href="booking.html">活动预约</a></li>
+                    </ul>
+                </nav>
+                <!-- 商店页：购物车区域（显示） -->
+                <div class="cart-area">
+                    <div class="nav-cart-icon" id="navCartIcon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <div class="nav-cart-count">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- 页面顶部区域 -->
+    <section class="page-header">
+        <div class="container">
+            <h1>糖画商城</h1>
+            <p>精选糖画作品、DIY材料包及文创产品，让您将甜蜜艺术带回家</p>
+        </div>
+    </section>
+    
+    <!-- 商品分类 -->
+    <section class="shop-categories">
+        <div class="container">
+            <div class="categories-container">
+                <button class="category-btn active">全部商品</button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 商品网格 -->
+    <section class="shop-main">
+        <div class="container">
+            <div class="products-grid">
+                <!-- 商品1 - 增加图片通道 -->
+                <div class="product-card">
+                    <div class="product-img">
+                        <!-- 实际图片优先显示，图片加载失败时显示图标 -->
+                        <img src="images/dragon-sugar.jpg" alt="金龙糖画" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <i class="fas fa-dragon" style="display: none;"></i>
+                    </div>
+                    <div class="product-badge">热销</div>
+                    <div class="product-info">
+                        <h3>金龙糖画（传统）</h3>
+                        <div class="product-desc">传统龙形糖画，线条流畅有力，龙鳞细腻分明，展现糖画艺人的精湛技艺。采用特制糖浆，色泽金黄透亮。</div>
+                        <div class="product-price">
+                            <div class="price-main">¥68.00</div>
+                            <div class="price-original">¥88.00</div>
+                        </div>
+                        <button class="product-btn" 
+                                data-product="1" 
+                                data-img="images/dragon-sugar.jpg" 
+                                data-icon="fa-dragon">加入购物车</button>
+                    </div>
+                </div>
+                
+                <!-- 商品2 - 增加图片通道 -->
+                <div class="product-card">
+                    <div class="product-img">
+                        <img src="images/custom-sugar.jpg" alt="定制糖画" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <i class="fas fa-heart" style="display: none;"></i>
+                    </div>
+                    <div class="product-badge">新品</div>
+                    <div class="product-info">
+                        <h3>定制糖画</h3>
+                        <div class="product-desc">可定制任何主题，任何图案的糖画</div>
+                        <div class="product-price">
+                            <div class="price-main">¥98.00</div>
+                        </div>
+                        <button class="product-btn" 
+                                data-product="2" 
+                                data-img="images/custom-sugar.jpg" 
+                                data-icon="fa-heart">加入购物车</button>
+                    </div>
+                </div>
+                
+                <!-- 商品3 - 增加图片通道 -->
+                <div class="product-card">
+                    <div class="product-img">
+                        <img src="images/diy-set.jpg" alt="糖画DIY入门套装" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <i class="fas fa-box-open" style="display: none;"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3>糖画DIY入门套装</h3>
+                        <div class="product-desc">包含糖画笔、专用糖块、温度计、大理石板等全套工具，附送教学视频，适合初学者体验糖画制作。</div>
+                        <div class="product-price">
+                            <div class="price-main">¥158.00</div>
+                            <div class="price-original">¥198.00</div>
+                        </div>
+                        <button class="product-btn" 
+                                data-product="3" 
+                                data-img="images/diy-set.jpg" 
+                                data-icon="fa-box-open">加入购物车</button>
+                    </div>
+                </div>
+                
+                <!-- 商品5 - 增加图片通道 -->
+                <div class="product-card">
+                    <div class="product-img">
+                        <img src="images/zodiac-gift.jpg" alt="十二生肖糖画礼盒" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <i class="fas fa-gift" style="display: none;"></i>
+                    </div>
+                    <div class="product-badge">礼盒</div>
+                    <div class="product-info">
+                        <h3>十二生肖糖画礼盒</h3>
+                        <div class="product-desc">全套十二生肖糖画，精美礼盒包装，附赠糖画历史介绍册，适合作为节日礼物或收藏品。</div>
+                        <div class="product-price">
+                            <div class="price-main">¥298.00</div>
+                        </div>
+                        <button class="product-btn" 
+                                data-product="5" 
+                                data-img="images/zodiac-gift.jpg" 
+                                data-icon="fa-gift">加入购物车</button>
+                    </div>
+                </div>
+                
+                <!-- 商品7 - 增加图片通道 -->
+                <div class="product-card">
+                    <div class="product-img">
+                        <img src="images/pro-tools.jpg" alt="专业糖画工具包" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <i class="fas fa-toolbox" style="display: none;"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3>专业糖画工具包</h3>
+                        <div class="product-desc">专业级糖画工具套装，包含不同尺寸的铜勺、温度控制器、专用大理石板等，适合进阶爱好者。</div>
+                        <div class="product-price">
+                            <div class="price-main">¥328.00</div>
+                        </div>
+                        <button class="product-btn" 
+                                data-product="7" 
+                                data-img="images/pro-tools.jpg" 
+                                data-icon="fa-toolbox">加入购物车</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 购物车侧边栏 -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>购物车</h3>
+            <div class="close-cart" id="closeCart">
+                <i class="fas fa-times"></i>
+            </div>
+        </div>
+        
+        <div class="cart-items">
+            <!-- 购物车初始为空 -->
+            <p style="text-align:center;color:#999;padding:20px;">购物车是空的</p>
+        </div>
+        
+        <div class="cart-total">
+            <div class="total-row">
+                <span>商品总计</span>
+                <span>¥0.00</span>
+            </div>
+            <div class="total-row">
+                <span>运费</span>
+                <span>¥0.00</span>
+            </div>
+            <div class="total-row total-final">
+                <span>应付总额</span>
+                <span>¥0.00</span>
+            </div>
+        </div>
+        
+        <div class="cart-actions">
+            <button class="cart-action-btn checkout-btn">去结算</button>
+            <button class="cart-action-btn continue-btn" id="continueShopping">继续购物</button>
+        </div>
+    </div>
+    
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <div class="logo-icon"></div>
+                        <h3>糖韵匠心</h3>
+                    </div>
+                    <p>非遗糖画数字传承馆致力于通过数字技术记录、展示和传承糖画艺术，让这一古老技艺在新时代继续绽放光彩。</p>
+                </div>
+                <div class="footer-links">
+                    <h4>快速链接</h4>
+                    <ul>
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="history.html">糖画历史</a></li>
+                        <li><a href="craft.html">制作工艺</a></li>
+                        <li><a href="gallery.html">作品鉴赏</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>更多内容</h4>
+                    <ul>
+                        <li><a href="experience.html">在线体验</a></li>
+                        <li><a href="artisans.html">传承人物</a></li>
+                        <li><a href="shop.html">糖画商城</a></li>
+                        <li><a href="booking.html">活动预约</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>联系我们</h4>
+                    <p>邮箱：contact@sugarpainting.com</p>
+                    <p>电话：400-123-4567</p>
+                    <p>地址：北京市东城区非物质文化遗产保护中心</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2023 糖韵匠心 - 非遗糖画数字传承馆 版权所有 | 设计制作：非遗数字化团队</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 购物车交互
+            const cartIcon = document.getElementById('navCartIcon');
+            const cartSidebar = document.getElementById('cartSidebar');
+            const closeCart = document.getElementById('closeCart');
+            const continueShopping = document.getElementById('continueShopping');
+            const cartCount = document.querySelector('.nav-cart-count');
+            const productButtons = document.querySelectorAll('.product-btn');
+            const checkoutBtn = document.querySelector('.checkout-btn');
+            const cartItemsContainer = document.querySelector('.cart-items');
+            
+            // 购物车数据 - 初始为空
+            let cartItems = [];
+            
+            // 初始化购物车
+            function initCart() {
+                cartItems = []; // 空购物车
+                updateCartDisplay();
+            }
+            
+            // 更新购物车显示
+            function updateCartDisplay() {
+                // 更新购物车数量
+                const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
+                cartCount.textContent = totalItems;
+                
+                // 更新购物车商品列表
+                renderCartItems();
+                
+                // 更新购物车总价
+                updateCartTotal();
+            }
+            
+            // 渲染购物车商品 - 支持图片显示
+            function renderCartItems() {
+                if (cartItems.length === 0) {
+                    cartItemsContainer.innerHTML = '<p style="text-align:center;color:#999;padding:20px;">购物车是空的</p>';
+                    return;
+                }
+                
+                let cartHTML = '';
+                cartItems.forEach((item, index) => {
+                    cartHTML += `
+                        <div class="cart-item" data-product-id="${item.id}">
+                            <div class="cart-item-img">
+                                <!-- 购物车中也显示商品图片，失败时显示图标 -->
+                                <img src="${item.img}" alt="${item.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                <i class="fas ${item.icon}" style="display: none;"></i>
+                            </div>
+                            <div class="cart-item-info">
+                                <h4>${item.name}</h4>
+                                <div class="cart-item-price">¥${item.price.toFixed(2)}</div>
+                                <div class="cart-item-actions">
+                                    <div class="cart-item-quantity">
+                                        <button class="quantity-btn decrease" data-index="${index}">-</button>
+                                        <span class="quantity">${item.quantity}</span>
+                                        <button class="quantity-btn increase" data-index="${index}">+</button>
+                                    </div>
+                                    <button class="remove-btn" data-index="${index}">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                cartItemsContainer.innerHTML = cartHTML;
+                
+                // 重新绑定事件
+                bindCartEvents();
+            }
+            
+            // 绑定购物车商品事件
+            function bindCartEvents() {
+                // 减少数量
+                document.querySelectorAll('.decrease').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        if (cartItems[index].quantity > 1) {
+                            cartItems[index].quantity--;
+                            updateCartDisplay();
+                        }
+                    });
+                });
+                
+                // 增加数量
+                document.querySelectorAll('.increase').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        cartItems[index].quantity++;
+                        updateCartDisplay();
+                    });
+                });
+                
+                // 删除商品
+                document.querySelectorAll('.remove-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        const itemName = cartItems[index].name;
+                        
+                        cartItems.splice(index, 1);
+                        updateCartDisplay();
+                        
+                        alert(`"${itemName}"已从购物车中删除`);
+                    });
+                });
+            }
+            
+            // 更新购物车总价
+            function updateCartTotal() {
+                let subtotal = 0;
+                cartItems.forEach(item => {
+                    subtotal += item.price * item.quantity;
+                });
+                
+                // 更新总价显示
+                const totalRows = document.querySelectorAll('.total-row');
+                if (totalRows.length >= 3) {
+                    totalRows[0].querySelector('span:last-child').textContent = `¥${subtotal.toFixed(2)}`;
+                    totalRows[2].querySelector('span:last-child').textContent = `¥${subtotal.toFixed(2)}`;
+                }
+            }
+            
+            // 打开购物车
+            cartIcon.addEventListener('click', function() {
+                cartSidebar.classList.add('active');
+            });
+            
+            // 关闭购物车
+            closeCart.addEventListener('click', function() {
+                cartSidebar.classList.remove('active');
+            });
+            
+            // 继续购物
+            continueShopping.addEventListener('click', function() {
+                cartSidebar.classList.remove('active');
+            });
+            
+            // 点击外部关闭购物车
+            document.addEventListener('click', function(e) {
+                if (!cartSidebar.contains(e.target) && !cartIcon.contains(e.target) && cartSidebar.classList.contains('active')) {
+                    cartSidebar.classList.remove('active');
+                }
+            });
+            
+            // 商品加入购物车 - 支持图片数据
+            productButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const productId = parseInt(this.getAttribute('data-product'));
+                    const productImg = this.getAttribute('data-img');
+                    const productIcon = this.getAttribute('data-icon');
+                    const productCard = this.closest('.product-card');
+                    const productName = productCard.querySelector('h3').textContent;
+                    const priceText = productCard.querySelector('.price-main').textContent;
+                    const price = parseFloat(priceText.replace('¥', ''));
+                    
+                    // 检查是否已在购物车中
+                    const existingItemIndex = cartItems.findIndex(item => item.id === productId);
+                    
+                    if (existingItemIndex !== -1) {
+                        // 如果已存在，增加数量
+                        cartItems[existingItemIndex].quantity++;
+                    } else {
+                        // 如果不存在，添加新商品（包含图片信息）
+                        cartItems.push({
+                            id: productId,
+                            name: productName,
+                            price: price,
+                            quantity: 1,
+                            img: productImg,
+                            icon: productIcon
+                        });
+                    }
+                    
+                    // 更新购物车显示
+                    updateCartDisplay();
+                    
+                    // 按钮反馈效果
+                    this.textContent = '已加入购物车';
+                    this.classList.add('added');
+                    
+                    // 提示用户
+                    alert(`"${productName}" 已加入购物车，当前数量：${cartItems.find(item => item.id === productId).quantity}`);
+                    
+                    // 3秒后恢复按钮状态
+                    setTimeout(() => {
+                        this.textContent = '加入购物车';
+                        this.classList.remove('added');
+                    }, 3000);
+                });
+            });
+            
+            // 结算按钮
+            checkoutBtn.addEventListener('click', function() {
+                if (cartItems.length === 0) {
+                    alert('购物车是空的，请先添加商品');
+                    return;
+                }
+                
+                const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
+                const totalPrice = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+                
+                alert(`您有 ${totalItems} 件商品，总金额 ¥${totalPrice.toFixed(2)}\n在实际网站中，这里会跳转到结算页面`);
+            });
+            
+            // 商品分类筛选
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            const productCards = document.querySelectorAll('.product-card');
+            
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // 移除所有按钮的active类
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // 为当前点击的按钮添加active类
+                    this.classList.add('active');
+                    
+                    // 获取分类文本
+                    const category = this.textContent;
+                    
+                    // 在实际网站中，这里会根据分类筛选商品
+                    // 这里仅作演示，显示所有商品
+                    productCards.forEach(card => {
+                        card.style.display = 'block';
+                    });
+                    
+                    // 如果是"全部商品"，显示所有
+                    if (category === '全部商品') {
+                        productCards.forEach(card => {
+                            card.style.display = 'block';
+                        });
+                    } else {
+                        // 模拟分类筛选效果
+                        alert('在实际网站中，这里会根据"' + category + '"筛选商品');
+                    }
+                });
+            });
+            
+            // 商品悬停效果
+            productCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-10px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+            
+            // 初始化购物车
+            initCart();
+        });
+    </script>
+</body>
+</html>

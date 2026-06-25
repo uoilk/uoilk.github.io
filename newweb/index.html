@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta name="description" content="糖韵匠心 - 非遗糖画数字传承馆，致力于通过数字技术记录、展示和传承糖画艺术">
+	<meta name="keywords" content="糖画,非遗,非物质文化遗产,传统技艺,糖画艺术,糖画制作">
+	<meta name="author" content="非遗数字化团队">
+	<meta property="og:title" content="糖韵匠心 - 非遗糖画数字传承馆">
+	<meta property="og:description" content="探索糖画艺术的悠久历史与精湛技艺">
+	<meta property="og:image" content="https://yoursite.com/images/og-image.jpg">
+	<meta property="og:url" content="https://yoursite.com">
+	<meta name="twitter:card" content="summary_large_image">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>糖韵匠心 - 非遗糖画数字传承馆</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <style>
+        :root {
+            --primary-amber: #D4A017;
+            --golden-yellow: #FFD700;
+            --cream-white: #FFF8E7;
+            --dark-brown: #5D4037;
+            --chinese-red: #C62828;
+            --shadow-light: rgba(212, 160, 23, 0.1);
+            --shadow-medium: rgba(212, 160, 23, 0.2);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: var(--cream-white);
+            color: var(--dark-brown);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 头部样式 */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 12px var(--shadow-light);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-amber), var(--golden-yellow));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .logo-icon:before {
+            content: "";
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--dark-brown);
+        }
+        
+        .logo-icon:after {
+            content: "";
+            position: absolute;
+            width: 15px;
+            height: 40px;
+            background-color: var(--dark-brown);
+            border-radius: 10px;
+            transform: rotate(45deg);
+            top: 5px;
+            left: 25px;
+        }
+        
+        .logo-text h1 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.8rem;
+            color: var(--dark-brown);
+            letter-spacing: 2px;
+        }
+        
+        .logo-text p {
+            font-size: 0.8rem;
+            color: var(--primary-amber);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: var(--dark-brown);
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        nav a:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-amber);
+            transition: width 0.3s ease;
+        }
+        
+        nav a:hover {
+            color: var(--primary-amber);
+        }
+        
+        nav a:hover:after {
+            width: 100%;
+        }
+        
+        /* 主视觉区域 */
+        .hero {
+            padding: 160px 0 80px;
+            background: linear-gradient(rgba(255, 248, 231, 0.9), rgba(255, 248, 231, 0.7));
+            background-size: cover;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+        }
+        
+        .hero-text {
+            flex: 1;
+            animation: fadeInUp 1s ease;
+        }
+        
+        .hero-text h2 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 3.2rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: var(--dark-brown);
+        }
+        
+        .hero-text h2 span {
+            color: var(--primary-amber);
+            position: relative;
+        }
+        
+        .hero-text h2 span:after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background-color: rgba(212, 160, 23, 0.2);
+            z-index: -1;
+        }
+        
+        .hero-text p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: #666;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: var(--primary-amber);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 15px var(--shadow-medium);
+        }
+        
+        .cta-button:hover {
+            background-color: var(--dark-brown);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px var(--shadow-medium);
+        }
+        
+        .hero-visual {
+            flex: 1;
+            position: relative;
+            height: 400px;
+        }
+        
+        .sugar-painting {
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(93, 64, 55, 0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .sugar-dragon {
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            background: transparent;
+            border: 8px solid transparent;
+            border-top-color: var(--primary-amber);
+            border-right-color: var(--primary-amber);
+            border-radius: 50%;
+            animation: drawLine 4s linear infinite;
+        }
+        
+        /* 特色区域 */
+        .features {
+            padding: 80px 0;
+            background-color: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 2.5rem;
+            color: var(--dark-brown);
+            position: relative;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        
+        .section-title h2:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--primary-amber);
+        }
+        
+        .section-title p {
+            color: #777;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background-color: var(--cream-white);
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(212, 160, 23, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px var(--shadow-light);
+        }
+        
+        .feature-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--primary-amber), var(--golden-yellow));
+        }
+        
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background-color: rgba(212, 160, 23, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2rem;
+            color: var(--primary-amber);
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--dark-brown);
+        }
+        
+        /* 多媒体区域 */
+        .media-section {
+            padding: 80px 0;
+            background-color: #f9f5eb;
+        }
+        
+        .media-container {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+        
+        .video-player {
+            flex: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        .video-placeholder {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(45deg, var(--dark-brown), var(--primary-amber));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            position: relative;
+        }
+        
+        .play-button {
+            width: 70px;
+            height: 70px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-amber);
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .play-button:hover {
+            transform: scale(1.1);
+            background-color: white;
+        }
+        
+        .audio-section {
+            flex: 1;
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+        
+        .audio-section h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--dark-brown);
+        }
+        
+        .audio-player {
+            width: 100%;
+            height: 100px;
+            background-color: var(--cream-white);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+            position: relative;
+        }
+        
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .audio-controls i {
+            font-size: 1.8rem;
+            color: var(--primary-amber);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .audio-controls i:hover {
+            color: var(--dark-brown);
+            transform: scale(1.1);
+        }
+        
+        /* 页脚 */
+        footer {
+            background-color: var(--dark-brown);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-logo .logo-icon {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .footer-logo h3 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .footer-links h4 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-links h4:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary-amber);
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary-amber);
+            padding-left: 5px;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* 动画 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+        
+        @keyframes drawLine {
+            0% {
+                border-top-color: transparent;
+                border-right-color: transparent;
+            }
+            25% {
+                border-top-color: var(--primary-amber);
+                border-right-color: transparent;
+            }
+            50% {
+                border-top-color: var(--primary-amber);
+                border-right-color: var(--primary-amber);
+            }
+            75% {
+                border-top-color: var(--primary-amber);
+                border-right-color: var(--primary-amber);
+                border-bottom-color: transparent;
+                border-left-color: transparent;
+            }
+            100% {
+                border-top-color: var(--primary-amber);
+                border-right-color: var(--primary-amber);
+                border-bottom-color: var(--primary-amber);
+                border-left-color: var(--primary-amber);
+            }
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .hero-content {
+                flex-direction: column;
+            }
+            
+            .media-container {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                gap: 15px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero-text h2 {
+                font-size: 2.5rem;
+            }
+        }
+		/* 入场加载页面样式 */
+		.loading-screen {
+		    position: fixed;
+		    top: 0;
+		    left: 0;
+		    width: 100%;
+		    height: 100%;
+		    background: linear-gradient(135deg, var(--cream-white) 0%, #f9f3e9 100%);
+		    z-index: 9999;
+		    display: flex;
+		    align-items: center;
+		    justify-content: center;
+		    transition: opacity 0.8s ease, visibility 0.8s ease;
+		}
+		
+		.loading-screen.hidden {
+		    opacity: 0;
+		    visibility: hidden;
+		}
+		
+		.loading-container {
+		    text-align: center;
+		    max-width: 500px;
+		    padding: 40px;
+		    background-color: rgba(255, 255, 255, 0.9);
+		    border-radius: 20px;
+		    box-shadow: 0 20px 60px rgba(93, 64, 55, 0.15);
+		    animation: fadeInUp 0.8s ease;
+		}
+		
+		.loading-logo {
+		    margin-bottom: 40px;
+		}
+		
+		.loading-logo-icon {
+		    width: 80px;
+		    height: 80px;
+		    background: linear-gradient(135deg, var(--primary-amber), var(--golden-yellow));
+		    border-radius: 50%;
+		    margin: 0 auto 20px;
+		    position: relative;
+		    animation: pulse 2s infinite ease-in-out;
+		}
+		
+		.loading-logo-icon:before {
+		    content: "";
+		    position: absolute;
+		    width: 50px;
+		    height: 50px;
+		    border-radius: 50%;
+		    background-color: var(--dark-brown);
+		    top: 50%;
+		    left: 50%;
+		    transform: translate(-50%, -50%);
+		}
+		
+		.loading-logo-icon:after {
+		    content: "";
+		    position: absolute;
+		    width: 25px;
+		    height: 60px;
+		    background-color: var(--dark-brown);
+		    border-radius: 12px;
+		    transform: rotate(45deg);
+		    top: 10px;
+		    left: 45px;
+		}
+		
+		.loading-logo h2 {
+		    font-family: 'Noto Serif SC', serif;
+		    font-size: 2.2rem;
+		    color: var(--dark-brown);
+		    margin-bottom: 10px;
+		    letter-spacing: 3px;
+		}
+		
+		.loading-logo p {
+		    color: var(--primary-amber);
+		    font-size: 1rem;
+		}
+		
+		.loading-progress {
+		    margin-bottom: 30px;
+		}
+		
+		.progress-bar {
+		    width: 100%;
+		    height: 8px;
+		    background-color: rgba(212, 160, 23, 0.2);
+		    border-radius: 10px;
+		    overflow: hidden;
+		    margin-bottom: 15px;
+		}
+		
+		.progress-fill {
+		    height: 100%;
+		    width: 0%;
+		    background: linear-gradient(90deg, var(--primary-amber), var(--golden-yellow));
+		    border-radius: 10px;
+		    transition: width 0.5s ease;
+		}
+		
+		.loading-percentage {
+		    font-size: 1.5rem;
+		    font-weight: 700;
+		    color: var(--dark-brown);
+		    font-family: 'Noto Serif SC', serif;
+		}
+		
+		.loading-quote p {
+		    font-style: italic;
+		    color: #777;
+		    font-size: 1.1rem;
+		    border-top: 1px solid rgba(212, 160, 23, 0.2);
+		    padding-top: 20px;
+		    margin-top: 20px;
+		}
+		
+		/* 加载动画 */
+		@keyframes pulse {
+		    0% {
+		        transform: scale(1);
+		        box-shadow: 0 0 0 0 rgba(212, 160, 23, 0.4);
+		    }
+		    50% {
+		        transform: scale(1.05);
+		        box-shadow: 0 0 0 15px rgba(212, 160, 23, 0);
+		    }
+		    100% {
+		        transform: scale(1);
+		        box-shadow: 0 0 0 0 rgba(212, 160, 23, 0);
+		    }
+		}
+		
+		@keyframes shimmer {
+		    0% {
+		        background-position: -500px 0;
+		    }
+		    100% {
+		        background-position: 500px 0;
+		    }
+		}
+		/* 进度条闪烁效果 */
+		@keyframes shimmer {
+		    0% {
+		        background-position: -500px 0;
+		    }
+		    100% {
+		        background-position: 500px 0;
+		    }
+		}
+		
+		.progress-fill {
+		    height: 100%;
+		    width: 0%;
+		    background: linear-gradient(90deg, var(--primary-amber), var(--golden-yellow), var(--primary-amber));
+		    background-size: 500px 100%;
+		    border-radius: 10px;
+		    transition: width 0.3s ease;
+		    animation: shimmer 2s infinite linear;
+		}
+		/* 滚动动画样式 */
+		.feature-card,
+		.video-player,
+		.audio-section {
+		    opacity: 0;
+		    transform: translateY(30px);
+		    transition: opacity 0.8s ease, transform 0.8s ease;
+		}
+		
+		.feature-card.animated,
+		.video-player.animated,
+		.audio-section.animated {
+		    opacity: 1;
+		    transform: translateY(0);
+		}
+		
+		/* 为特征卡片添加交错动画延迟 */
+		.feature-card:nth-child(1) { transition-delay: 0.1s; }
+		.feature-card:nth-child(2) { transition-delay: 0.2s; }
+		.feature-card:nth-child(3) { transition-delay: 0.3s; }
+		.feature-card:nth-child(4) { transition-delay: 0.4s; }
+		/* 额外的动画效果 */
+		@keyframes cardAppear {
+		    0% {
+		        opacity: 0;
+		        transform: translateY(30px) scale(0.95);
+		    }
+		    70% {
+		        transform: translateY(-5px) scale(1.02);
+		    }
+		    100% {
+		        opacity: 1;
+		        transform: translateY(0) scale(1);
+		    }
+		}
+		
+		.feature-card.animated {
+		    animation: cardAppear 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+		}
+		
+		@keyframes slideInLeft {
+		    from {
+		        opacity: 0;
+		        transform: translateX(-30px);
+		    }
+		    to {
+		        opacity: 1;
+		        transform: translateX(0);
+		    }
+		}
+		
+		@keyframes slideInRight {
+		    from {
+		        opacity: 0;
+		        transform: translateX(30px);
+		    }
+		    to {
+		        opacity: 1;
+		        transform: translateX(0);
+		    }
+		}
+		
+		/* 为大屏幕添加左右滑动效果 */
+		@media (min-width: 993px) {
+		    .video-player.animated {
+		        animation: slideInLeft 0.8s ease forwards;
+		    }
+		    
+		    .audio-section.animated {
+		        animation: slideInRight 0.8s ease forwards;
+		    }
+		}
+    </style>
+</head>
+<body>
+	<!-- 入场加载页面 -->
+	<div id="loading-screen" class="loading-screen">
+	    <div class="loading-container">
+	        <div class="loading-logo">
+	            <div class="loading-logo-icon"></div>
+	            <h2>糖韵匠心</h2>
+	            <p>正在为您准备甜蜜艺术之旅...</p>
+	        </div>
+	        <div class="loading-progress">
+	            <div class="progress-bar">
+	                <div class="progress-fill"></div>
+	            </div>
+	            <div class="loading-percentage">0%</div>
+	        </div>
+	        <div class="loading-quote">
+	            <p>"以糖为墨，以勺为笔，绘出甜蜜画卷"</p>
+	        </div>
+	    </div>
+	</div>
+    <!-- 头部 -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-area">
+                    <div class="logo-icon"></div>
+                    <div class="logo-text">
+                        <h1>糖韵匠心</h1>
+                        <p>非遗糖画数字传承馆</p>
+                    </div>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html" class="active">首页</a></li>
+                        <li><a href="history.html">糖画历史</a></li>
+                        <li><a href="craft.html">制作工艺</a></li>
+                        <li><a href="gallery.html">作品鉴赏</a></li>
+                        <li><a href="experience.html">在线体验</a></li>
+                        <li><a href="artisans.html">传承人物</a></li>
+                        <li><a href="shop.html">糖画商城</a></li>
+                        <li><a href="booking.html">活动预约</a></li>
+                    </ul>
+                </nav>
+                <!-- 首页：购物车占位区域（保持透明或不显示） -->
+                <div class="cart-placeholder"></div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- 主视觉区域 -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h2>指尖上的<span>甜蜜艺术</span></h2>
+                    <p>糖画，这一流传六百余年的民间技艺，以糖为墨，以勺为笔，在光洁的大理石板上绘出甜蜜的画卷。我们致力于记录、传承并创新这门古老手艺，让糖画艺术在数字时代焕发新光彩。</p>
+                    <a href="experience.html" class="cta-button">开启糖画之旅</a>
+                </div>
+                <div class="hero-visual">
+                    <div class="sugar-painting">
+                        <div class="sugar-dragon"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 特色区域 -->
+    <section class="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>探索糖画世界</h2>
+                <p>从历史源流到现代创新，从技法解析到互动体验，全方位感受糖画艺术的独特魅力</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <h3>历史源流</h3>
+                    <p>追溯糖画自明代以来的发展历程，了解这一民间艺术如何从街头巷尾走向国家级非物质文化遗产。</p>
+                    <a href="history.html" class="cta-button" style="margin-top: 15px; padding: 10px 20px; font-size: 1rem;">了解更多</a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <h3>制作工艺</h3>
+                    <p>详解熬糖、绘形、起画等关键步骤，揭秘糖画艺人如何将液态糖浆转化为精美艺术品。</p>
+                    <a href="craft.html" class="cta-button" style="margin-top: 15px; padding: 10px 20px; font-size: 1rem;">了解更多</a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>传承人物</h3>
+                    <p>拜访国家级、省级非遗传承人，聆听他们与糖画的故事，感受匠心精神的代代相传。</p>
+                    <a href="artisans.html" class="cta-button" style="margin-top: 15px; padding: 10px 20px; font-size: 1rem;">了解更多</a>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3>在线体验</h3>
+                    <p>通过虚拟制作工具，亲手设计糖画图案，感受糖画创作的乐趣，无需工具也能体验传统技艺。</p>
+                    <a href="experience.html" class="cta-button" style="margin-top: 15px; padding: 10px 20px; font-size: 1rem;">体验一下</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 多媒体区域 -->
+    <section class="media-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>视听糖画</h2>
+                <p>通过视频与音频，沉浸式感受糖画艺术的制作过程与历史故事</p>
+            </div>
+            <div class="media-container">
+                <!-- 视频播放器 -->
+                <div class="video-player">
+                    <div class="video-wrapper">
+                        <video id="sugarVideo" controls preload="metadata" poster="images/video-poster.jpg" style="width: 100%; height: auto;">
+                            <source src="./video/糖画制作.mp4" type="video/mp4">
+                            <source src="videos/sugar-painting-process.webm" type="video/webm">
+                            您的浏览器不支持视频播放，请升级浏览器或尝试其他浏览器。
+                        </video>
+                    </div>
+                    <p class="video-description" style="font-weight: bold; font-size: 1.3rem; text-align: center;">糖画制作全过程视频</p>
+                </div>
+                
+                <!-- 音频播放器 -->
+                <div class="audio-section">
+                    <h3>听传承人讲述糖画故事</h3>
+                    <p>国家级非遗传承人陈老师，讲述他30年糖画生涯中的难忘经历与技艺心得。</p>
+                    <div class="audio-player">
+                        <audio id="sugarAudio" controls preload="metadata" style="width: 100%;">
+                            <source src="./audio/传承人故事.mp3" type="audio/mp3">
+                            <source src="audio/artisan-story.ogg" type="audio/ogg">
+                            您的浏览器不支持音频播放，请升级浏览器或尝试其他浏览器。
+                        </audio>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 视频速度控制脚本 -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // 获取视频元素
+        const video = document.getElementById('sugarVideo');
+        const audio = document.getElementById('sugarAudio');
+        
+        if (video) {
+            // 强制设置视频播放速度为正常速度
+            video.defaultPlaybackRate = 0.8;
+            video.playbackRate = 0.8;
+            
+            // 监听视频加载完成事件
+            video.addEventListener('loadedmetadata', function() {
+                // 再次确保播放速度为正常
+                this.playbackRate = 0.8;
+                this.defaultPlaybackRate = 0.8;
+                
+                // 设置视频为16:9比例
+                const videoRatio = 16/9;
+                const videoWidth = this.offsetWidth;
+                this.style.height = (videoWidth / videoRatio) + 'px';
+                
+                console.log('视频已加载，时长:', this.duration, '秒');
+                console.log('视频播放速度已设置为:', this.playbackRate);
+            });
+            
+            // 监听播放事件
+            video.addEventListener('play', function() {
+                // 播放时再次检查速度
+                if (this.playbackRate !== 0.8) {
+                    this.playbackRate = 0.8;
+                    console.log('播放时修正速度为1.0倍');
+                }
+            });
+            
+            // 监听速度变化
+            video.addEventListener('ratechange', function() {
+                console.log('播放速度变化为:', this.playbackRate, '倍');
+                // 如果速度不是1.0，强制改回
+                if (this.playbackRate !== 0.8) {
+                    setTimeout(() => {
+                        this.playbackRate = 0.8;
+                    }, 100);
+                }
+            });
+        }
+        
+        if (audio) {
+            // 音频也设置正常速度
+            audio.defaultPlaybackRate = 1.0;
+            audio.playbackRate = 1.0;
+            
+            audio.addEventListener('loadedmetadata', function() {
+                this.playbackRate = 1.0;
+                this.defaultPlaybackRate = 1.0;
+            });
+            
+            // 监听音频播放速度变化事件，强制保持正常速度
+            audio.addEventListener('ratechange', function() {
+                if (this.playbackRate !== 1.0) {
+                    this.playbackRate = 1.0;
+                    console.log('音频播放速度已重置为正常速度');
+                }
+            });
+            
+            // 监听播放事件
+            audio.addEventListener('play', function() {
+                // 播放时检查速度
+                if (this.playbackRate !== 1.0) {
+                    this.playbackRate = 1.0;
+                    console.log('音频播放时速度已修正为1.0倍');
+                }
+            });
+        }
+        
+        // 处理窗口大小变化，保持16:9比例
+        window.addEventListener('resize', function() {
+            if (video) {
+                const videoRatio = 16/9;
+                const videoWidth = video.offsetWidth;
+                video.style.height = (videoWidth / videoRatio) + 'px';
+            }
+        });
+    });
+    </script>
+    
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <div class="logo-icon"></div>
+                        <h3>糖韵匠心</h3>
+                    </div>
+                    <p>非遗糖画数字传承馆致力于通过数字技术记录、展示和传承糖画艺术，让这一古老技艺在新时代继续绽放光彩。</p>
+                </div>
+                <div class="footer-links">
+                    <h4>快速链接</h4>
+                    <ul>
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="history.html">糖画历史</a></li>
+                        <li><a href="craft.html">制作工艺</a></li>
+                        <li><a href="gallery.html">作品鉴赏</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>更多内容</h4>
+                    <ul>
+                        <li><a href="experience.html">在线体验</a></li>
+                        <li><a href="artisans.html">传承人物</a></li>
+                        <li><a href="shop.html">糖画商城</a></li>
+                        <li><a href="booking.html">活动预约</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>联系我们</h4>
+                    <p>邮箱：contact@sugarpainting.com</p>
+                    <p>电话：400-123-4567</p>
+                    <p>地址：北京市东城区非物质文化遗产保护中心</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2023 糖韵匠心 - 非遗糖画数字传承馆 版权所有 | 设计制作：非遗数字化团队</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // 简单的交互功能
+        document.addEventListener('DOMContentLoaded', function() {
+            // 视频播放按钮交互
+            const playButton = document.querySelector('.play-button');
+            const videoPlaceholder = document.querySelector('.video-placeholder');
+            
+            if (playButton && videoPlaceholder) {
+                playButton.addEventListener('click', function() {
+                    videoPlaceholder.innerHTML = `
+                        <div style="width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: #222; color: white;">
+                            <p style="font-size: 1.2rem; margin-bottom: 20px;">糖画制作视频演示</p>
+                            <div style="width: 80%; height: 60%; background-color: #333; display: flex; align-items: center; justify-content: center; border-radius: 5px;">
+                                <p>视频播放区域</p>
+                            </div>
+                            <p style="margin-top: 15px; font-size: 0.9rem;">在实际网站中这里将嵌入糖画制作视频</p>
+                        </div>
+                    `;
+                });
+            }
+            
+            // 音频控制交互
+            const audioPlayButton = document.querySelector('.fa-play-circle');
+            if (audioPlayButton) {
+                let isPlaying = false;
+                
+                audioPlayButton.addEventListener('click', function() {
+                    if (!isPlaying) {
+                        this.classList.remove('fa-play-circle');
+                        this.classList.add('fa-pause-circle');
+                        isPlaying = true;
+                        // 在实际网站中，这里会播放音频
+                        alert('开始播放传承人讲述音频');
+                    } else {
+                        this.classList.remove('fa-pause-circle');
+                        this.classList.add('fa-play-circle');
+                        isPlaying = false;
+                        // 在实际网站中，这里会暂停音频
+                        alert('暂停播放音频');
+                    }
+                });
+            }
+            
+            // 导航链接悬停效果增强
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach(link => {
+                link.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px)';
+                });
+                
+                link.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+		// 入场加载页面控制（改进版）
+		document.addEventListener('DOMContentLoaded', function() {
+		    const loadingScreen = document.getElementById('loading-screen');
+		    const progressFill = document.querySelector('.progress-fill');
+		    const loadingPercentage = document.querySelector('.loading-percentage');
+		    
+		    if (loadingScreen) {
+		        // 确保加载页至少显示2秒钟
+		        const minDisplayTime = 2000; // 2秒
+		        const maxDisplayTime = 5000; // 5秒
+		        let startTime = Date.now();
+		        let progress = 0;
+		        let interval;
+		        
+		        // 添加加载完成标志
+		        let isPageLoaded = false;
+		        
+		        // 页面加载完成的回调
+		        window.addEventListener('load', function() {
+		            isPageLoaded = true;
+		            console.log('页面所有资源已加载完成');
+		        });
+		        
+		        // 更平滑的进度模拟函数
+		        function simulateProgress() {
+		            if (progress >= 100) {
+		                clearInterval(interval);
+		                return;
+		            }
+		            
+		            // 动态调整增量：开始时快，接近结束时慢
+		            let increment;
+		            if (progress < 70) {
+		                // 70%之前：较快
+		                increment = Math.random() * 8 + 4; // 4-12%
+		            } else if (progress < 90) {
+		                // 70-90%：中等
+		                increment = Math.random() * 4 + 2; // 2-6%
+		            } else {
+		                // 90%之后：很慢
+		                increment = Math.random() * 2 + 0.5; // 0.5-2.5%
+		            }
+		            
+		            // 如果页面已经加载完成，但进度还没到100%，加快进度
+		            if (isPageLoaded && progress < 95) {
+		                increment = Math.random() * 15 + 10; // 10-25%
+		            }
+		            
+		            progress += increment;
+		            if (progress > 100) progress = 100;
+		            
+		            // 更新进度条和百分比
+		            progressFill.style.width = progress + '%';
+		            loadingPercentage.textContent = Math.floor(progress) + '%';
+		            
+		            // 添加进度完成的视觉反馈
+		            if (progress >= 100) {
+		                progressFill.style.background = 'linear-gradient(90deg, var(--primary-amber), var(--golden-yellow))';
+		                loadingPercentage.style.color = 'var(--primary-amber)';
+		                loadingPercentage.style.transform = 'scale(1.1)';
+		                
+		                // 检查是否达到了最小显示时间
+		                const elapsedTime = Date.now() - startTime;
+		                const remainingTime = minDisplayTime - elapsedTime;
+		                
+		                if (remainingTime > 0) {
+		                    // 还没达到最小显示时间，等待
+		                    setTimeout(hideLoadingScreen, remainingTime);
+		                } else {
+		                    // 已经达到最小显示时间，立即隐藏
+		                    setTimeout(hideLoadingScreen, 300);
+		                }
+		            }
+		        }
+		        
+		        // 隐藏加载页面的函数
+		        function hideLoadingScreen() {
+		            if (loadingScreen.classList.contains('hidden')) return;
+		            
+		            loadingScreen.classList.add('hidden');
+		            
+		            // 完全移除加载页面
+		            setTimeout(() => {
+		                loadingScreen.style.display = 'none';
+		                // 触发自定义事件，通知加载完成
+		                document.dispatchEvent(new CustomEvent('loadingComplete'));
+		            }, 800);
+		        }
+		        
+		        // 开始模拟进度
+		        interval = setInterval(simulateProgress, 200); // 每200ms更新一次
+		        
+		        // 防止加载时间过长，最大时间后强制隐藏
+		        setTimeout(() => {
+		            if (!loadingScreen.classList.contains('hidden')) {
+		                console.log('达到最大加载时间，强制隐藏加载页');
+		                progress = 100;
+		                progressFill.style.width = '100%';
+		                loadingPercentage.textContent = '100%';
+		                hideLoadingScreen();
+		            }
+		        }, maxDisplayTime);
+		        
+		        // 可选：添加鼠标点击跳过加载的功能（用户体验考虑）
+		        loadingScreen.addEventListener('click', function() {
+		            if (progress < 90) { // 只允许在加载90%后跳过
+		                return;
+		            }
+		            clearInterval(interval);
+		            progress = 100;
+		            progressFill.style.width = '100%';
+		            loadingPercentage.textContent = '100%';
+		            hideLoadingScreen();
+		        });
+		        
+		        // 添加跳过提示（可选）
+		        setTimeout(() => {
+		            if (!loadingScreen.classList.contains('hidden')) {
+		                const skipHint = document.createElement('div');
+		                skipHint.className = 'skip-hint';
+		                skipHint.innerHTML = '<p>点击屏幕可跳过加载</p>';
+		                skipHint.style.cssText = `
+		                    position: absolute;
+		                    bottom: 20px;
+		                    left: 0;
+		                    width: 100%;
+		                    text-align: center;
+		                    color: var(--primary-amber);
+		                    font-size: 0.9rem;
+		                    opacity: 0.7;
+		                    animation: fadeInOut 2s infinite;
+		                `;
+		                loadingScreen.appendChild(skipHint);
+		                
+		                // 添加提示动画样式
+		                const style = document.createElement('style');
+		                style.textContent = `
+		                    @keyframes fadeInOut {
+		                        0%, 100% { opacity: 0.3; }
+		                        50% { opacity: 0.8; }
+		                    }
+		                `;
+		                document.head.appendChild(style);
+		            }
+		        }, 3000); // 3秒后显示跳过提示
+		    }
+		});
+		// 滚动触发的渐入动画
+		document.addEventListener('DOMContentLoaded', function() {
+		    // 等待加载页面完全消失后再初始化滚动动画
+		    document.addEventListener('loadingComplete', function() {
+		        initScrollAnimations();
+		    });
+		    
+		    // 备用：如果加载事件未触发，5秒后初始化
+		    setTimeout(initScrollAnimations, 5000);
+		    
+		    function initScrollAnimations() {
+		        // 要观察的元素
+		        const animatedElements = document.querySelectorAll('.feature-card, .video-player, .audio-section');
+		        
+		        // 创建Intersection Observer
+		        const observer = new IntersectionObserver((entries) => {
+		            entries.forEach(entry => {
+		                if (entry.isIntersecting) {
+		                    // 元素进入视口，添加动画类
+		                    entry.target.classList.add('animated');
+		                    
+		                    // 对于特征卡片，添加额外的悬停效果延迟
+		                    if (entry.target.classList.contains('feature-card')) {
+		                        setTimeout(() => {
+		                            entry.target.style.transition = 'all 0.3s ease';
+		                        }, 1000);
+		                    }
+		                    
+		                    // 停止观察已动画的元素
+		                    observer.unobserve(entry.target);
+		                }
+		            });
+		        }, {
+		            threshold: 0.1, // 元素10%进入视口时触发
+		            rootMargin: '0px 0px -50px 0px' // 底部负边距，提前触发
+		        });
+		        
+		        // 开始观察所有元素
+		        animatedElements.forEach(element => {
+		            observer.observe(element);
+		        });
+		        
+		        console.log('滚动动画已初始化，观察元素数量:', animatedElements.length);
+		        
+		        // 可选：为section标题添加动画
+		        const sectionTitles = document.querySelectorAll('.section-title');
+		        const titleObserver = new IntersectionObserver((entries) => {
+		            entries.forEach(entry => {
+		                if (entry.isIntersecting) {
+		                    entry.target.style.opacity = '0';
+		                    entry.target.style.transform = 'translateY(-20px)';
+		                    
+		                    setTimeout(() => {
+		                        entry.target.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+		                        entry.target.style.opacity = '1';
+		                        entry.target.style.transform = 'translateY(0)';
+		                    }, 100);
+		                    
+		                    titleObserver.unobserve(entry.target);
+		                }
+		            });
+		        }, {
+		            threshold: 0.2
+		        });
+		        
+		        sectionTitles.forEach(title => {
+		            titleObserver.observe(title);
+		        });
+		        
+		        // 检查页面初始位置（可能元素已经在视口中）
+		        checkInitialVisibility(animatedElements);
+		    }
+		    
+		    function checkInitialVisibility(elements) {
+		        // 检查元素是否已经在视口中
+		        elements.forEach(element => {
+		            const rect = element.getBoundingClientRect();
+		            const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+		            
+		            // 如果元素在视口中
+		            if (rect.top <= windowHeight * 0.9 && rect.bottom >= 0) {
+		                setTimeout(() => {
+		                    element.classList.add('animated');
+		                }, 300); // 延迟添加，避免与加载页冲突
+		            }
+		        });
+		    }
+		    
+		    // 监听滚动事件，为已经可见但未动画化的元素添加动画
+		    let scrollCheckTimeout;
+		    window.addEventListener('scroll', function() {
+		        clearTimeout(scrollCheckTimeout);
+		        scrollCheckTimeout = setTimeout(function() {
+		            const elements = document.querySelectorAll('.feature-card:not(.animated), .video-player:not(.animated), .audio-section:not(.animated)');
+		            checkInitialVisibility(elements);
+		        }, 100);
+		    });
+		});
+    </script>
+	
+</body>
+</html>

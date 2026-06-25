@@ -1,0 +1,1345 @@
+[file name]: experience.html
+[file content begin]
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在线体验 - 糖韵匠心</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <style>
+        /* 使用首页的CSS变量和基本样式 */
+        :root {
+            --primary-amber: #D4A017;
+            --golden-yellow: #FFD700;
+            --cream-white: #FFF8E7;
+            --dark-brown: #5D4037;
+            --chinese-red: #C62828;
+            --shadow-light: rgba(212, 160, 23, 0.1);
+            --shadow-medium: rgba(212, 160, 23, 0.2);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: var(--cream-white);
+            color: var(--dark-brown);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 头部样式 - 与首页保持一致 */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 12px var(--shadow-light);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-amber), var(--golden-yellow));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .logo-icon:before {
+            content: "";
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--dark-brown);
+        }
+        
+        .logo-icon:after {
+            content: "";
+            position: absolute;
+            width: 15px;
+            height: 40px;
+            background-color: var(--dark-brown);
+            border-radius: 10px;
+            transform: rotate(45deg);
+            top: 5px;
+            left: 25px;
+        }
+        
+        .logo-text h1 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.8rem;
+            color: var(--dark-brown);
+            letter-spacing: 2px;
+        }
+        
+        .logo-text p {
+            font-size: 0.8rem;
+            color: var(--primary-amber);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: var(--dark-brown);
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        nav a:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-amber);
+            transition: width 0.3s ease;
+        }
+        
+        nav a:hover {
+            color: var(--primary-amber);
+        }
+        
+        nav a:hover:after {
+            width: 100%;
+        }
+        
+        /* 页面顶部区域 */
+        .page-header {
+            padding: 160px 0 60px;
+            background: linear-gradient(135deg, rgba(212, 160, 23, 0.1), rgba(255, 215, 0, 0.05));
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .page-header h1 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 3rem;
+            color: var(--dark-brown);
+            margin-bottom: 15px;
+        }
+        
+        .page-header p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* 体验区域 */
+        .experience-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 80px;
+        }
+        
+        @media (max-width: 992px) {
+            .experience-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .canvas-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        .canvas-container h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--dark-brown);
+            text-align: center;
+        }
+        
+        .drawing-canvas {
+            width: 100%;
+            height: 400px;
+            background-color: #f9f9f9;
+            border: 2px dashed rgba(212, 160, 23, 0.3);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            cursor: crosshair;
+            touch-action: none;
+            user-select: none;
+        }
+        
+        .canvas-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .canvas-btn {
+            padding: 10px 20px;
+            background-color: var(--primary-amber);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .canvas-btn:hover {
+            background-color: var(--dark-brown);
+            transform: translateY(-2px);
+        }
+        
+        .canvas-btn.secondary {
+            background-color: #f0f0f0;
+            color: var(--dark-brown);
+        }
+        
+        .canvas-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .tools-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        .tools-container h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--dark-brown);
+            text-align: center;
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .tool-item {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .tool-item:hover, .tool-item.active {
+            border-color: var(--primary-amber);
+            background-color: rgba(212, 160, 23, 0.05);
+        }
+        
+        .tool-icon {
+            font-size: 2.5rem;
+            color: var(--primary-amber);
+            margin-bottom: 10px;
+        }
+        
+        .tool-item h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        
+        .color-picker {
+            margin-top: 30px;
+        }
+        
+        .color-picker h3 {
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .color-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .color-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .color-option:hover, .color-option.active {
+            transform: scale(1.1);
+            border-color: var(--dark-brown);
+        }
+        
+        /* 新增：技法练习区域 */
+        .technique-section {
+            margin-bottom: 80px;
+            background: white;
+            border-radius: 15px;
+            padding: 60px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        
+        .technique-section h2 {
+            font-size: 2.2rem;
+            text-align: center;
+            margin-bottom: 10px;
+            color: var(--dark-brown);
+            font-family: 'Noto Serif SC', serif;
+        }
+        
+        .technique-section p {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #666;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .technique-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .technique-card {
+            background-color: #f9f9f9;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+            height: 100%;
+            border: 2px solid transparent;
+        }
+        
+        .technique-card:hover {
+            border-color: var(--primary-amber);
+            box-shadow: 0 12px 30px rgba(212, 160, 23, 0.15);
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, var(--primary-amber), var(--golden-yellow));
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+        
+        .card-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        
+        .card-header .difficulty {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .card-body {
+            padding: 25px;
+        }
+        
+        .card-body p {
+            color: #666;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .technique-steps {
+            margin-top: 20px;
+        }
+        
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(212, 160, 23, 0.05);
+            border-radius: 8px;
+        }
+        
+        .step-number {
+            width: 28px;
+            height: 28px;
+            background-color: var(--primary-amber);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            flex-grow: 1;
+        }
+        
+        .step-content h4 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: var(--dark-brown);
+        }
+        
+        .step-content p {
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+        
+        .practice-hint {
+            background-color: rgba(255, 215, 0, 0.1);
+            border-left: 4px solid var(--golden-yellow);
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .practice-hint i {
+            color: var(--primary-amber);
+            margin-right: 10px;
+        }
+        
+        /* 状态提示 */
+        .status-message {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--dark-brown);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+        
+        .status-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* 画布元素样式 */
+        .sugar-path {
+            position: absolute;
+            pointer-events: none;
+            transition: stroke-width 0.2s ease;
+        }
+        
+        /* 页脚 - 与首页保持一致 */
+        footer {
+            background-color: var(--dark-brown);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-logo .logo-icon {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .footer-logo h3 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .footer-links h4 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-links h4:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary-amber);
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary-amber);
+            padding-left: 5px;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .canvas-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .canvas-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .technique-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部 -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-area">
+                    <div class="logo-icon"></div>
+                    <div class="logo-text">
+                        <h1>糖韵匠心</h1>
+                        <p>非遗糖画数字传承馆</p>
+                    </div>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="history.html">糖画历史</a></li>
+                        <li><a href="craft.html">制作工艺</a></li>
+                        <li><a href="gallery.html">作品鉴赏</a></li>
+                        <li><a href="experience.html" class="active">在线体验</a></li>
+                        <li><a href="artisans.html">传承人物</a></li>
+                        <li><a href="shop.html">糖画商城</a></li>
+                        <li><a href="booking.html">活动预约</a></li>
+                    </ul>
+                </nav>
+                <!-- 首页：购物车占位区域（保持透明或不显示） -->
+                <div class="cart-placeholder"></div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- 状态提示 -->
+    <div id="statusMessage" class="status-message"></div>
+    
+    <!-- 页面顶部区域 -->
+    <section class="page-header">
+        <div class="container">
+            <h1>在线体验</h1>
+            <p>无需糖勺与石板，在这里您可以体验虚拟糖画创作的乐趣，设计属于自己的糖画作品</p>
+        </div>
+    </section>
+    
+    <!-- 体验区域 -->
+    <section class="experience-main">
+        <div class="container">
+            <div class="experience-container">
+                <!-- 左侧：画布区域 -->
+                <div class="canvas-container">
+                    <h2>糖画画布</h2>
+                    <div class="drawing-canvas" id="drawingCanvas">
+                        <!-- 初始提示 -->
+                        <div id="canvasHint" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: #999; z-index: 1; background-color: rgba(255, 255, 255, 0.9); padding: 20px; border-radius: 10px;">
+                            <i class="fas fa-mouse-pointer" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                            <p>在此区域使用鼠标或手指绘制糖画</p>
+                            <p>选择左侧工具和颜色开始创作</p>
+                            <p style="font-size: 0.9rem; margin-top: 10px; color: var(--primary-amber);">
+                                <i class="fas fa-lightbulb"></i> 提示：绘制时按住Shift键可画直线或正圆
+                            </p>
+                        </div>
+                        <!-- SVG容器用于绘制 -->
+                        <svg id="sugarCanvas" width="100%" height="100%" style="position: absolute; top: 0; left: 0;"></svg>
+                    </div>
+                    <div class="canvas-controls">
+                        <button class="canvas-btn" id="clearCanvas">清空画布</button>
+                        <button class="canvas-btn" id="undoBtn" disabled>撤销上一步</button>
+                        <button class="canvas-btn" id="saveCanvas">保存作品</button>
+                        <button class="canvas-btn secondary" id="shareCanvas">分享作品</button>
+                    </div>
+                </div>
+                
+                <!-- 右侧：工具区域 -->
+                <div class="tools-container">
+                    <h2>糖画工具</h2>
+                    <div class="tools-grid">
+                        <div class="tool-item active" data-tool="brush">
+                            <div class="tool-icon">
+                                <i class="fas fa-paint-brush"></i>
+                            </div>
+                            <h3>糖画笔</h3>
+                            <p>模拟糖画勺绘制线条</p>
+                        </div>
+                        <div class="tool-item" data-tool="line">
+                            <div class="tool-icon">
+                                <i class="fas fa-slash"></i>
+                            </div>
+                            <h3>直线工具</h3>
+                            <p>绘制直线条</p>
+                        </div>
+                        <div class="tool-item" data-tool="curve">
+                            <div class="tool-icon">
+                                <i class="fas fa-wave-square"></i>
+                            </div>
+                            <h3>曲线工具</h3>
+                            <p>绘制流畅曲线</p>
+                        </div>
+                        <div class="tool-item" data-tool="circle">
+                            <div class="tool-icon">
+                                <i class="fas fa-circle"></i>
+                            </div>
+                            <h3>圆形工具</h3>
+                            <p>绘制圆形和椭圆形</p>
+                        </div>
+                    </div>
+                    
+                    <div class="color-picker">
+                        <h3>糖浆颜色</h3>
+                        <div class="color-options">
+                            <div class="color-option active" style="background-color: #D4A017;" data-color="#D4A017" data-name="琥珀糖色"></div>
+                            <div class="color-option" style="background-color: #FFD700;" data-color="#FFD700" data-name="金黄糖色"></div>
+                            <div class="color-option" style="background-color: #FFA000;" data-color="#FFA000" data-name="蜜糖色"></div>
+                            <div class="color-option" style="background-color: #FF8F00;" data-color="#FF8F00" data-name="橙糖色"></div>
+                            <div class="color-option" style="background-color: #FF6F00;" data-color="#FF6F00" data-name="焦糖色"></div>
+                            <div class="color-option" style="background-color: #E65100;" data-color="#E65100" data-name="红糖色"></div>
+                            <div class="color-option" style="background-color: #BF360C;" data-color="#BF360C" data-name="深红糖色"></div>
+                            <div class="color-option" style="background-color: #8D6E63;" data-color="#8D6E63" data-name="褐糖色"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="line-width" style="margin-top: 30px;">
+                        <h3>线条粗细 <span id="lineWidthValue">3</span></h3>
+                        <input type="range" min="1" max="10" value="3" class="slider" id="lineWidth" style="width: 100%; margin-top: 10px;">
+                        <div style="display: flex; justify-content: space-between; margin-top: 5px;">
+                            <span>细</span>
+                            <span>中</span>
+                            <span>粗</span>
+                        </div>
+                    </div>
+                    
+                    <div class="current-settings" style="margin-top: 30px; padding: 15px; background-color: rgba(212, 160, 23, 0.05); border-radius: 5px;">
+                        <h3>当前设置</h3>
+                        <p id="currentTool">工具：糖画笔</p>
+                        <p id="currentColor">颜色：琥珀糖色 (#D4A017)</p>
+                        <p id="currentWidth">粗细：3px</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 新增：技法练习区域 -->
+    <section class="technique-section">
+        <div class="container">
+            <h2>糖画技法练习</h2>
+            <p>掌握基本技法是创作精美糖画的关键。跟随以下练习步骤，提升您的糖画技艺</p>
+            
+            <div class="technique-cards">
+                <div class="technique-card">
+                    <div class="card-header">
+                        <h3>基础线条练习</h3>
+                        <div class="difficulty">难度：初级</div>
+                    </div>
+                    <div class="card-body">
+                        <p>练习糖画中最基本的直线、曲线和波浪线，掌握糖浆流动的控制技巧。</p>
+                        
+                        <div class="technique-steps">
+                            <div class="step">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <h4>直线练习</h4>
+                                    <p>使用直线工具，尝试绘制不同长度和粗细的直线，保持手部稳定。</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <h4>曲线练习</h4>
+                                    <p>使用曲线工具，练习绘制流畅的"S"形和"C"形曲线。</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <h4>波浪线练习</h4>
+                                    <p>练习绘制规律的波浪线，控制好波峰和波谷的间距。</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="practice-hint">
+                            <i class="fas fa-lightbulb"></i>
+                            <strong>练习提示：</strong> 从较慢的速度开始，逐渐提高绘制速度，保持线条的连贯性。
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="technique-card">
+                    <div class="card-header">
+                        <h3>基本形状练习</h3>
+                        <div class="difficulty">难度：初级</div>
+                    </div>
+                    <div class="card-body">
+                        <p>学习绘制糖画中常用的基本形状，如圆形、椭圆形、方形等。</p>
+                        
+                        <div class="technique-steps">
+                            <div class="step">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <h4>圆形绘制</h4>
+                                    <p>使用圆形工具，按住Shift键绘制正圆，练习不同大小的圆形。</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <h4>椭圆绘制</h4>
+                                    <p>练习绘制椭圆形，注意控制长轴和短轴的比例。</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <h4>方形组合</h4>
+                                    <p>使用直线工具组合绘制方形和长方形。</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="practice-hint">
+                            <i class="fas fa-lightbulb"></i>
+                            <strong>练习提示：</strong> 绘制形状时注意起笔和收笔的位置，确保形状闭合完整。
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="technique-card">
+                    <div class="card-header">
+                        <h3>纹样组合练习</h3>
+                        <div class="difficulty">难度：中级</div>
+                    </div>
+                    <div class="card-body">
+                        <p>将基本线条和形状组合成糖画中常用的装饰纹样，如卷草纹、云纹等。</p>
+                        
+                        <div class="technique-steps">
+                            <div class="step">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <h4>卷草纹练习</h4>
+                                    <p>绘制连续的螺旋形曲线，模拟传统卷草纹样。</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <h4>云纹绘制</h4>
+                                    <p>练习绘制流畅的云朵形状，注意边缘的柔和过渡。</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <h4>花纹组合</h4>
+                                    <p>将不同纹样组合成对称的装饰图案。</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="practice-hint">
+                            <i class="fas fa-lightbulb"></i>
+                            <strong>练习提示：</strong> 注意纹样之间的连接和过渡，保持整体的协调性。
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="technique-card">
+                    <div class="card-header">
+                        <h3>动物轮廓练习</h3>
+                        <div class="difficulty">难度：高级</div>
+                    </div>
+                    <div class="card-body">
+                        <p>练习绘制糖画中常见的动物轮廓，如鱼、鸟、兔子等吉祥图案。</p>
+                        
+                        <div class="technique-steps">
+                            <div class="step">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <h4>鲤鱼绘制</h4>
+                                    <p>练习绘制流畅的鱼身曲线，注意鱼鳍和尾巴的动态感。</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <h4>小鸟轮廓</h4>
+                                    <p>绘制简化的鸟类轮廓，突出翅膀和尾巴的特征。</p>
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <h4>兔子练习</h4>
+                                    <p>练习绘制可爱的兔子轮廓，注意长耳朵和短尾巴的特征。</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="practice-hint">
+                            <i class="fas fa-lightbulb"></i>
+                            <strong>练习提示：</strong> 先用简单的几何图形勾勒大体轮廓，再逐步细化特征。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <div class="logo-icon"></div>
+                        <h3>糖韵匠心</h3>
+                    </div>
+                    <p>非遗糖画数字传承馆致力于通过数字技术记录、展示和传承糖画艺术，让这一古老技艺在新时代继续绽放光彩。</p>
+                </div>
+                <div class="footer-links">
+                    <h4>快速链接</h4>
+                    <ul>
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="history.html">糖画历史</a></li>
+                        <li><a href="craft.html">制作工艺</a></li>
+                        <li><a href="gallery.html">作品鉴赏</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>更多内容</h4>
+                    <ul>
+                        <li><a href="experience.html">在线体验</a></li>
+                        <li><a href="artisans.html">传承人物</a></li>
+                        <li><a href="shop.html">糖画商城</a></li>
+                        <li><a href="booking.html">活动预约</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>联系我们</h4>
+                    <p>邮箱：contact@sugarpainting.com</p>
+                    <p>电话：400-123-4567</p>
+                    <p>地址：北京市东城区非物质文化遗产保护中心</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2023 糖韵匠心 - 非遗糖画数字传承馆 版权所有 | 设计制作：非遗数字化团队</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 全局变量 - 增加曲线相关变量
+            let currentTool = 'brush';
+            let currentColor = '#D4A017';
+            let currentLineWidth = 3;
+            let isDrawing = false;
+            let drawingHistory = [];
+            let currentPath = null;
+            let startX, startY;
+            let isShiftPressed = false;
+            let controlPoints = []; // 用于存储曲线控制点
+            let previousPoint = null; // 上一个点，用于平滑曲线
+            
+            // DOM元素
+            const canvas = document.getElementById('drawingCanvas');
+            const svgCanvas = document.getElementById('sugarCanvas');
+            const canvasHint = document.getElementById('canvasHint');
+            const statusMessage = document.getElementById('statusMessage');
+            const undoBtn = document.getElementById('undoBtn');
+            const lineWidthSlider = document.getElementById('lineWidth');
+            const lineWidthValue = document.getElementById('lineWidthValue');
+            
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Shift') {
+                    isShiftPressed = true;
+                    // 提示用户Shift平滑功能已激活
+                    if (currentTool === 'curve' && isDrawing) {
+                        showStatusMessage('Shift平滑模式已激活', 'info');
+                    }
+                }
+            });
+        
+            document.addEventListener('keyup', function(e) {
+                if (e.key === 'Shift') {
+                    isShiftPressed = false;
+                    previousPoint = null; // 重置上一个点，避免影响后续绘制
+                }
+            });
+            
+            // 状态提示函数
+            function showStatusMessage(message, type = 'info') {
+                statusMessage.textContent = message;
+                statusMessage.className = 'status-message';
+                statusMessage.classList.add('show');
+                
+                // 根据类型设置颜色
+                if (type === 'success') {
+                    statusMessage.style.backgroundColor = '#4CAF50';
+                } else if (type === 'error') {
+                    statusMessage.style.backgroundColor = '#f44336';
+                } else if (type === 'warning') {
+                    statusMessage.style.backgroundColor = '#ff9800';
+                } else {
+                    statusMessage.style.backgroundColor = '#5D4037';
+                }
+                
+                // 3秒后自动隐藏
+                setTimeout(() => {
+                    statusMessage.classList.remove('show');
+                }, 3000);
+            }
+            
+            // 工具选择交互
+            const toolItems = document.querySelectorAll('.tool-item');
+            toolItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    toolItems.forEach(tool => tool.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    currentTool = this.getAttribute('data-tool');
+                    
+                    // 更新当前设置显示
+                    document.getElementById('currentTool').textContent = 
+                        `工具：${this.querySelector('h3').textContent}`;
+                    
+                    showStatusMessage(`已选择${this.querySelector('h3').textContent}工具`, 'info');
+                });
+            });
+            
+            // 颜色选择交互
+            const colorOptions = document.querySelectorAll('.color-option');
+            colorOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    colorOptions.forEach(color => color.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    currentColor = this.getAttribute('data-color');
+                    const colorName = this.getAttribute('data-name');
+                    
+                    // 更新当前设置显示
+                    document.getElementById('currentColor').textContent = 
+                        `颜色：${colorName} (${currentColor})`;
+                    
+                    showStatusMessage(`已选择${colorName}`, 'info');
+                });
+            });
+            
+            // 线条粗细滑块交互
+            lineWidthSlider.addEventListener('input', function() {
+                currentLineWidth = parseInt(this.value);
+                lineWidthValue.textContent = currentLineWidth;
+                
+                // 更新当前设置显示
+                document.getElementById('currentWidth').textContent = 
+                    `粗细：${currentLineWidth}px`;
+            });
+            
+            // 获取画布上的坐标点 - 修复版
+            function getCanvasPoint(e) {
+                const rect = canvas.getBoundingClientRect();
+                let clientX, clientY;
+                
+                if (e.type.includes('touch')) {
+                    clientX = e.touches[0].clientX;
+                    clientY = e.touches[0].clientY;
+                } else {
+                    clientX = e.clientX;
+                    clientY = e.clientY;
+                }
+                
+                // 计算相对于画布的坐标
+                let x = clientX - rect.left;
+                let y = clientY - rect.top;
+                
+                // 确保坐标在画布范围内
+                x = Math.max(0, Math.min(x, rect.width));
+                y = Math.max(0, Math.min(y, rect.height));
+                
+                return { x, y };
+            }
+            
+            // 画布绘制功能 - 修复版
+            function startDrawing(e) {
+                e.preventDefault();
+                isDrawing = true;
+                
+                // 隐藏提示
+                canvasHint.style.display = 'none';
+                
+                const point = getCanvasPoint(e);
+                startX = point.x;
+                startY = point.y;
+                
+                // 根据工具类型开始绘制
+                if (currentTool === 'brush' || currentTool === 'curve') {
+                    // 创建新的路径
+                    currentPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    currentPath.setAttribute('stroke', currentColor);
+                    currentPath.setAttribute('stroke-width', currentLineWidth);
+                    currentPath.setAttribute('fill', 'none');
+                    currentPath.setAttribute('stroke-linecap', 'round');
+                    currentPath.setAttribute('stroke-linejoin', 'round');
+                    currentPath.setAttribute('d', `M ${startX} ${startY}`);
+                    
+                    svgCanvas.appendChild(currentPath);
+                } else if (currentTool === 'line') {
+                    // 直线工具 - 创建临时线
+                    currentPath = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    currentPath.setAttribute('stroke', currentColor);
+                    currentPath.setAttribute('stroke-width', currentLineWidth);
+                    currentPath.setAttribute('fill', 'none');
+                    currentPath.setAttribute('stroke-linecap', 'round');
+                    currentPath.setAttribute('x1', startX);
+                    currentPath.setAttribute('y1', startY);
+                    currentPath.setAttribute('x2', startX);
+                    currentPath.setAttribute('y2', startY);
+                    
+                    svgCanvas.appendChild(currentPath);
+                } else if (currentTool === 'circle') {
+                    // 圆形工具
+                    currentPath = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+                    currentPath.setAttribute('stroke', currentColor);
+                    currentPath.setAttribute('stroke-width', currentLineWidth);
+                    currentPath.setAttribute('fill', 'none');
+                    currentPath.setAttribute('stroke-linecap', 'round');
+                    currentPath.setAttribute('cx', startX);
+                    currentPath.setAttribute('cy', startY);
+                    currentPath.setAttribute('rx', 0);
+                    currentPath.setAttribute('ry', 0);
+                    
+                    svgCanvas.appendChild(currentPath);
+                }
+                
+                // 立即绘制第一个点
+                draw(e);
+            }
+            
+            function draw(e) {
+                if (!isDrawing || !currentPath) return;
+                e.preventDefault();
+                
+                const point = getCanvasPoint(e);
+                const x = point.x;
+                const y = point.y;
+                
+                if (currentTool === 'brush' || currentTool === 'curve') {
+                    // 更新路径
+                    let currentD = currentPath.getAttribute('d');
+                    currentPath.setAttribute('d', currentD + ` L ${x} ${y}`);
+                } else if (currentTool === 'line') {
+                    // 更新直线终点
+                    let endX = x;
+                    let endY = y;
+                    
+                    // 如果按住Shift键，则绘制水平或垂直线
+                    if (isShiftPressed) {
+                        const dx = Math.abs(x - startX);
+                        const dy = Math.abs(y - startY);
+                        
+                        if (dx > dy) {
+                            // 水平线
+                            endY = startY;
+                        } else {
+                            // 垂直线
+                            endX = startX;
+                        }
+                    }
+                    
+                    currentPath.setAttribute('x2', endX);
+                    currentPath.setAttribute('y2', endY);
+                } else if (currentTool === 'circle') {
+                    // 更新椭圆半径
+                    const rx = Math.abs(x - startX);
+                    const ry = Math.abs(y - startY);
+                    
+                    // 如果按住Shift键，则绘制正圆
+                    if (isShiftPressed) {
+                        const radius = Math.max(rx, ry);
+                        currentPath.setAttribute('rx', radius);
+                        currentPath.setAttribute('ry', radius);
+                    } else {
+                        currentPath.setAttribute('rx', rx);
+                        currentPath.setAttribute('ry', ry);
+                    }
+                }
+            }
+            
+            function stopDrawing() {
+                if (!isDrawing) return;
+                isDrawing = false;
+                
+                if (currentPath) {
+                    // 保存到历史记录
+                    drawingHistory.push(currentPath);
+                    updateUndoButton();
+                    currentPath = null;
+                }
+            }
+            
+            // 清空画布
+            function clearCanvas() {
+                // 删除所有子元素
+                while (svgCanvas.firstChild) {
+                    svgCanvas.removeChild(svgCanvas.firstChild);
+                }
+                
+                drawingHistory = [];
+                updateUndoButton();
+                
+                // 显示提示
+                canvasHint.style.display = 'block';
+                
+                showStatusMessage('画布已清空', 'success');
+            }
+            
+            // 撤销操作
+            function undo() {
+                if (drawingHistory.length === 0) return;
+                
+                const lastPath = drawingHistory.pop();
+                if (lastPath && lastPath.parentNode === svgCanvas) {
+                    svgCanvas.removeChild(lastPath);
+                }
+                
+                updateUndoButton();
+                showStatusMessage('已撤销上一步操作', 'info');
+            }
+            
+            // 更新撤销按钮状态
+            function updateUndoButton() {
+                undoBtn.disabled = drawingHistory.length === 0;
+            }
+            
+            // 保存作品
+            function saveCanvas() {
+                if (drawingHistory.length === 0) {
+                    showStatusMessage('画布为空，请先绘制作品再保存', 'warning');
+                    return;
+                }
+                
+                showStatusMessage('作品已保存到本地', 'success');
+                
+                // 模拟下载
+                setTimeout(() => {
+                    alert('作品已保存为"sugar-painting.png"。在实际网站中，您可以下载该文件。');
+                }, 500);
+            }
+            
+            // 分享作品
+            function shareCanvas() {
+                if (drawingHistory.length === 0) {
+                    showStatusMessage('画布为空，请先绘制作品再分享', 'warning');
+                    return;
+                }
+                
+                showStatusMessage('分享功能 - 在实际网站中可以分享到社交媒体', 'info');
+                
+                // 模拟分享对话框
+                setTimeout(() => {
+                    const shareText = "我创作了一幅糖画作品！";
+                    const shareUrl = window.location.href;
+                    
+                    if (navigator.share) {
+                        navigator.share({
+                            title: '我的糖画作品',
+                            text: shareText,
+                            url: shareUrl
+                        });
+                    } else {
+                        alert(`分享内容：${shareText}\n\n链接：${shareUrl}\n\n您可以将此链接复制分享给朋友。`);
+                    }
+                }, 500);
+            }
+            
+            // 事件监听器设置
+            function setupEventListeners() {
+                // 鼠标事件
+                canvas.addEventListener('mousedown', startDrawing);
+                canvas.addEventListener('mousemove', draw);
+                canvas.addEventListener('mouseup', stopDrawing);
+                canvas.addEventListener('mouseleave', stopDrawing);
+                
+                // 触摸事件
+                canvas.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    startDrawing(e);
+                });
+                
+                canvas.addEventListener('touchmove', function(e) {
+                    e.preventDefault();
+                    draw(e);
+                });
+                
+                canvas.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    stopDrawing();
+                });
+                
+                canvas.addEventListener('touchcancel', function(e) {
+                    e.preventDefault();
+                    stopDrawing();
+                });
+                
+                // Shift键检测
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Shift') {
+                        isShiftPressed = true;
+                    }
+                });
+                
+                document.addEventListener('keyup', (e) => {
+                    if (e.key === 'Shift') {
+                        isShiftPressed = false;
+                    }
+                });
+                
+                // 防止画布上的默认拖拽行为
+                canvas.addEventListener('dragstart', (e) => e.preventDefault());
+                canvas.addEventListener('drop', (e) => e.preventDefault());
+                
+                // 控制按钮事件
+                document.getElementById('clearCanvas').addEventListener('click', clearCanvas);
+                document.getElementById('undoBtn').addEventListener('click', undo);
+                document.getElementById('saveCanvas').addEventListener('click', saveCanvas);
+                document.getElementById('shareCanvas').addEventListener('click', shareCanvas);
+                
+                // 阻止画布上的文本选择
+                canvas.addEventListener('selectstart', (e) => e.preventDefault());
+            }
+            
+            // 初始化函数
+            function init() {
+                // 确保SVG画布有正确的视图框
+                const rect = canvas.getBoundingClientRect();
+                svgCanvas.setAttribute('viewBox', `0 0 ${rect.width} ${rect.height}`);
+                svgCanvas.setAttribute('preserveAspectRatio', 'none');
+                
+                setupEventListeners();
+                updateUndoButton();
+                
+                // 初始提示
+                showStatusMessage('欢迎使用糖画在线体验工具！选择工具和颜色开始创作吧。', 'info');
+                
+                // 监听窗口大小变化，更新SVG视图框
+                window.addEventListener('resize', function() {
+                    const rect = canvas.getBoundingClientRect();
+                    svgCanvas.setAttribute('viewBox', `0 0 ${rect.width} ${rect.height}`);
+                });
+            }
+            
+            // 初始化应用
+            init();
+        });
+    </script>
+</body>
+</html>
+[file content end]

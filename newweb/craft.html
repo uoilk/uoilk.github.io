@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>制作工艺 - 糖韵匠心</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <style>
+        /* 共用样式，与首页相同 */
+        :root {
+            --primary-amber: #D4A017;
+            --golden-yellow: #FFD700;
+            --cream-white: #FFF8E7;
+            --dark-brown: #5D4037;
+            --chinese-red: #C62828;
+            --shadow-light: rgba(212, 160, 23, 0.1);
+            --shadow-medium: rgba(212, 160, 23, 0.2);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: var(--cream-white);
+            color: var(--dark-brown);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 头部样式 - 与首页相同 */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 12px var(--shadow-light);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-amber), var(--golden-yellow));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .logo-icon:before {
+            content: "";
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--dark-brown);
+        }
+        
+        .logo-icon:after {
+            content: "";
+            position: absolute;
+            width: 15px;
+            height: 40px;
+            background-color: var(--dark-brown);
+            border-radius: 10px;
+            transform: rotate(45deg);
+            top: 5px;
+            left: 25px;
+        }
+        
+        .logo-text h1 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.8rem;
+            color: var(--dark-brown);
+            letter-spacing: 2px;
+        }
+        
+        .logo-text p {
+            font-size: 0.8rem;
+            color: var(--primary-amber);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: var(--dark-brown);
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        nav a:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-amber);
+            transition: width 0.3s ease;
+        }
+        
+        nav a:hover {
+            color: var(--primary-amber);
+        }
+        
+        nav a:hover:after {
+            width: 100%;
+        }
+        
+        /* 页面标题区域 */
+        .page-header {
+            padding: 160px 0 60px;
+            background: linear-gradient(rgba(255, 248, 231, 0.9), rgba(255, 248, 231, 0.7));
+            text-align: center;
+        }
+        
+        .page-header h2 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 3rem;
+            color: var(--dark-brown);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .page-header h2:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background-color: var(--primary-amber);
+        }
+        
+        .page-header p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* 制作步骤 */
+        .process-steps {
+            padding: 80px 0;
+        }
+        
+        .step-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 80px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.5s ease;
+        }
+        
+        .step-container.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .step-container:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        
+        .step-image {
+            flex: 1;
+            height: 300px;
+            background-color: #f0e6d3;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .step-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .step-image:hover .step-img {
+            transform: scale(1.05);
+        }
+        
+        .img-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(93, 64, 55, 0.8);
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        
+        .step-content {
+            flex: 1;
+            padding: 0 40px;
+        }
+        
+        .step-number {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-amber);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 50px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        .step-title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--dark-brown);
+            font-family: 'Noto Serif SC', serif;
+        }
+        
+        .step-description {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        /* 工具展示 */
+        .tools-section {
+            padding: 80px 0;
+            background-color: #f9f5eb;
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .tool-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .tool-image {
+            height: 200px;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            overflow: hidden;
+        }
+        
+        .tool-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .tool-content {
+            padding: 20px;
+        }
+        
+        .tool-name {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--dark-brown);
+            font-family: 'Noto Serif SC', serif;
+        }
+        
+        .tool-description {
+            color: #666;
+        }
+        
+        /* 材料展示 */
+        .materials-section {
+            padding: 80px 0;
+        }
+        
+        .materials-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .material-item {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            width: 250px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-top: 5px solid var(--primary-amber);
+        }
+        
+        .material-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .material-icon {
+            width: 80px;
+            height: 80px;
+            background-color: rgba(212, 160, 23, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2rem;
+            color: var(--primary-amber);
+        }
+        
+        .material-name {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--dark-brown);
+        }
+        
+        /* 提示区域 */
+        .tips-section {
+            padding: 60px 0;
+            background-color: #f9f5eb;
+            margin-top: 40px;
+        }
+        
+        .tips-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .tip-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tip-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--dark-brown);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .tip-card h3 i {
+            color: var(--primary-amber);
+        }
+        
+        /* 页脚样式 - 与首页相同 */
+        footer {
+            background-color: var(--dark-brown);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-logo .logo-icon {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .footer-logo h3 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .footer-links h4 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-links h4:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary-amber);
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary-amber);
+            padding-left: 5px;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+            
+            .page-header h2 {
+                font-size: 2.5rem;
+            }
+            
+            .step-container, .step-container:nth-child(even) {
+                flex-direction: column;
+            }
+            
+            .step-content {
+                padding: 20px 0;
+            }
+            
+            .step-image {
+                margin-bottom: 30px;
+                height: 250px;
+            }
+            
+            .materials-list {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .material-item {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部 -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-area">
+                    <div class="logo-icon"></div>
+                    <div class="logo-text">
+                        <h1>糖韵匠心</h1>
+                        <p>非遗糖画数字传承馆</p>
+                    </div>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="history.html">糖画历史</a></li>
+                        <li><a href="craft.html" class="active">制作工艺</a></li>
+                        <li><a href="gallery.html">作品鉴赏</a></li>
+                        <li><a href="experience.html">在线体验</a></li>
+                        <li><a href="artisans.html">传承人物</a></li>
+                        <li><a href="shop.html">糖画商城</a></li>
+                        <li><a href="booking.html">活动预约</a></li>
+                    </ul>
+                </nav>
+                <!-- 首页：购物车占位区域（保持透明或不显示） -->
+                <div class="cart-placeholder"></div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- 页面标题区域 -->
+    <section class="page-header">
+        <div class="container">
+            <h2>糖画制作工艺</h2>
+            <p>以糖为墨，以勺为笔，揭秘糖画从液态糖浆到精美艺术品的转化过程</p>
+        </div>
+    </section>
+    
+    <!-- 制作步骤 -->
+    <section class="process-steps">
+        <div class="container">
+            <div class="step-container">
+                <div class="step-image">
+                    <!-- 准备糖料图片 -->
+                    <img src="images/1.png" alt="准备糖料" class="step-img">
+                    <div class="img-caption">准备糖料</div>
+                </div>
+                <div class="step-content">
+                    <div class="step-number">01</div>
+                    <h2 class="step-title">熬糖准备</h2>
+                    <p class="step-description">选择优质白砂糖或冰糖作为原料，按照特定比例加入清水。传统配方通常为糖与水按2:1的比例混合，这是保证糖浆色泽和延展性的关键。</p>
+                    <p class="step-description">熬糖过程中需要严格控制火候，先用大火将糖水煮沸，然后转为小火慢熬，期间需要不断搅拌防止糖浆糊底。</p>
+                </div>
+            </div>
+            
+            <div class="step-container">
+                <div class="step-image">
+                    <!-- 熬制糖浆图片 -->
+                    <img src="images/2.png" alt="熬制糖浆" class="step-img">
+                    <div class="img-caption">熬制糖浆</div>
+                </div>
+                <div class="step-content">
+                    <div class="step-number">02</div>
+                    <h2 class="step-title">熬制糖浆</h2>
+                    <p class="step-description">熬糖是整个制作过程中技术含量最高的环节。糖浆需要熬制到160-180°C之间，这个温度下糖浆会呈现出琥珀色，并且具有合适的黏稠度。</p>
+                    <p class="step-description">有经验的艺人通过观察糖浆的颜色、气泡和拉丝状态来判断熬制程度。熬好的糖浆需要立即离火，防止温度过高导致糖浆变苦。</p>
+                </div>
+            </div>
+            
+            <div class="step-container">
+                <div class="step-image">
+                    <!-- 绘制图案图片 -->
+                    <img src="images/3.png" alt="绘制图案" class="step-img">
+                    <div class="img-caption">绘制图案</div>
+                </div>
+                <div class="step-content">
+                    <div class="step-number">03</div>
+                    <h2 class="step-title">绘制图案</h2>
+                    <p class="step-description">在光滑的大理石板或金属板上涂抹一层薄薄的食用油，防止糖浆粘连。艺人手持铜勺，舀起适量糖浆，手腕悬空移动，让糖浆如丝般流淌在板面上。</p>
+                    <p class="step-description">绘制过程中需要一气呵成，不能中断。线条的粗细、疏密、快慢都会影响最终效果。传统图案有龙、凤、十二生肖等，现代糖画题材更加广泛。</p>
+                </div>
+            </div>
+            
+            <div class="step-container">
+                <div class="step-image">
+                    <!-- 冷却定型图片 -->
+                    <img src="images/4.png"alt="冷却定型" class="step-img">
+                    <div class="img-caption">冷却定型</div>
+                </div>
+                <div class="step-content">
+                    <div class="step-number">04</div>
+                    <h2 class="step-title">冷却定型</h2>
+                    <p class="step-description">糖画绘制完成后，需要等待几十秒让糖浆自然冷却固化。冷却时间与环境温度、糖浆厚度有关，通常需要30-60秒。</p>
+                    <p class="step-description">在糖浆尚未完全硬化时，艺人会用铲刀小心地将糖画从板面剥离，然后插入竹签或木棍作为手柄。完全冷却后的糖画变得坚硬透明，可以长时间保存。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 工具展示 -->
+    <section class="tools-section">
+        <div class="container">
+            <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 20px; font-family: 'Noto Serif SC', serif; color: var(--dark-brown);">糖画工具</h2>
+            <p style="text-align: center; color: #666; max-width: 800px; margin: 0 auto 40px;">工欲善其事，必先利其器。糖画制作需要专业的工具</p>
+            
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-image">
+                        <!-- 铜勺图片 -->
+                        <img src="images/5.png" 
+                             alt="铜勺" class="tool-img">
+                    </div>
+                    <div class="tool-content">
+                        <h3 class="tool-name">铜勺</h3>
+                        <p class="tool-description">糖画的主要绘制工具，通常为黄铜制成。铜勺导热均匀，便于控制糖浆流量。勺嘴的形状和大小决定了线条的粗细。</p>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-image">
+                        <!-- 大理石板图片 -->
+                        <img src="images/6.png" 
+                             alt="大理石板" class="tool-img">
+                    </div>
+                    <div class="tool-content">
+                        <h3 class="tool-name">大理石板</h3>
+                        <p class="tool-description">糖画的绘制平台，表面光滑平整，导热性好，便于糖浆快速冷却定型。使用前需涂抹一层薄油防粘。</p>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-image">
+                        <!-- 便携炉具图片 -->
+                        <img src="images/7.png" 
+                             alt="便携炉具" class="tool-img">
+                    </div>
+                    <div class="tool-content">
+                        <h3 class="tool-name">便携炉具</h3>
+                        <p class="tool-description">传统的炭火炉或现代的小型燃气炉，用于加热和保温糖浆。需要能够精确控制火候。</p>
+                    </div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-image">
+                        <!-- 辅助工具图片 -->
+                        <img src="images/8.png" 
+                             alt="辅助工具" class="tool-img">
+                    </div>
+                    <div class="tool-content">
+                        <h3 class="tool-name">辅助工具</h3>
+                        <p class="tool-description">包括铲刀（起画用）、竹签（做手柄）、油刷（涂油防粘）、温度计（监测糖温）等。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 材料展示 -->
+    <section class="materials-section">
+        <div class="container">
+            <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 20px; font-family: 'Noto Serif SC', serif; color: var(--dark-brown);">主要材料</h2>
+            <p style="text-align: center; color: #666; max-width: 800px; margin: 0 auto 40px;">优质的材料是制作精美糖画的基础</p>
+            
+            <div class="materials-list">
+                <div class="material-item">
+                    <div class="material-icon">
+                        <i class="fas fa-cube"></i>
+                    </div>
+                    <h3 class="material-name">白砂糖</h3>
+                    <p>最常用的糖画原料，纯度高的白砂糖熬制出的糖浆色泽透明，口感清甜。</p>
+                </div>
+                
+                <div class="material-item">
+                    <div class="material-icon">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <h3 class="material-name">冰糖</h3>
+                    <p>品质更高的原料，熬制出的糖浆更加晶莹剔透，保存时间更长。</p>
+                </div>
+                
+                <div class="material-item">
+                    <div class="material-icon">
+                        <i class="fas fa-tint"></i>
+                    </div>
+                    <h3 class="material-name">清水</h3>
+                    <p>按比例与糖混合，用于调节糖浆浓度和熬制过程中的化学反应。</p>
+                </div>
+                
+                <div class="material-item">
+                    <div class="material-icon">
+                        <i class="fas fa-oil-can"></i>
+                    </div>
+                    <h3 class="material-name">食用油</h3>
+                    <p>涂抹在板面上防止糖浆粘连，通常使用无色无味的植物油。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 提示区域 -->
+    <section class="tips-section">
+        <div class="container">
+            <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 20px; font-family: 'Noto Serif SC', serif; color: var(--dark-brown);">制作要点与技巧</h2>
+            <p style="text-align: center; color: #666; max-width: 800px; margin: 0 auto 40px;">掌握这些技巧，你也能制作出精美的糖画</p>
+            
+            <div class="tips-container">
+                <div class="tip-card">
+                    <h3><i class="fas fa-thermometer-half"></i> 温度控制</h3>
+                    <p>熬糖温度是关键，温度过低糖浆不易凝固，温度过高糖浆会变苦。最佳温度范围是160-180°C。</p>
+                </div>
+                
+                <div class="tip-card">
+                    <h3><i class="fas fa-hand-paper"></i> 手腕功夫</h3>
+                    <p>绘制时手腕要稳，移动要流畅均匀。线条的连贯性决定了作品的完整度。</p>
+                </div>
+                
+                <div class="tip-card">
+                    <h3><i class="fas fa-brain"></i> 构图设计</h3>
+                    <p>下笔前心中要有完整的图案构思，糖画要求一气呵成，不能修改。</p>
+                </div>
+                
+                <div class="tip-card">
+                    <h3><i class="fas fa-clock"></i> 时间把握</h3>
+                    <p>糖浆冷却速度快，需要把握好绘制和起画的时间窗口，避免糖画断裂。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <div class="logo-icon"></div>
+                        <h3>糖韵匠心</h3>
+                    </div>
+                    <p>非遗糖画数字传承馆致力于通过数字技术记录、展示和传承糖画艺术，让这一古老技艺在新时代继续绽放光彩。</p>
+                </div>
+                <div class="footer-links">
+                    <h4>快速链接</h4>
+                    <ul>
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="history.html">糖画历史</a></li>
+                        <li><a href="craft.html">制作工艺</a></li>
+                        <li><a href="gallery.html">作品鉴赏</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>更多内容</h4>
+                    <ul>
+                        <li><a href="experience.html">在线体验</a></li>
+                        <li><a href="artisans.html">传承人物</a></li>
+                        <li><a href="shop.html">糖画商城</a></li>
+                        <li><a href="booking.html">活动预约</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>联系我们</h4>
+                    <p>邮箱：contact@sugarpainting.com</p>
+                    <p>电话：400-123-4567</p>
+                    <p>地址：北京市东城区非物质文化遗产保护中心</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2023 糖韵匠心 - 非遗糖画数字传承馆 版权所有 | 设计制作：非遗数字化团队</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // 步骤动画
+        document.addEventListener('DOMContentLoaded', function() {
+            const stepContainers = document.querySelectorAll('.step-container');
+            
+            function checkVisibility() {
+                stepContainers.forEach(container => {
+                    const rect = container.getBoundingClientRect();
+                    const windowHeight = window.innerHeight;
+                    
+                    if (rect.top <= windowHeight * 0.8) {
+                        container.classList.add('visible');
+                    }
+                });
+            }
+            
+            // 初始检查
+            checkVisibility();
+            
+            // 滚动时检查
+            window.addEventListener('scroll', checkVisibility);
+            
+            // 当前页面导航高亮
+            const currentPageLink = document.querySelector('nav a[href="craft.html"]');
+            if (currentPageLink) {
+                currentPageLink.style.color = 'var(--primary-amber)';
+                currentPageLink.style.fontWeight = 'bold';
+            }
+            
+            // 添加图片加载错误处理
+            const images = document.querySelectorAll('img');
+            images.forEach(img => {
+                img.addEventListener('error', function() {
+                    // 如果图片加载失败，显示备用图标
+                    const parent = this.parentElement;
+                    const altText = this.alt || '图片';
+                    const iconClass = this.classList.contains('step-img') ? 
+                        'fas fa-image' : 'fas fa-tools';
+                    
+                    this.style.display = 'none';
+                    const fallbackDiv = document.createElement('div');
+                    fallbackDiv.style.cssText = `
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        background-color: #f0e6d3;
+                        color: #666;
+                        text-align: center;
+                        padding: 20px;
+                    `;
+                    fallbackDiv.innerHTML = `
+                        <i class="${iconClass}" style="font-size: 4rem; margin-bottom: 10px;"></i>
+                        <p>${altText}</p>
+                        <p style="font-size: 0.8rem; margin-top: 10px;">图片加载失败</p>
+                    `;
+                    parent.appendChild(fallbackDiv);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

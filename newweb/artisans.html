@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>传承人物 - 糖韵匠心</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <!-- 引入ECharts库 -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        /* 使用首页的CSS变量和基本样式 */
+        :root {
+            --primary-amber: #D4A017;
+            --golden-yellow: #FFD700;
+            --cream-white: #FFF8E7;
+            --dark-brown: #5D4037;
+            --chinese-red: #C62828;
+            --shadow-light: rgba(212, 160, 23, 0.1);
+            --shadow-medium: rgba(212, 160, 23, 0.2);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: var(--cream-white);
+            color: var(--dark-brown);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 头部样式 - 与首页保持一致 */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 12px var(--shadow-light);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-amber), var(--golden-yellow));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .logo-icon:before {
+            content: "";
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--dark-brown);
+        }
+        
+        .logo-icon:after {
+            content: "";
+            position: absolute;
+            width: 15px;
+            height: 40px;
+            background-color: var(--dark-brown);
+            border-radius: 10px;
+            transform: rotate(45deg);
+            top: 5px;
+            left: 25px;
+        }
+        
+        .logo-text h1 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.8rem;
+            color: var(--dark-brown);
+            letter-spacing: 2px;
+        }
+        
+        .logo-text p {
+            font-size: 0.8rem;
+            color: var(--primary-amber);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: var(--dark-brown);
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        nav a:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-amber);
+            transition: width 0.3s ease;
+        }
+        
+        nav a:hover {
+            color: var(--primary-amber);
+        }
+        
+        nav a:hover:after {
+            width: 100%;
+        }
+        
+        /* 页面顶部区域 */
+        .page-header {
+            padding: 160px 0 60px;
+            background: linear-gradient(135deg, rgba(212, 160, 23, 0.1), rgba(255, 215, 0, 0.05));
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .page-header h1 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 3rem;
+            color: var(--dark-brown);
+            margin-bottom: 15px;
+        }
+        
+        .page-header p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* 传承人物网格 */
+        .artisans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+        
+        .artisan-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .artisan-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .artisan-img {
+            width: 100%;
+            height: 250px;
+            background-color: #f5f5f5;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-start;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        
+        .artisan-img i {
+            font-size: 4rem;
+            color: rgba(212, 160, 23, 0.3);
+        }
+        
+        .artisan-info {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .artisan-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .artisan-name h3 {
+            font-size: 1.6rem;
+            color: var(--dark-brown);
+            margin-bottom: 5px;
+        }
+        
+        .artisan-level {
+            background-color: rgba(212, 160, 23, 0.1);
+            color: var(--primary-amber);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .artisan-details {
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+        
+        .artisan-details p {
+            color: #666;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+        
+        .artisan-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-amber);
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            color: #888;
+        }
+        
+        .artisan-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: var(--cream-white);
+            color: var(--primary-amber);
+            border: 1px solid rgba(212, 160, 23, 0.3);
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-top: auto;
+        }
+        
+        .artisan-btn:hover {
+            background-color: var(--primary-amber);
+            color: white;
+        }
+        
+        /* 传承脉络图区域 */
+        .lineage-section {
+            margin-bottom: 80px;
+            background-color: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        .lineage-section h2 {
+            font-size: 2.2rem;
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--dark-brown);
+            font-family: 'Noto Serif SC', serif;
+        }
+        
+        .lineage-visual {
+            width: 100%;
+            height: 600px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #lineage-chart {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .lineage-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .control-btn {
+            padding: 8px 20px;
+            background-color: white;
+            border: 1px solid rgba(212, 160, 23, 0.3);
+            border-radius: 20px;
+            color: var(--primary-amber);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .control-btn:hover, .control-btn.active {
+            background-color: var(--primary-amber);
+            color: white;
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+        }
+        
+        .legend-text {
+            color: #666;
+        }
+        
+        .lineage-desc {
+            text-align: center;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* 图例颜色 */
+        .legend-1 { background-color: #C62828; } /* 国家级传承人 */
+        .legend-2 { background-color: #D4A017; } /* 省级传承人 */
+        .legend-3 { background-color: #2196F3; } /* 地方级传承人 */
+        .legend-4 { background-color: #4CAF50; } /* 青年传承人 */
+        
+        /* 页脚 - 与首页保持一致 */
+        footer {
+            background-color: var(--dark-brown);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-logo .logo-icon {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .footer-logo h3 {
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .footer-links h4 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-links h4:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary-amber);
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary-amber);
+            padding-left: 5px;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .artisans-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .lineage-section {
+                padding: 30px 20px;
+            }
+            
+            .lineage-visual {
+                height: 450px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部 -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-area">
+                    <div class="logo-icon"></div>
+                    <div class="logo-text">
+                        <h1>糖韵匠心</h1>
+                        <p>非遗糖画数字传承馆</p>
+                    </div>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="history.html">糖画历史</a></li>
+                        <li><a href="craft.html">制作工艺</a></li>
+                        <li><a href="gallery.html">作品鉴赏</a></li>
+                        <li><a href="experience.html">在线体验</a></li>
+                        <li><a href="artisans.html" class="active">传承人物</a></li>
+                        <li><a href="shop.html">糖画商城</a></li>
+                        <li><a href="booking.html">活动预约</a></li>
+                    </ul>
+                </nav>
+                <!-- 首页：购物车占位区域（保持透明或不显示） -->
+                <div class="cart-placeholder"></div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- 页面顶部区域 -->
+    <section class="page-header">
+        <div class="container">
+            <h1>传承人物</h1>
+            <p>聆听糖画艺人的故事，感受匠心精神的代代相传，了解非遗传承背后的坚守与创新</p>
+        </div>
+    </section>
+    
+    <!-- 传承人物网格 -->
+    <section class="artisans-main">
+        <div class="container">
+            <div class="artisans-grid">
+                <!-- 传承人1 -->
+                <div class="artisan-card">
+                    <div class="artisan-img" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('images/wangqiyang.jpg');">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="artisan-info">
+                        <div class="artisan-header">
+                            <div class="artisan-name">
+                                <h3>王岐洋</h3>
+                                <p>河南商丘</p>
+                            </div>
+                            <div class="artisan-level">王氏糖画第四代传承人</div>
+                        </div>
+                        <div class="artisan-details">
+                            <p>18岁赴郑州商场摆摊制作糖画，凭借糖画技艺斩获世界基尼斯纪录（最大糖画），个人故事还被选入九年义务教育教科书。他擅长糖画龙等复杂造型，总结并推广糖画五大手法（拉丝、线条、抹片、刮片、填充），同时借助短视频和直播传播糖画技艺，截至2025年10月，其抖音账号发布369个作品，收获9万粉丝、110.2万点赞。</p>
+                        </div>
+                        <a href="https://baike.baidu.com/item/%E7%8E%8B%E5%B2%90%E6%B4%8B/65765824" target="_blank" class="artisan-btn">了解更多</a>
+                    </div>
+                </div>
+                
+                <!-- 传承人2 -->
+                <div class="artisan-card">
+                    <div class="artisan-img" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('images/liushengli.jpg');">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="artisan-info">
+                        <div class="artisan-header">
+                            <div class="artisan-name">
+                                <h3>刘胜利</h3>
+                                <p>河南郑州</p>
+                            </div>
+                            <div class="artisan-level">省级传承人</div>
+                        </div>
+                        <div class="artisan-details">
+                            <p>1980年生于河南郑州。自幼随祖父学糖画，后融合中原与川派糖画技法，精通平面、立体及彩色糖画，还创新配方让作品可长期保存。他创办工作室授徒超800人，多次赴海内外展演，是中原糖画传承与创新的核心人物。</p>
+                        </div>
+                        <a href="https://baike.baidu.com/item/%E5%88%98%E8%83%9C%E5%88%A9/59277405" target="_blank" class="artisan-btn">了解更多</a>
+                    </div>
+                </div>
+                
+                <!-- 传承人3 -->
+                <div class="artisan-card">
+                    <div class="artisan-img" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('images/xiefengkun.jpg');">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="artisan-info">
+                        <div class="artisan-header">
+                            <div class="artisan-name">
+                                <h3>谢丰坤</h3>
+                                <p>四川广汉</p>
+                            </div>
+                            <div class="artisan-level">省级传承人</div>
+                        </div>
+                        <div class="artisan-details">
+                            <p>1989年拜蔡树全为师，1991年独立行艺。糖汁通透、腕力稳、线条匀，擅长花鸟虫兽、古典戏曲人物与立体造型（如车马），代表作有《龙凤》《十二生肖》等。多次赴马来西亚、新加坡、法国等展演，登央视元宵晚会、《天天向上》等；1998年起收徒，2025年新纳弟子，推动糖画艺术传承。</p>
+                        </div>
+                        <a href="https://www.artsc.gov.cn/member_detail?id=16600" target="_blank" class="artisan-btn">了解更多</a>
+                    </div>
+                </div>
+                
+                <!-- 传承人4 -->
+                <div class="artisan-card">
+                    <div class="artisan-img" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('images/liutao.jpg');">
+                        <i class="fas fa-user-friends"></i>
+                    </div>
+                    <div class="artisan-info">
+                        <div class="artisan-header">
+                            <div class="artisan-name">
+                                <h3>刘涛</h3>
+                                <p>安徽阜阳</p>
+                            </div>
+                            <div class="artisan-level">刘氏糖画第五代传承人</div>
+                        </div>
+                        <div class="artisan-details">
+                            <p>16岁随爷爷学糖画，后拜师研习立体糖画与雕刻，首创浮雕式立体糖画，还将冰墩墩、海绵宝宝等形象融入作品。他曾获吉林卫视《高手在民间》"最绝高手"勋章，受邀赴迪拜、阿曼等国表演，作品还登上世界邮票名录。</p>
+                        </div>
+                        <a href="https://www.jiangrenbaike.com/baike/news/2019/0613/474.html" target="_blank" class="artisan-btn">了解更多</a>
+                    </div>
+                </div>
+                
+                <!-- 传承人5 -->
+                <div class="artisan-card">
+                    <div class="artisan-img" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('images/chenqilin.jpg');">
+                        <i class="fas fa-user-astronaut"></i>
+                    </div>
+                    <div class="artisan-info">
+                        <div class="artisan-header">
+                            <div class="artisan-name">
+                                <h3>陈启林</h3>
+                                <p>四川成都</p>
+                            </div>
+                            <div class="artisan-level">省级传承人</div>
+                        </div>
+                        <div class="artisan-details">
+                            <p>1968年出生，15岁拜师蔡树全（蔡氏糖画传人）。从艺40余年，1988年与师傅合作的立体糖龙获全国烹饪大赛一等奖，1989年制作的20米长"糖龙"轰动业界。他精通糖画"子子货""丝丝货"技法，曾赴近20个国家展示糖画技艺，如今仍在成都塔子山公园摆摊，坚守非遗传承一线。</p>
+                        </div>
+                        <a href="https://cn.bing.com/search?q=%E9%99%88%E5%90%AF%E6%9E%97%E9%9D%9E%E9%81%97%E7%B3%96%E7%94%BB&qs=n&form=QBRE&sp=-1&lq=0&pq=%E9%99%88%E5%90%AF%E6%9E%97%E9%9D%9E%E9%81%97%E7%B3%96%E7%94%BB&sc=0-7&sk=&cvid=BFC11BE818064264AFE2BBF4F4135B0C" target="_blank" class="artisan-btn">了解更多</a>
+                    </div>
+                </div>
+                
+                <!-- 传承人6 -->
+                <div class="artisan-card">
+                    <div class="artisan-img" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('images/wufengquan.jpg');">
+                        <i class="fas fa-user-ninja"></i>
+                    </div>
+                    <div class="artisan-info">
+                        <div class="artisan-header">
+                            <div class="artisan-name">
+                                <h3>吴逢全</h3>
+                                <p>四川成都</p>
+                            </div>
+                            <div class="artisan-level">青年艺术家</div>
+                        </div>
+                        <div class="artisan-details">
+                            <p>9岁随父学糖画，1988年拜师国家级传承人樊德然；2009年获评省级传承人，从艺40余年。擅花鸟虫兽、戏曲人物，兼做立体造型与卡通形象，线条流畅、造型生动。赴法、德、日等多国展演，获成都首届民间艺术节特别奖等；儿子吴毅已是区级传承人，实现三代传承。</p>
+                        </div>
+                        <a href="https://news.qq.com/rain/a/20230307A04HHQ00" target="_blank" class="artisan-btn">了解更多</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 传承脉络图区域 -->
+    <section class="lineage-section">
+        <div class="container">
+            <h2>糖画传承脉络关系图谱</h2>
+            
+            <!-- 控制按钮 -->
+            <div class="lineage-controls">
+                <button class="control-btn active" data-view="all">全部传承关系</button>
+                <button class="control-btn" data-view="sichuan">四川流派</button>
+                <button class="control-btn" data-view="henan">河南流派</button>
+                <button class="control-btn" data-view="family">家族传承</button>
+                <button class="control-btn" data-view="teacher">师徒传承</button>
+            </div>
+            
+            <!-- 关系图谱容器 -->
+            <div class="lineage-visual">
+                <div id="lineage-chart"></div>
+            </div>
+            
+            <!-- 图例 -->
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color legend-1"></div>
+                    <span class="legend-text">国家级传承人</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color legend-2"></div>
+                    <span class="legend-text">省级传承人</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color legend-3"></div>
+                    <span class="legend-text">地方级传承人</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color legend-4"></div>
+                    <span class="legend-text">青年传承人</span>
+                </div>
+            </div>
+            
+            <div class="lineage-desc">
+                <p>糖画艺术自明代兴起，历经数百年的发展，形成了以家族传承、师徒传承为主要方式的传承体系。新中国成立后，政府加强了对非遗传承人的认定与保护，建立了国家、省、市、县四级传承人体系。近年来，随着非遗进校园、非遗数字化等项目的开展，糖画传承方式更加多元化。</p>
+                <p>目前，全国共有国家级糖画非遗传承人12人，省级传承人45人，市县级传承人200余人，形成了老中青结合的传承梯队，确保了糖画艺术的活态传承。</p>
+                <p><strong>提示：</strong>点击节点可查看传承人详细信息，拖动可调整图谱布局，使用上方按钮可筛选不同流派或传承方式。</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <div class="logo-icon"></div>
+                        <h3>糖韵匠心</h3>
+                    </div>
+                    <p>非遗糖画数字传承馆致力于通过数字技术记录、展示和传承糖画艺术，让这一古老技艺在新时代继续绽放光彩。</p>
+                </div>
+                <div class="footer-links">
+                    <h4>快速链接</h4>
+                    <ul>
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="history.html">糖画历史</a></li>
+                        <li><a href="craft.html">制作工艺</a></li>
+                        <li><a href="gallery.html">作品鉴赏</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>更多内容</h4>
+                    <ul>
+                        <li><a href="experience.html">在线体验</a></li>
+                        <li><a href="artisans.html">传承人物</a></li>
+                        <li><a href="shop.html">糖画商城</a></li>
+                        <li><a href="booking.html">活动预约</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>联系我们</h4>
+                    <p>邮箱：contact@sugarpainting.com</p>
+                    <p>电话：400-123-4567</p>
+                    <p>地址：北京市东城区非物质文化遗产保护中心</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2023 糖韵匠心 - 非遗糖画数字传承馆 版权所有 | 设计制作：非遗数字化团队</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 传承人卡片交互
+            const artisanCards = document.querySelectorAll('.artisan-card');
+            
+            artisanCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-10px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+            
+            // 初始化ECharts关系图谱
+            const chartDom = document.getElementById('lineage-chart');
+            const myChart = echarts.init(chartDom);
+            
+            // 关系图谱数据
+            const lineageData = {
+                categories: [
+                    {name: '国家级传承人', itemStyle: {color: '#C62828'}},
+                    {name: '省级传承人', itemStyle: {color: '#D4A017'}},
+                    {name: '地方级传承人', itemStyle: {color: '#2196F3'}},
+                    {name: '青年传承人', itemStyle: {color: '#4CAF50'}}
+                ],
+                nodes: [
+                    // 国家级传承人 (0)
+                    {id: '0', name: '蔡树全', category: 0, value: 100, 
+                     desc: '著名糖画艺术家，四川糖画代表性人物，培养了大批优秀传承人'},
+                    {id: '1', name: '樊德然', category: 0, value: 95,
+                     desc: '国家级非遗糖画传承人，四川糖画重要代表人物'},
+                    {id: '2', name: '陈子扬', category: 0, value: 90,
+                     desc: '老一辈糖画大师，对糖画艺术有深远影响'},
+                    
+                    // 省级传承人 (1)
+                    {id: '3', name: '谢丰坤', category: 1, value: 85,
+                     desc: '蔡树全弟子，省级传承人，擅长花鸟虫兽、古典戏曲人物'},
+                    {id: '4', name: '陈启林', category: 1, value: 85,
+                     desc: '蔡树全弟子，省级传承人，精通糖画"子子货""丝丝货"技法'},
+                    {id: '5', name: '吴逢全', category: 1, value: 80,
+                     desc: '樊德然弟子，省级传承人，实现三代传承'},
+                    {id: '6', name: '刘胜利', category: 1, value: 80,
+                     desc: '中原糖画代表性人物，精通平面、立体及彩色糖画'},
+                    
+                    // 地方级传承人 (2)
+                    {id: '7', name: '王岐洋', category: 2, value: 75,
+                     desc: '王氏糖画第四代传承人，擅长糖画龙等复杂造型'},
+                    {id: '8', name: '刘涛', category: 2, value: 70,
+                     desc: '刘氏糖画第五代传承人，首创浮雕式立体糖画'},
+                    {id: '9', name: '张明华', category: 2, value: 65,
+                     desc: '地方级糖画传承人，在湖南地区推广糖画艺术'},
+                    {id: '10', name: '李秀英', category: 2, value: 65,
+                     desc: '女性糖画传承人，擅长花卉题材糖画'},
+                    
+                    // 青年传承人 (3)
+                    {id: '11', name: '吴毅', category: 3, value: 60,
+                     desc: '吴逢全之子，新生代糖画传承人'},
+                    {id: '12', name: '陈晓', category: 3, value: 55,
+                     desc: '青年糖画艺术家，将现代元素融入传统糖画'},
+                    {id: '13', name: '王明', category: 3, value: 50,
+                     desc: '90后糖画手艺人，通过社交媒体推广糖画'}
+                ],
+                links: [
+                    // 师徒关系
+                    {source: '0', target: '3', value: 2, label: {show: true, formatter: '师徒'}},
+                    {source: '0', target: '4', value: 2, label: {show: true, formatter: '师徒'}},
+                    {source: '1', target: '5', value: 2, label: {show: true, formatter: '师徒'}},
+                    
+                    // 家族关系
+                    {source: '5', target: '11', value: 1, label: {show: true, formatter: '父子'}},
+                    {source: '7', target: '13', value: 1, label: {show: false}},
+                    
+                    // 地域关联
+                    {source: '0', target: '1', value: 1, label: {show: true, formatter: '同派'}},
+                    {source: '6', target: '7', value: 1, label: {show: true, formatter: '交流'}},
+                    {source: '3', target: '4', value: 1, label: {show: false}},
+                    {source: '8', target: '12', value: 1, label: {show: false}},
+                    {source: '9', target: '10', value: 1, label: {show: false}}
+                ]
+            };
+            
+            // 图表配置
+            const option = {
+                title: {
+                    text: '糖画传承脉络关系图',
+                    subtext: '点击节点查看详细信息，拖动节点调整布局',
+                    left: 'center',
+                    textStyle: {
+                        color: '#5D4037',
+                        fontSize: 18
+                    },
+                    subtextStyle: {
+                        color: '#888',
+                        fontSize: 12
+                    }
+                },
+                tooltip: {
+                    formatter: function(params) {
+                        if (params.dataType === 'node') {
+                            const node = params.data;
+                            return `
+                                <div style="padding:5px;">
+                                    <strong>${node.name}</strong><br/>
+                                    级别: ${lineageData.categories[node.category].name}<br/>
+                                    描述: ${node.desc || '暂无详细信息'}
+                                </div>
+                            `;
+                        } else if (params.dataType === 'edge') {
+                            const sourceName = lineageData.nodes.find(n => n.id === params.data.source).name;
+                            const targetName = lineageData.nodes.find(n => n.id === params.data.target).name;
+                            const relation = params.data.label && params.data.label.formatter ? params.data.label.formatter : '关联';
+                            return `${sourceName} → ${targetName}<br/>关系: ${relation}`;
+                        }
+                    }
+                },
+                legend: {
+                    show: false
+                },
+                animationDuration: 1500,
+                animationEasingUpdate: 'quinticInOut',
+                series: [{
+                    type: 'graph',
+                    layout: 'force',
+                    data: lineageData.nodes,
+                    links: lineageData.links,
+                    categories: lineageData.categories,
+                    roam: true,
+                    label: {
+                        show: true,
+                        position: 'right',
+                        formatter: '{b}',
+                        fontSize: 12
+                    },
+                    lineStyle: {
+                        color: 'source',
+                        curveness: 0.3,
+                        width: 2
+                    },
+                    emphasis: {
+                        focus: 'adjacency',
+                        lineStyle: {
+                            width: 3
+                        }
+                    },
+                    force: {
+                        repulsion: 200,
+                        edgeLength: [50, 150],
+                        layoutAnimation: true
+                    },
+                    draggable: true
+                }]
+            };
+            
+            // 设置图表选项
+            myChart.setOption(option);
+            
+            // 窗口大小变化时重绘图表
+            window.addEventListener('resize', function() {
+                myChart.resize();
+            });
+            
+            // 控制按钮交互
+            const controlBtns = document.querySelectorAll('.control-btn');
+            controlBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 移除其他按钮的active类
+                    controlBtns.forEach(b => b.classList.remove('active'));
+                    // 为当前按钮添加active类
+                    this.classList.add('active');
+                    
+                    const viewType = this.getAttribute('data-view');
+                    
+                    // 根据视图类型筛选数据
+                    let filteredLinks = [...lineageData.links];
+                    
+                    if (viewType === 'sichuan') {
+                        // 四川流派：显示四川相关传承人
+                        const sichuanNodes = ['0', '1', '3', '4', '5', '11'];
+                        filteredLinks = lineageData.links.filter(link => 
+                            sichuanNodes.includes(link.source) && sichuanNodes.includes(link.target)
+                        );
+                    } else if (viewType === 'henan') {
+                        // 河南流派：显示河南相关传承人
+                        const henanNodes = ['6', '7'];
+                        filteredLinks = lineageData.links.filter(link => 
+                            henanNodes.includes(link.source) && henanNodes.includes(link.target)
+                        );
+                    } else if (viewType === 'family') {
+                        // 家族传承：只显示家族关系
+                        filteredLinks = lineageData.links.filter(link => 
+                            link.value === 1 && link.label && link.label.formatter === '父子'
+                        );
+                    } else if (viewType === 'teacher') {
+                        // 师徒传承：只显示师徒关系
+                        filteredLinks = lineageData.links.filter(link => 
+                            link.value === 2 && link.label && link.label.formatter === '师徒'
+                        );
+                    }
+                    // 'all' 视图显示所有关系
+                    
+                    // 更新图表
+                    myChart.setOption({
+                        series: [{
+                            links: filteredLinks
+                        }]
+                    });
+                });
+            });
+            
+            // 点击节点时显示详细信息
+            myChart.on('click', function(params) {
+                if (params.dataType === 'node') {
+                    const nodeName = params.data.name;
+                    const nodeDesc = params.data.desc || '暂无详细信息';
+                    const categoryName = lineageData.categories[params.data.category].name;
+                    
+                    // 在实际应用中，这里可以跳转到传承人详情页
+                    // 现在用一个弹窗代替
+                    alert(`传承人: ${nodeName}\n级别: ${categoryName}\n简介: ${nodeDesc}`);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
